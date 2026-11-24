@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { media, type MediaTile } from "../content/media";
 import { projects, type Project } from "../content/projects";
 import { CompanyPanel } from "./CompanyPanel";
@@ -119,18 +119,26 @@ export function ProjectsFeed() {
 }
 
 function Media({ tile }: { tile: MediaTile }) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  // Clips play only on screen, and never with reduced motion (the poster stays).
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()));
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+
+  const pos = tile.focus ? { objectPosition: tile.focus } : undefined;
   return (
-    <figure className={styles.media} data-reveal="">
-      <img
-        src={tile.src}
-        alt={tile.alt}
-        width={tile.width}
-        height={tile.height}
-        loading="lazy"
-        decoding="async"
-        draggable={false}
-        style={tile.focus ? { objectPosition: tile.focus } : undefined}
-      />
+    <figure className={styles.media} data-reveal="" data-sound-hover={tile.caption ? "" : undefined}>
+      {tile.video ? (
+        <video ref={ref} src={tile.video} poster={tile.src} muted loop playsInline preload="metadata" aria-label={tile.alt} style={pos} />
+      ) : (
+        <img src={tile.src} alt={tile.alt} width={tile.width} height={tile.height} loading="lazy" decoding="async" draggable={false} style={pos} />
+      )}
+      {tile.caption && <figcaption className={styles.mediaCaption}>{tile.caption}</figcaption>}
     </figure>
   );
 }
