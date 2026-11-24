@@ -106,6 +106,8 @@ const CHARMED_COVER = img("charmed-cover.webp", "Charmed HUB: the texture genera
 const ATLAS_COVER = img("atlas-cover.webp", "Atlas leads capture: Explore our 3D navigator tools, with a 3D capture of a garage", 1600, 1000);
 const AUGMEND_COVER = img("augmend-cover.webp", "Augmend workspace: an incident summary with its hypothesis beside shared windows and a CloudWatch log", 1600, 1000);
 const COOL_EARTH_COVER = img("cool-earth-cover.webp", "Cool Club by Cool Earth: badges and certificates on the home, beside the Learn section and the leaderboard", 1600, 1000);
+const SWIPPR_B2B_CLIENTS = img("swippr-b2b-clients.webp", "Swippr B2B admin: the clients list, each client with open positions and buttons to view it or add a position", 1600, 978);
+const SWIPPR_B2B_LOGIN = img("swippr-b2b-login.webp", "Swippr B2B admin sign-in: Welcome to Swippr, with Continue with Google", 1600, 978);
 const ML = { label: "Mercado Libre", brand: "mercadolibre" } as const;
 const CB = { label: "Coverbase", brand: "coverbase" } as const;
 const TT = { label: "Toptal", brand: "toptal" } as const;
@@ -609,6 +611,12 @@ export const projects: Project[] = [
         type: "p",
         text: "Swippr is a product I founded. It went into production and made sales. The record spans an MVP, a second release, white-label websites, then a B2B line with an admin, a design system, landing pages, branding, a one-pager, a sales deck and a pitch, after strategy work on goals, prioritization, information architecture, customer journeys and benchmarks.",
       },
+      { type: "h", text: "The B2B admin" },
+      {
+        type: "p",
+        text: "The B2B line came with its own admin for the team placing talent: a sign-in, then a list of client companies with their open positions, where the team can open a client or add a position.",
+      },
+      { type: "images", items: [SWIPPR_B2B_CLIENTS, SWIPPR_B2B_LOGIN] },
     ],
   },
 

@@ -61,7 +61,7 @@ export const companies: Partial<Record<Brand, CompanyContext>> = {
   },
   redvalley: {
     where: "Medellín",
-    photo: { src: "/images/companies/redvalley.webp", width: 960, height: 794, caption: "Red Valley · Team On-site" },
+    photo: { src: "/images/companies/redvalley.webp", width: 960, height: 794, caption: "Medellín · Team On-site" },
     about: "RV Dev, a software agency, where I built the design team from scratch.",
     roles: [{ title: "Head UX Designer", dates: "2021 – 2022" }],
     points: [
