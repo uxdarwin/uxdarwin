@@ -97,6 +97,7 @@ export const projects: Project[] = [
     year: 2026,
     employer: { label: "Freelance" },
     client: "Neon Wood",
+    url: "https://neonwood.com/",
     description: "A website for furnished apartments and community spaces in four German cities.",
     teaser: "One floating card for location, apartment type and all-inclusive rent, right in the hero",
     image: NEON,
@@ -104,7 +105,7 @@ export const projects: Project[] = [
       { type: "images", items: [NEON] },
       {
         type: "p",
-        text: "Neon Wood rents furnished apartments and community spaces in Berlin, Cologne, Frankfurt and Tübingen. I designed the website through Cresco, a Berlin studio, and led and executed it end to end.",
+        text: "Neon Wood rents furnished apartments and community spaces in Berlin, Cologne, Frankfurt and Tübingen. I designed the website through Cresco, a Berlin studio, and led and executed it end to end. It is live at neonwood.com.",
       },
       { type: "h", text: "The decision on top of the photo" },
       {
@@ -123,6 +124,7 @@ export const projects: Project[] = [
     year: 2026,
     employer: { label: "Freelance" },
     client: "Abacus Tierpark Hotel",
+    url: "https://www.abacus-hotel.de/en",
     description: "A website redesign for a Berlin hotel next to Tierpark, with booking up front.",
     teaser: "Before and after: a home page that leads with the park and a one-line booking bar",
     image: ABACUS,
@@ -130,7 +132,7 @@ export const projects: Project[] = [
       { type: "images", items: [ABACUS] },
       {
         type: "p",
-        text: "A website redesign for a hotel next to Tierpark Berlin, designed through Cresco. I led and executed it end to end.",
+        text: "A website redesign for a hotel next to Tierpark Berlin, designed through Cresco. I led and executed it end to end, and the new site is live at abacus-hotel.de.",
       },
       { type: "h", text: "Where Berlin slows down" },
       {

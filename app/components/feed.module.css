@@ -261,6 +261,18 @@
   text-underline-offset: 3px;
 }
 
+.metaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.metaArrow {
+  width: 11px;
+  height: 11px;
+}
+
 .metaLink:hover {
   color: var(--text);
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import type { Brand } from "../content/profile";
 import type { Project } from "../content/projects";
 import { CoverbaseLogo, MercadoLibreMono, RainforestLogo, RedValleyLogo, ToptalLogo } from "./logos";
@@ -21,6 +23,8 @@ function MetaLogo({ brand, id }: { brand: Brand; id: string }) {
   }
 }
 
+const domain = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/.*$/, "");
+
 /** "2026 · [logo] EMPLOYER · CLIENT [· URL]" in Geist Mono caps. */
 export function ProjectMeta({ project: p, withUrl = false }: { project: Project; withUrl?: boolean }) {
   return (
@@ -33,14 +37,48 @@ export function ProjectMeta({ project: p, withUrl = false }: { project: Project;
       </span>
       <span aria-hidden="true">·</span>
       <span>{p.client}</span>
-      {withUrl && p.url && (
+      {p.url && (
         <>
           <span aria-hidden="true">·</span>
-          <a className={styles.metaLink} href={p.url} target="_blank" rel="noreferrer">
-            {p.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-          </a>
+          {withUrl ? (
+            <a className={styles.metaLink} href={p.url} target="_blank" rel="noreferrer">
+              {domain(p.url)}
+              <LiveArrow />
+            </a>
+          ) : (
+            // Cards are links already, so the live site opens from a span (no nested anchors).
+            <span
+              role="link"
+              tabIndex={0}
+              className={styles.metaLink}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(p.url, "_blank", "noreferrer");
+              }}
+              onPointerDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter") return;
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(p.url, "_blank", "noreferrer");
+              }}
+              aria-label={`Open ${domain(p.url)} in a new tab`}
+            >
+              {domain(p.url)}
+              <LiveArrow />
+            </span>
+          )}
         </>
       )}
     </p>
+  );
+}
+
+function LiveArrow() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={styles.metaArrow}>
+      <path d="M7 17 17 7M7 7h10v10" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
   );
 }
