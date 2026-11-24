@@ -609,7 +609,30 @@
   max-width: 1032px;
 }
 
-.cluster + .sectionTitle {
+.pageVideo {
+  margin: 72px 0;
+  max-width: 1032px;
+}
+
+.pageVideo video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: #2a2a21;
+}
+
+/* Portrait phone recordings: a phone-width column, not a full-width tower. */
+.pageVideoTall {
+  max-width: 360px;
+}
+
+.pageVideoTall video {
+  border-radius: 28px;
+}
+
+.cluster + .sectionTitle,
+.pageVideo + .sectionTitle {
   margin-top: 0;
 }
 
