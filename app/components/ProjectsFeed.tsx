@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { projects, type Project } from "../content/projects";
+import { CompanyPanel } from "./CompanyPanel";
 import { ProjectMeta } from "./ProjectMeta";
 import { seeded, useCanDrag } from "./drag";
 import { setCompany, useCompany } from "./filter";
@@ -154,6 +155,7 @@ export function ProjectsFeed() {
           </button>
         )}
       </header>
+      <div className={styles.feedBody} data-panel={company ? "" : undefined}>
       <div ref={pileRef} className={styles.pile} data-ready={ready || undefined} style={{ height }}>
         {full.yearTops.map(({ year, top }) => {
           const at = yearTops.find((y) => y.year === year);
@@ -192,6 +194,8 @@ export function ProjectsFeed() {
               ))}
           </div>
         ))}
+      </div>
+      {company && <CompanyPanel brand={company} count={visible.length} />}
       </div>
     </section>
   );
