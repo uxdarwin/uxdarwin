@@ -1,0 +1,803 @@
+/* Left panel. Measurements come from the 1440×900 Figma frames (34:1934 and its hover states).
+   Text uses `text-box` trimming like Figma's "cap height to baseline", so the gaps below are
+   cap-to-baseline distances. Browsers without it render slightly looser spacing. */
+
+/* ---------- Page shell ---------- */
+
+.shell {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: var(--gap);
+  padding: var(--gap);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  align-self: start;
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-height: 880px) and (min-width: 1024px) {
+  .panel {
+    position: sticky;
+    top: var(--gap);
+  }
+}
+
+.content {
+  min-width: 0;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+  position: relative;
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-card);
+}
+
+/* Shared frosted surface: the four cards and the round contact buttons. */
+.card,
+.roundBtn {
+  background: var(--surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.trim {
+  text-box: trim-both cap alphabetic;
+}
+
+.cardTitle {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 400;
+  color: var(--text);
+  text-box: trim-both cap alphabetic;
+}
+
+/* ---------- Intro ---------- */
+
+.intro {
+  padding: 19.5px 23.5px 31.5px;
+}
+
+.introTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.wordmark {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+.dmark {
+  position: relative;
+  width: 73.4px;
+  height: 56px;
+  flex: none;
+}
+
+.rings {
+  position: absolute;
+  left: 0.5px;
+  top: 0.65px;
+  width: 49.2px;
+  height: 56px;
+  overflow: visible;
+}
+
+.ring {
+  stroke-dasharray: 1 1;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring {
+    animation: none !important;
+  }
+}
+
+.portrait {
+  position: absolute;
+  left: 11.42px;
+  top: 0;
+  width: 62px;
+  height: 56px;
+  mix-blend-mode: luminosity;
+  object-fit: cover;
+  transition: filter 320ms var(--ease-out);
+}
+
+/* Hovering the logo lifts the portrait's exposure by 30%. */
+.wordmark:hover .portrait {
+  filter: brightness(1.3);
+}
+
+.wordmarkText {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-left: -13.8px; /* "Darwin" starts at x 83.6, overlapping the portrait like the file */
+  margin-top: 5.9px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 25.65px;
+  line-height: 25.6px;
+  position: relative;
+}
+
+.wordmarkName {
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.wordmarkSub {
+  color: var(--text-3);
+}
+
+.social {
+  display: flex;
+  margin-right: -0.5px;
+}
+
+.roundBtn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  border: 0.5px solid var(--border);
+  color: var(--text-3);
+  transition:
+    background-color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    color 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+
+.mailBtn {
+  z-index: 1;
+}
+
+.linkedinBtn {
+  margin-left: -18px;
+}
+
+.roundBtn:hover,
+.roundBtn:focus-visible {
+  z-index: 2;
+  color: #fff;
+  border-color: transparent;
+}
+
+.mailBtn:hover,
+.mailBtn:focus-visible {
+  background: var(--blue-press);
+}
+
+.linkedinBtn:hover,
+.linkedinBtn:focus-visible {
+  background: var(--linkedin);
+}
+
+.roundBtn:active {
+  transform: scale(0.96);
+}
+
+.roundIcon {
+  width: 24px;
+  height: 24px;
+  grid-area: 1 / 1;
+  transition: opacity 200ms var(--ease-out);
+}
+
+.iconHover {
+  opacity: 0;
+}
+
+.linkedinBtn:hover .iconHover,
+.linkedinBtn:focus-visible .iconHover {
+  opacity: 1;
+}
+
+.linkedinBtn:hover .iconIdle,
+.linkedinBtn:focus-visible .iconIdle {
+  opacity: 0;
+}
+
+.headline {
+  margin-top: 27.5px;
+  white-space: nowrap;
+  letter-spacing: -0.015em;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--text);
+  text-box: trim-both cap alphabetic;
+}
+
+.at {
+  margin-top: 12.5px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--text-3);
+  text-box: trim-both cap alphabetic;
+}
+
+.companyLink {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-left: 2px;
+  color: var(--text-3);
+  transition: color 200ms var(--ease-out);
+}
+
+.companyLogo {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  align-self: center;
+  margin: -4px 0;
+  transform: translateY(1px);
+}
+
+.companyLogo svg {
+  position: absolute;
+  inset: 0;
+  width: 20px;
+  height: 20px;
+  transition: opacity 200ms var(--ease-out);
+}
+
+.companyLogoHover {
+  opacity: 0;
+}
+
+.companyName {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 200ms var(--ease-out);
+}
+
+.companyLink:hover,
+.companyLink:focus-visible {
+  color: var(--text);
+}
+
+.companyLink:hover .companyName,
+.companyLink:focus-visible .companyName {
+  text-decoration-color: currentColor;
+}
+
+.companyLink:hover .companyLogoHover,
+.companyLink:focus-visible .companyLogoHover {
+  opacity: 1;
+}
+
+.companyLink:hover .companyLogoIdle,
+.companyLink:focus-visible .companyLogoIdle {
+  opacity: 0;
+}
+
+.summary {
+  margin-top: 24.5px;
+  max-width: 272px;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 300;
+  color: var(--text-2);
+  text-box: trim-both cap alphabetic;
+  text-wrap: pretty;
+}
+
+/* ---------- Lists and rows (experience + highlights) ---------- */
+
+.experience {
+  display: flex;
+  flex-direction: column;
+  padding-top: 23.5px;
+}
+
+.experience > .cardTitle {
+  padding: 0 23.5px;
+}
+
+.listWrap {
+  position: relative;
+  flex: 1;
+  margin-top: 12.5px;
+}
+
+.list {
+  list-style: none;
+  padding: 0 11.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.highlights {
+  padding: 11.5px 0;
+}
+
+.row {
+  --brand: 255 255 255;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 46px;
+  padding: 3px 12px;
+  border-radius: var(--radius-row);
+  text-align: left;
+  isolation: isolate;
+}
+
+/* Hover wash: brand color fading into white at 4% (Figma hover frames). */
+.row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgb(var(--brand) / 0.16) 0%, rgb(255 255 255 / 0.04) 50%);
+  opacity: 0;
+  transition: opacity 220ms var(--ease-out);
+}
+
+.row:hover::before,
+.row:focus-visible::before,
+.row[data-active="true"]::before {
+  opacity: 1;
+}
+
+.mark {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  flex: none;
+}
+
+.mark svg {
+  width: 40px;
+  height: 40px;
+}
+
+.markMono,
+.markColor {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity 220ms var(--ease-out),
+    transform 320ms var(--ease-out);
+}
+
+.markColor {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+.row:hover .markColor,
+.row:focus-visible .markColor,
+.row[data-active="true"] .markColor {
+  opacity: 1;
+  transform: none;
+}
+
+.row:hover .markMono,
+.row:focus-visible .markMono,
+.row[data-active="true"] .markMono {
+  opacity: 0;
+}
+
+/* Muted logo states: a white silhouette at 60%, or a dedicated outline drawing. */
+.silhouette {
+  filter: brightness(0) invert(1);
+  opacity: 0.6;
+}
+
+.mono {
+  color: var(--text-3);
+}
+
+.rowText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.rowTitle {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 300;
+  color: var(--text);
+  text-box: trim-both cap alphabetic;
+  white-space: nowrap;
+  overflow: clip;
+  overflow-clip-margin: 4px;
+  text-overflow: ellipsis;
+}
+
+.rowSub {
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 300;
+  color: var(--text-3);
+  text-box: trim-both cap alphabetic;
+  white-space: nowrap;
+  overflow: clip;
+  overflow-clip-margin: 4px;
+  text-overflow: ellipsis;
+}
+
+.rowMeta {
+  flex: none;
+  margin-left: 4px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 18px;
+  letter-spacing: 0.3px;
+  color: var(--text-3);
+  text-align: right;
+}
+
+/* ---------- "Show projects" tooltip ---------- */
+
+.tooltip {
+  position: absolute;
+  left: var(--x, 50%);
+  top: var(--y, 0);
+  z-index: 5;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgb(20 20 26 / 0.86);
+  border: 0.5px solid rgb(255 255 255 / 0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.4);
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 400;
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 2px)) scale(0.94);
+  opacity: 0;
+  transition:
+    opacity 160ms var(--ease-out),
+    transform 160ms var(--ease-out),
+    top 160ms var(--ease-out);
+}
+
+.tooltip[data-show="true"] {
+  opacity: 1;
+  transform: translate(-50%, calc(-100% + 4px)) scale(1);
+}
+
+@media (hover: none) {
+  .tooltip {
+    display: none;
+  }
+}
+
+/* ---------- "And more" footer ---------- */
+
+.more {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 56px;
+  margin-top: 11.5px;
+  padding: 0 23.5px;
+  background: transparent;
+  border: 0;
+  border-top: 0.5px solid var(--border);
+  border-radius: 0 0 19.5px 19.5px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 200ms var(--ease-out);
+}
+
+.more:hover,
+.more:focus-visible {
+  background: var(--surface);
+}
+
+.more:hover .moreIcon,
+.more:focus-visible .moreIcon,
+.more:hover .textLink,
+.more:focus-visible .textLink {
+  color: var(--text);
+}
+
+.moreIcon {
+  transition: color 200ms var(--ease-out);
+}
+
+.moreIcon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--text-3);
+}
+
+.moreIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.moreText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.moreTitle {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text);
+  text-box: trim-both cap alphabetic;
+}
+
+.textLink {
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 300;
+  color: var(--text-3);
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+  text-underline-offset: 2px;
+  text-box: trim-both cap alphabetic;
+  transition:
+    color 160ms var(--ease-out),
+    text-decoration-color 160ms var(--ease-out);
+}
+
+.textLink:hover,
+.textLink:focus-visible {
+  color: var(--text);
+  text-decoration-color: currentColor;
+}
+
+/* ---------- Highlight previews ---------- */
+
+.previewLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.preview {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  filter: drop-shadow(0 24px 48px rgb(0 0 0 / 0.55));
+  opacity: 0;
+  transform: translate3d(-12px, 10px, 0) scale(0.96);
+  transform-origin: left center;
+  transition:
+    opacity 180ms var(--ease-out),
+    transform 380ms var(--ease-out),
+    top 260ms var(--ease-out);
+}
+
+.preview[data-show="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview {
+    transform: none;
+    transition: opacity 120ms linear;
+  }
+}
+
+.highlightItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.inlinePreview {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 320ms var(--ease-out);
+}
+
+.inlinePreview[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.inlinePreviewInner {
+  overflow: hidden;
+}
+
+.inlinePreviewInner img {
+  width: 100%;
+  height: auto;
+  padding: 6px 4px 10px;
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+}
+
+.inlinePreview[data-open="true"] img {
+  opacity: 1;
+}
+
+/* ---------- Location ---------- */
+
+.location {
+  height: 80px;
+  overflow: hidden;
+  transition: background-color 260ms var(--ease-out), border-color 260ms var(--ease-out);
+}
+
+.location:hover,
+.location:focus-within {
+  background: var(--blue-press);
+  border-color: transparent;
+}
+
+.locationText {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 17.5px 23.5px 0;
+}
+
+.time {
+  margin-top: 9px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 18px;
+  letter-spacing: 0.3px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  text-box: trim-both cap alphabetic;
+}
+
+.location .textLink {
+  margin-top: 7.5px;
+}
+
+.location:hover .textLink,
+.location:focus-within .textLink {
+  color: var(--text);
+}
+
+/* Globe centered on Medellín, which lands at about (255, 44) in the 320×80 card on hover. */
+.globeWrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: lighten;
+  mask-image: linear-gradient(90deg, transparent 22%, #000 58%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 22%, #000 58%);
+}
+
+.globe {
+  position: absolute;
+  left: calc(100% - 215px);
+  top: -106px;
+  width: 300px;
+  height: 300px;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+
+.globe[data-ready="true"] {
+  opacity: 1;
+}
+
+/* ---------- Tablet: the panel becomes a full-width header band ---------- */
+
+@media (max-width: 1023px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "intro experience"
+      "location experience"
+      "highlights highlights";
+  }
+
+  .intro {
+    grid-area: intro;
+  }
+
+  .experience {
+    grid-area: experience;
+  }
+
+  .location {
+    grid-area: location;
+    height: auto;
+    min-height: 80px;
+  }
+
+  .highlights {
+    grid-area: highlights;
+  }
+
+  .highlights > .list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 4px;
+  }
+
+  .summary {
+    max-width: 420px;
+  }
+}
+
+/* ---------- Mobile: one column of cards ---------- */
+
+@media (max-width: 639px) {
+  .shell {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .panel {
+    display: flex;
+    gap: 8px;
+  }
+
+  .highlights > .list {
+    display: flex;
+  }
+
+  .intro {
+    padding-bottom: 27.5px;
+  }
+}
+
+/* ---------- Coverbase logo loop (plays once on hover) ---------- */
+
+.loopRow,
+.loopIntro {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.loopRow {
+  inset: 0;
+}
+
+.loopIntro {
+  inset: 0;
+}
+
+.markColor:has(.loopRow[data-playing="true"]) > svg,
+.companyLogo:has(.loopIntro[data-playing="true"]) > svg {
+  opacity: 0 !important;
+}

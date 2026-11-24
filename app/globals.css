@@ -1,43 +1,96 @@
+/* Design tokens from the Figma file "Darwin Designer Brand" (left panel, 1440 desktop). */
 :root {
-  --bg: #fafaf9;
-  --fg: #1c1917;
-  color-scheme: light dark;
+  --bg: #0a0a0f;
+  --surface: rgb(255 255 255 / 0.04);
+  --surface-hover: rgb(255 255 255 / 0.07);
+  --border: rgb(255 255 255 / 0.08);
+  --text: #ffffff;
+  --text-2: rgb(255 255 255 / 0.8);
+  --text-3: rgb(255 255 255 / 0.6);
+  --underline: rgb(255 255 255 / 0.2);
+
+  --blue-750: #1a35c0;
+  --blue-press: #001ba5; /* mail button and location card hover */
+  --linkedin: #007ebb;
+
+  --brand-coverbase: 26 53 192;
+  --brand-mercadolibre: 255 209 0;
+  --brand-toptal: 32 78 207;
+  --brand-redvalley: 255 36 53;
+  --brand-figma: 135 79 255;
+  --brand-rainforest: 102 188 70;
+
+  --radius-card: 20px;
+  --glass-blur: blur(60px);
+  --radius-row: 12px;
+  --gap: 4px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0c0a09;
-    --fg: #f5f5f4;
-  }
-}
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
 }
 
-html,
-body {
-  height: 100%;
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-main {
   min-height: 100dvh;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1 {
-  font-size: clamp(2.5rem, 8vw, 6rem);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1;
+img,
+svg,
+canvas {
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid #6598ff;
+  outline-offset: 2px;
+}
+
+/* Selection: brand blue, and full-opacity text so muted copy reads clearly when selected. */
+::selection {
+  background: #001ba5;
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
