@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { ChromaFlow, FlutedGlass, Shader, Swirl } from "shaders/react";
+import { ChromaFlow, CustomShader, Shader, Swirl } from "shaders/react";
+import { RadialFlutes } from "./radialFlutes";
 
 // Darkest palette color (--bg) instead of pure black.
 const BG = "#0a0a0f";
 // Darwin wants a very subtle effect: 20% of the full-strength shader over --bg.
 const STRENGTH = 0.2;
+
+// Each glass arc is this many CSS pixels wide (Darwin's spec).
+const ARC_PX = 24;
 
 const REDUCE = "(prefers-reduced-motion: reduce)";
 
@@ -24,12 +28,21 @@ function useReducedMotion() {
 
 /**
  * Ambient WebGPU background from shaders.com: a slow swirl, a cursor-reactive chroma
- * flow and a fluted-glass distortion. Browsers without WebGPU, and visitors who prefer
+ * flow, seen through concentric fluted-glass arcs. Browsers without WebGPU, and visitors who prefer
  * reduced motion, simply see the flat --bg color underneath.
  */
 export function ShaderBackground() {
   const reduce = useReducedMotion();
   const [state, setState] = useState("loading");
+  const [band, setBand] = useState(ARC_PX / 900);
+
+  // The filter measures in uv-height units; convert 24px for the current window height.
+  useEffect(() => {
+    const fit = () => setBand(ARC_PX / Math.max(window.innerHeight, 1));
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
 
   // The shader follows the cursor through window "mousemove" events. Some interactions
   // (pressing on controls, focus moves) can leave the browser sending only pointer
@@ -73,19 +86,11 @@ export function ShaderBackground() {
         onReady={() => setState("ready")}
         onUnavailable={(reason) => setState(`unavailable:${String(reason)}`)}
       >
-        {/* Ambient background */}
-        <Swirl blend={36} detail={1.5} stops={[{ color: BG, position: 0 }, { color: "#3d3d40", position: 1 }]} />
-        {/* Interactive cursor effect */}
-        <ChromaFlow baseColor={BG} downColor={BG} leftColor={BG} rightColor={BG} upColor={BG} />
-        {/* Glass-like distortion */}
-        <FlutedGlass
-          aberration={0.36}
-          angle={90}
-          frequency={50}
-          highlightColor="#ffffff"
-          refraction={4}
-          softness={1}
-        />
+        {/* Glass arcs fanning out from the left edge, over the ambient swirl and cursor flow */}
+        <CustomShader src={RadialFlutes} centerX={0} centerY={0.5} band={band} refraction={1.2} sheen={0.006}>
+          <Swirl blend={36} detail={1.5} stops={[{ color: BG, position: 0 }, { color: "#3d3d40", position: 1 }]} />
+          <ChromaFlow baseColor={BG} downColor={BG} leftColor={BG} rightColor={BG} upColor={BG} />
+        </CustomShader>
       </Shader>
     </div>
   );
