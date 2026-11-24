@@ -29,6 +29,8 @@ export type Project = {
   teaser: string;
   /** Feed image. Projects without one get a typographic cover until assets are gathered. */
   image?: ProjectImage;
+  /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
+  carousel?: string[];
   /** Lottie animations: played in the card instead of an image, and by a "motion" block. */
   motion?: MotionClip[];
   story: Block[];
@@ -605,6 +607,7 @@ export const projects: Project[] = [
     description: "A product I founded, took to production and sold.",
     teaser: "From MVP to a B2B line with its own admin, design system and sales deck",
     image: SWIPPR_COVER,
+    carousel: ["pricing", "pitch", "social", "b2b-clients", "b2b-login"].map((n) => `/images/carousel/swippr/${n}.webp`),
     story: [
       { type: "images", items: [SWIPPR_COVER] },
       {
