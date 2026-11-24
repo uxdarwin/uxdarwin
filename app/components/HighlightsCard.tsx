@@ -47,6 +47,8 @@ export function HighlightsCard() {
               <button
                 type="button"
                 className={styles.row}
+                data-sound-hover=""
+                data-cuelume-tap=""
                 data-active={isActive}
                 aria-expanded={floating ? undefined : isActive}
                 aria-describedby={isActive ? `hl-preview-${i}` : undefined}

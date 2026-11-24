@@ -39,6 +39,7 @@ export function ExperienceCard() {
               className={styles.row}
               style={{ "--brand": `var(--brand-${item.brand})` } as React.CSSProperties}
               onPointerMove={moveTip}
+              data-sound-hover=""
               data-loop-host={item.brand === "coverbase" ? "" : undefined}
             >
               <BrandMark brand={item.brand} id={`exp-${i}`} />
@@ -55,7 +56,7 @@ export function ExperienceCard() {
         </div>
       </div>
 
-      <button type="button" className={styles.more} onClick={() => setCvOpen(true)} aria-haspopup="dialog">
+      <button type="button" className={styles.more} onClick={() => setCvOpen(true)} aria-haspopup="dialog" data-sound-hover="" data-cuelume-tap="">
         <span className={styles.moreIcon} aria-hidden="true">
           <FileTextIcon />
         </span>

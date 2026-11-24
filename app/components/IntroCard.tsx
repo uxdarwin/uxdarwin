@@ -8,7 +8,7 @@ export function IntroCard() {
   return (
     <section className={`${styles.card} ${styles.intro}`} aria-label="Introduction">
       <div className={styles.introTop}>
-        <h1 className={styles.wordmark}>
+        <h1 className={styles.wordmark} data-sound-hover="">
           <DMark />
           <span className={styles.wordmarkText}>
             <span className={styles.wordmarkName}>Darwin</span>
@@ -17,7 +17,7 @@ export function IntroCard() {
           <span className="sr-only">{profile.name}</span>
         </h1>
         <div className={styles.social}>
-          <a className={`${styles.roundBtn} ${styles.mailBtn}`} href={`mailto:${profile.email}`} aria-label="Email Darwin">
+          <a className={`${styles.roundBtn} ${styles.mailBtn}`} href={`mailto:${profile.email}`} aria-label="Email Darwin" data-sound-hover="" data-cuelume-tap="">
             <MailIcon className={styles.roundIcon} />
           </a>
           <a
@@ -26,6 +26,8 @@ export function IntroCard() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Darwin on LinkedIn"
+            data-sound-hover=""
+            data-cuelume-tap=""
           >
             <LinkedInIcon className={`${styles.roundIcon} ${styles.iconIdle}`} />
             <LinkedInFilledIcon className={`${styles.roundIcon} ${styles.iconHover}`} />
@@ -36,7 +38,7 @@ export function IntroCard() {
       <p className={styles.headline}>{profile.headline}</p>
       <p className={styles.at}>
         at{" "}
-        <a className={styles.companyLink} href={profile.company.url} target="_blank" rel="noopener noreferrer" data-loop-host="">
+        <a className={styles.companyLink} href={profile.company.url} target="_blank" rel="noopener noreferrer" data-loop-host="" data-sound-hover="" data-cuelume-tap="">
           <span className={styles.companyLogo} aria-hidden="true">
             <CoverbaseLogo id="intro-cb-gray" tone="gray" className={styles.companyLogoIdle} viewBox="8.03 8.03 23.95 23.95" />
             <CoverbaseLogo id="intro-cb-color" className={styles.companyLogoHover} viewBox="8.03 8.03 23.95 23.95" />
