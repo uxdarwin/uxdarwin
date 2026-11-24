@@ -1,5 +1,5 @@
 /* Projects feed (center column). Grid from Figma 75:12973: three columns 2px apart, frosted
-   cards with the cover inset 24px, the year and employer centered below, then the title. */
+   cards with the cover inset 32px, the year and employer centered below, then the title. */
 
 .feed,
 .page {
@@ -120,7 +120,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 24px 32px;
+  padding: 32px;
   border-radius: 19px;
   color: inherit;
   text-decoration: none;
@@ -172,7 +172,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 24px;
+  margin-top: 32px;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 10px;
   line-height: 12px;
