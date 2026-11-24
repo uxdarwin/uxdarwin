@@ -24,6 +24,7 @@ function useFloating() {
 // settles to sharp while it fades and scales in (SVG turbulence + displacement).
 const DISTORT_MS = 750;
 const DISTORT_MAX = 28; // displacement in px at the first frame
+const SPLIT_MAX = 4; // red/blue channel split in px at the first frame (chromatic aberration)
 const SHADOW = "drop-shadow(0 24px 48px rgb(0 0 0 / 0.55))";
 
 export function HighlightsCard() {
@@ -32,24 +33,33 @@ export function HighlightsCard() {
   const [shift, setShift] = useState(0);
   const cardRef = useRef<HTMLElement>(null);
   const dispRef = useRef<SVGFEDisplacementMapElement>(null);
+  const redRef = useRef<SVGFEOffsetElement>(null);
+  const blueRef = useRef<SVGFEOffsetElement>(null);
   const [distorting, setDistorting] = useState<number | null>(null);
 
   useEffect(() => {
     if (!floating || active === null) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const disp = dispRef.current;
-    if (!disp) return;
+    const red = redRef.current;
+    const blue = blueRef.current;
+    if (!disp || !red || !blue) return;
+    const set = (k: number) => {
+      disp.setAttribute("scale", String(DISTORT_MAX * k));
+      red.setAttribute("dx", String(SPLIT_MAX * k));
+      blue.setAttribute("dx", String(-SPLIT_MAX * k));
+    };
     let raf = 0;
     const start = performance.now();
     setDistorting(active);
     const tick = (now: number) => {
       const t = Math.min((now - start) / DISTORT_MS, 1);
       const settle = 1 - Math.pow(1 - t, 3); // ease-out cubic
-      disp.setAttribute("scale", String(DISTORT_MAX * (1 - settle)));
+      set(1 - settle);
       if (t < 1) raf = requestAnimationFrame(tick);
       else setDistorting(null); // drop the filter once settled so the image is crisp
     };
-    disp.setAttribute("scale", String(DISTORT_MAX));
+    set(1);
     raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
@@ -114,7 +124,15 @@ export function HighlightsCard() {
           <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true" focusable="false">
             <filter id="hl-distort" x="-10%" y="-10%" width="120%" height="120%" colorInterpolationFilters="sRGB">
               <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves={2} seed={7} result="noise" />
-              <feDisplacementMap ref={dispRef} in="SourceGraphic" in2="noise" scale={0} xChannelSelector="R" yChannelSelector="G" />
+              <feDisplacementMap ref={dispRef} in="SourceGraphic" in2="noise" scale={0} xChannelSelector="R" yChannelSelector="G" result="warped" />
+              {/* Chromatic aberration: shift red and blue apart, keep green in place, add them back up. */}
+              <feOffset ref={redRef} in="warped" dx={0} result="rShift" />
+              <feColorMatrix in="rShift" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r" />
+              <feColorMatrix in="warped" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g" />
+              <feOffset ref={blueRef} in="warped" dx={0} result="bShift" />
+              <feColorMatrix in="bShift" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b" />
+              <feComposite in="r" in2="g" operator="arithmetic" k2={1} k3={1} result="rg" />
+              <feComposite in="rg" in2="b" operator="arithmetic" k2={1} k3={1} />
             </filter>
           </svg>
           {highlights.map((h, i) => (
