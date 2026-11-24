@@ -90,12 +90,15 @@ export function YearTile({ year, order }: { year: number; order: number }) {
       // Place the digits exactly where the page draws them, so switching to the canvas never
       // shifts them: the span is trimmed to cap height and baseline, so its left edge is the
       // text origin and its bottom edge is the baseline.
+      // The bottom-edge tilt is lifted for the measurement, so a tilted tile still lines up.
+      const tilt = tile.style.transform;
+      tile.style.transform = "";
       const t = tile.getBoundingClientRect();
       const r = text.getBoundingClientRect();
-      const sx = t.width / w || 1; // the tile may be mid entry animation
+      tile.style.transform = tilt;
       ctx.textBaseline = "alphabetic";
       ctx.textAlign = "left";
-      ctx.fillText(String(year), (r.left - t.left) / sx, (r.bottom - t.top) / sx);
+      ctx.fillText(String(year), r.left - t.left, r.bottom - t.top);
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
       gl.uniform1f(u.aspect, w / h);
