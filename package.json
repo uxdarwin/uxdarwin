@@ -11,8 +11,7 @@
     "cuelume": "^0.2.8",
     "next": "16.4.6",
     "react": "19.3.1",
-    "react-dom": "19.3.1",
-    "shaders": "4.0.7"
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@types/node": "^22",

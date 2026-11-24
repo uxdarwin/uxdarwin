@@ -38,7 +38,7 @@
 
 .card {
   position: relative;
-  border: 0.5px solid var(--border);
+  border: 0.5px solid var(--card-border);
   border-radius: var(--radius-card);
 }
 
@@ -49,6 +49,12 @@
   /* Prefixed first: the CSS minifier keeps only the last of the pair when it holds a var(). */
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
+}
+
+/* Cards carry the same grain as the page. */
+.card {
+  background: var(--noise);
+  background-color: var(--surface);
 }
 
 .trim {
@@ -669,7 +675,7 @@
 
 .location:hover,
 .location:focus-within {
-  background: var(--blue-press);
+  background-color: var(--blue-press);
   border-color: transparent;
 }
 
