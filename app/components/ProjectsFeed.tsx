@@ -6,6 +6,7 @@ import { projects, type Project } from "../content/projects";
 import { CompanyPanel } from "./CompanyPanel";
 import { MotionGrid } from "./MotionGrid";
 import { MetaLogo } from "./ProjectMeta";
+import { seeded } from "./drag";
 import { useCompany } from "./filter";
 import { YearTile } from "./YearTile";
 import { useReveal } from "./reveal";
@@ -158,7 +159,7 @@ function useParallax(ref: React.RefObject<HTMLDivElement | null>, key: string) {
 
 function ProjectCard({ project: p, order }: { project: Project; order: number }) {
   return (
-    <Link href={`/projects/${p.slug}`} className={styles.card} style={{ order }} data-reveal="" data-sound-hover="" data-cuelume-tap="">
+    <Link href={`/projects/${p.slug}`} className={styles.card} style={{ order, "--tilt": `${seeded(p.slug).toFixed(2)}deg` } as React.CSSProperties} data-reveal="" data-sound-hover="" data-cuelume-tap="">
       <div className={styles.thumb}>
         {p.motion ? (
           <MotionGrid clips={p.motion.slice(0, 4)} />

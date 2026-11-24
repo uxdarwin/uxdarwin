@@ -73,6 +73,7 @@
 
 .yearTile {
   position: relative;
+  rotate: var(--tilt, 0deg);
 }
 
 /* WebGL layer for the hover ripple (YearTile); shown only while it runs. */
@@ -120,7 +121,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 24px 32px;
+  padding: 16px 16px 28px;
+  rotate: var(--tilt, 0deg); /* seeded ±1°, the same on every visit */
   border-radius: 19px;
   color: inherit;
   text-decoration: none;
