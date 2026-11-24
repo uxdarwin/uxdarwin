@@ -8,6 +8,8 @@ export type CompanyContext = {
   roles: { title: string; dates: string }[];
   /** Shown under the location, in mono caps. */
   domain?: string;
+  /** Link target when it differs from https://{domain}. */
+  url?: string;
   /** Team photo at the bottom of the panel, shown at its own aspect ratio. */
   photo?: { src: string; width: number; height: number; caption: string };
   points: string[];
@@ -61,6 +63,8 @@ export const companies: Partial<Record<Brand, CompanyContext>> = {
   },
   redvalley: {
     where: "Medellín",
+    domain: "redvalley.com",
+    url: "https://www.redvalley.com/",
     photo: { src: "/images/companies/redvalley.webp", width: 960, height: 794, caption: "Medellín · Team On-site" },
     about: "RV Dev, a software agency, where I built the design team from scratch.",
     roles: [{ title: "Head UX Designer", dates: "2021 – 2022" }],

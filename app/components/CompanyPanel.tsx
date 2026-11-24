@@ -27,7 +27,7 @@ export function CompanyPanel({ brand }: { brand: Brand }) {
           <h2>{item.company}</h2>
           <p>{c.where}</p>
           {c.domain && (
-            <a className={styles.cpDomain} href={`https://${c.domain}`} target="_blank" rel="noreferrer">
+            <a className={styles.cpDomain} href={c.url ?? `https://${c.domain}`} target="_blank" rel="noreferrer">
               {c.domain}
             </a>
           )}
