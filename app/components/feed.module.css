@@ -606,8 +606,11 @@
   outline-offset: 4px;
 }
 
+/* The 720px text column is centred in the space right of the side column. Image clusters
+   start at the column's left edge and may spill right, as in Figma 43:9981. The back link
+   stays put so "Projects" keeps the feed title's position. */
 .pageBody {
-  padding-left: var(--title-inset);
+  padding-left: max(var(--title-inset), (100% - 720px) / 2);
   padding-top: 40px;
 }
 
@@ -671,6 +674,7 @@
 /* Portrait phone recordings: a phone-width column, not a full-width tower. */
 .pageVideoTall {
   max-width: 360px;
+  margin-left: max(0px, (min(100%, 720px) - 360px) / 2);
 }
 
 .pageVideoTall video {
