@@ -827,3 +827,63 @@
     display: none;
   }
 }
+
+/* ---------- Mail button: copy tooltip ---------- */
+
+.btnTip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgb(20 20 26 / 0.86);
+  border: 0.5px solid rgb(255 255 255 / 0.14);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.4);
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -4px) scale(0.94);
+  transition:
+    opacity 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+.mailBtn:hover .btnTip,
+.mailBtn:focus-visible .btnTip,
+.mailBtn[data-copied] .btnTip {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.mailBtn[data-copied] .btnTip {
+  animation: tipPop 220ms var(--ease-out);
+}
+
+.btnTipCheck {
+  width: 14px;
+  height: 14px;
+  color: #4ade80;
+  flex: none;
+}
+
+@keyframes tipPop {
+  from {
+    transform: translate(-50%, 0) scale(0.9);
+  }
+}
+
+/* Touch: only the confirmation shows, never the hover hint. */
+@media (hover: none) {
+  .mailBtn:not([data-copied]) .btnTip {
+    opacity: 0;
+  }
+}

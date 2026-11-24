@@ -1,7 +1,8 @@
 import { profile } from "../content/profile";
+import { CopyEmailButton } from "./CopyEmailButton";
 import { CoverbaseLoop } from "./CoverbaseLoop";
 import { DMark } from "./DMark";
-import { CoverbaseLogo, LinkedInFilledIcon, LinkedInIcon, MailIcon } from "./logos";
+import { CoverbaseLogo, LinkedInFilledIcon, LinkedInIcon } from "./logos";
 import styles from "./panel.module.css";
 
 export function IntroCard() {
@@ -17,9 +18,7 @@ export function IntroCard() {
           <span className="sr-only">{profile.name}</span>
         </h1>
         <div className={styles.social}>
-          <a className={`${styles.roundBtn} ${styles.mailBtn}`} href={`mailto:${profile.email}`} aria-label="Email Darwin" data-sound-hover="" data-cuelume-tap="">
-            <MailIcon className={styles.roundIcon} />
-          </a>
+          <CopyEmailButton />
           <a
             className={`${styles.roundBtn} ${styles.linkedinBtn}`}
             href={profile.linkedin}
