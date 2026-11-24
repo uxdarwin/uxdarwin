@@ -92,14 +92,11 @@ export function YearTile({ year, order }: { year: number; order: number }) {
       // Place the digits exactly where the page draws them, so switching to the canvas never
       // shifts them: the span is trimmed to cap height and baseline, so its left edge is the
       // text origin and its bottom edge is the baseline.
-      tile.style.rotate = "0deg"; // measure without the card tilt
-      const t = tile.getBoundingClientRect();
-      const r = text.getBoundingClientRect();
-      tile.style.rotate = "";
+      // Layout offsets ignore transforms, so the hover grow and tilt and the scroll-in scale
+      // never skew the measurement (the tile is position: relative, so it is the offsetParent).
       ctx.textBaseline = "alphabetic";
       ctx.textAlign = "left";
-      const k = t.width / w || 1; // the tile may still be scaled by its scroll-in intro
-      ctx.fillText(String(year), (r.left - t.left) / k, (r.bottom - t.top) / k);
+      ctx.fillText(String(year), text.offsetLeft, text.offsetTop + text.offsetHeight);
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
       gl.uniform1f(u.aspect, w / h);
