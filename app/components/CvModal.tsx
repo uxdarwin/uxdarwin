@@ -43,11 +43,11 @@ export function CvModal({ open, onClose }: { open: boolean; onClose: () => void 
             <p className={styles.meta}>{profile.name} · PDF · 2 pages</p>
           </div>
           <div className={styles.actions}>
-            <a className={styles.download} href={profile.cv.pdf} download={profile.cv.downloadName}>
+            <a className={styles.download} href={profile.cv.pdf} download={profile.cv.downloadName} data-sound-hover="" data-cuelume-tap="">
               <DownloadIcon className={styles.icon} />
               <span>Download</span>
             </a>
-            <button type="button" className={styles.close} onClick={() => ref.current?.close()} aria-label="Close CV preview">
+            <button type="button" className={styles.close} onClick={() => ref.current?.close()} aria-label="Close CV preview" data-sound-hover="" data-cuelume-tap="">
               <CloseIcon className={styles.icon} />
             </button>
           </div>

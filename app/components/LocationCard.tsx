@@ -147,6 +147,7 @@ export function LocationCard() {
     <section
       className={`${styles.card} ${styles.location}`}
       aria-label="Location"
+      data-sound-hover=""
       onPointerEnter={() => setActive(true)}
       onPointerLeave={() => setActive(false)}
       onFocus={() => setActive(true)}
@@ -156,7 +157,7 @@ export function LocationCard() {
       <div className={styles.locationText}>
         <p className={styles.cardTitle}>{profile.location.label}</p>
         <LocalTime />
-        <a className={styles.textLink} href={profile.linkedin} target="_blank" rel="noopener noreferrer">
+        <a className={styles.textLink} href={profile.linkedin} target="_blank" rel="noopener noreferrer" data-cuelume-tap="">
           Discover more about me
         </a>
       </div>

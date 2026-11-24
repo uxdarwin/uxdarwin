@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Sounds } from "./components/Sounds";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -44,6 +45,7 @@ export default function RootLayout({
     >
       <body>
         {children}
+        <Sounds />
       </body>
     </html>
   );
