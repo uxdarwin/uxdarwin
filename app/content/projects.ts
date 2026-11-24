@@ -1,7 +1,15 @@
-// Projects feed (center column). Source: Figma "Darwin Designer Brand", frame 34:1934.
-// Copy is drafted from the evidence doc and waits for Darwin's approval.
+// Projects feed and project pages. Layout from Figma "Darwin Designer Brand": feed 34:1934,
+// project page 43:9981. Copy is drafted from the evidence doc (every claim has a source there)
+// and waits for Darwin's approval. Years marked "estimate" below still need his confirmation.
 
 import type { Brand } from "./profile";
+
+export type ProjectImage = { src: string; alt: string; width: number; height: number };
+
+export type Block =
+  | { type: "p"; text: string }
+  | { type: "h"; text: string }
+  | { type: "images"; items: ProjectImage[] };
 
 export type Project = {
   slug: string;
@@ -10,13 +18,80 @@ export type Project = {
   employer: { label: string; brand?: Brand };
   /** Client, brand or product name shown last in the meta line. */
   client: string;
+  /** Live site, shown at the end of the meta line on the project page. */
+  url?: string;
   description: string;
-  /** The blue label that pops on hover: what story the case study will tell. */
+  /** The blue label that pops on hover: what story the project page tells. */
   teaser: string;
-  image: { src: string; alt: string; width: number; height: number };
+  /** Feed image. Projects without one get a typographic cover until assets are gathered. */
+  image?: ProjectImage;
+  story: Block[];
 };
 
+const img = (src: string, alt: string, width: number, height: number): ProjectImage => ({
+  src: `/images/projects/${src}`,
+  alt,
+  width,
+  height,
+});
+
+const STATEMENTS = img(
+  "statements.webp",
+  "Statements: a paid payment with its two invoices, each with reception date, status, payment date and amount",
+  1000,
+  504,
+);
+const COCUY = img(
+  "cocuy.webp",
+  "Cover of Cocuy, the 1P Main Library, over a photo of the Púlpito del Diablo in El Cocuy",
+  1000,
+  562,
+);
+const SPICE = img(
+  "spice-org.webp",
+  "Spice.org home page: the headline, install and docs buttons, and a SQL query explorer",
+  1000,
+  694,
+);
+const SPICE_CAPS = img(
+  "spice-org-capabilities.webp",
+  "Spice.org capability cards: federated data access, data acceleration, self-hostable and open source, secure AI/ML gateway",
+  1000,
+  743,
+);
+const SPICE_INSTALL = img(
+  "spice-org-install.webp",
+  "Spice.org install section: CLI commands per operating system above a code-editor demo",
+  1000,
+  1007,
+);
+const NEON = img(
+  "neon-wood.webp",
+  "Neon Wood home page: a full-bleed apartment photo with a floating card to pick a location and apartment type",
+  1000,
+  564,
+);
+const ABACUS = img(
+  "abacus.webp",
+  "Abacus Tierpark Hotel home page: an aerial park view behind the headline and a compact booking bar",
+  1000,
+  556,
+);
+
+const ML = { label: "Mercado Libre", brand: "mercadolibre" } as const;
+const CB = { label: "Coverbase", brand: "coverbase" } as const;
+const TT = { label: "Toptal", brand: "toptal" } as const;
+const RV = { label: "Red Valley", brand: "redvalley" } as const;
+
+const CB_NOTE =
+  "Coverbase is an AI procurement and vendor-risk platform from San Francisco. I joined as its first designer in November 2024, part-time at first and full-time from February 2026, and I own product design end to end.";
+const TT_NOTE =
+  "I worked as a Staff Product Designer consultant through Toptal, logging more than 2,200 hours across eight clients, and led and executed each project end to end.";
+const RV_NOTE =
+  "I was Head UX Designer at Red Valley, a Medellín agency, from 2021 to 2022, and led and executed each project end to end.";
+
 export const projects: Project[] = [
+  // ---------- 2026 ----------
   {
     slug: "neon-wood",
     year: 2026,
@@ -24,12 +99,24 @@ export const projects: Project[] = [
     client: "Neon Wood",
     description: "A website for furnished apartments and community spaces in four German cities.",
     teaser: "One floating card for location, apartment type and all-inclusive rent, right in the hero",
-    image: {
-      src: "/images/projects/neon-wood.webp",
-      alt: "Neon Wood home page: a full-bleed apartment photo with a floating card to pick a location and apartment type",
-      width: 1000,
-      height: 564,
-    },
+    image: NEON,
+    story: [
+      { type: "images", items: [NEON] },
+      {
+        type: "p",
+        text: "Neon Wood rents furnished apartments and community spaces in Berlin, Cologne, Frankfurt and Tübingen. I designed the website through Cresco, a Berlin studio, and led and executed it end to end.",
+      },
+      { type: "h", text: "The decision on top of the photo" },
+      {
+        type: "p",
+        text: "The home hero puts the decision on a full-bleed photo. A floating card switches between apartments and community spaces, picks a location and an apartment type with its all-inclusive monthly rent, and offers two actions: book a visit or rent an apartment.",
+      },
+      { type: "h", text: "A whole site, not a home page" },
+      {
+        type: "p",
+        text: "The site maps out location and building pages, a city overview, room categories and types, promotions, pricing, partners, events, sustainable living, an app page, a page for parents, a blog, about, contact and legal pages, with mobile layouts at 430 px for the key pages. Each review got its own dated design round, from March to July 2026, next to a logo, a style guide, illustrations and a sitemap.",
+      },
+    ],
   },
   {
     slug: "abacus",
@@ -38,13 +125,119 @@ export const projects: Project[] = [
     client: "Abacus Tierpark Hotel",
     description: "A website redesign for a Berlin hotel next to Tierpark, with booking up front.",
     teaser: "Before and after: a home page that leads with the park and a one-line booking bar",
-    image: {
-      src: "/images/projects/abacus.webp",
-      alt: "Abacus Tierpark Hotel home page: an aerial park view behind the headline and a compact booking bar",
-      width: 1000,
-      height: 556,
-    },
+    image: ABACUS,
+    story: [
+      { type: "images", items: [ABACUS] },
+      {
+        type: "p",
+        text: "A website redesign for a hotel next to Tierpark Berlin, designed through Cresco. I led and executed it end to end.",
+      },
+      { type: "h", text: "Where Berlin slows down" },
+      {
+        type: "p",
+        text: "The hero sets an aerial park view behind the logo and a serif italic headline, with a compact booking bar for dates, guests and reserve, and a link to location and parking. The home page is shown as a before-and-after pair, with alternative headline treatments and a responsive version at 400 px.",
+      },
+      {
+        type: "p",
+        text: "The architecture covers the hotel (rooms, amenities, gastronomy, location and parking, benefits for families, special offers), event spaces, the restaurant, contact and a booking flow, supported by logo, style guide, components and assets pages.",
+      },
+    ],
   },
+  {
+    slug: "contracts",
+    year: 2026,
+    employer: CB,
+    client: "Contracts",
+    description: "Contract management inside Coverbase's vendor-risk platform.",
+    teaser: "From a contracts area to clause-by-clause review with Contract Guardian",
+    story: [
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "Two finished files cover contract work: Contracts, with a cover dated September 2026, and Clause Review, Contract Guardian v1, which reviews contracts clause by clause.",
+      },
+    ],
+  },
+  {
+    slug: "vendor-registry",
+    year: 2026,
+    employer: CB,
+    client: "Vendor Registry Portal",
+    description: "The Vendor Registry Portal, one of Coverbase's finished product areas.",
+    teaser: "A finished portal design, dated September 2026",
+    story: [
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "The Vendor Registry Portal is one of the product areas I marked as finished design, with a cover dated September 2026.",
+      },
+    ],
+  },
+  {
+    slug: "radar",
+    year: 2026,
+    employer: CB,
+    client: "Radar",
+    description: "Radar, a Coverbase product surface redesigned through three versions.",
+    teaser: "Why Radar needed a v2 and then a v3 within a year",
+    story: [
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "Radar went through v2 and v3, both marked finished, with the v3 cover dated October 2026. The version numbers show the surface was redesigned more than once as the product grew.",
+      },
+    ],
+  },
+  {
+    slug: "cencora-audit",
+    year: 2026,
+    employer: CB,
+    client: "Cencora workflow audit",
+    description: "A design audit of a customer's workflow, with dashboard and configuration studies.",
+    teaser: "A customer workflow audit, with dashboard and configuration architecture studies",
+    story: [
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "The Cencora Workflow design audit sits in the Design Audit folder next to a dashboard architecture study and a configuration architecture board. The cover is dated June 2026.",
+      },
+    ],
+  },
+  {
+    slug: "cab-site",
+    year: 2026,
+    employer: CB,
+    client: "Customer Advisory Board",
+    description: "A code-gated landing page for Coverbase's Customer Advisory Board meeting.",
+    teaser: "A private entry screen: meeting title, date and a four-digit code over a full-bleed photo",
+    story: [
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "A landing page for the Customer Advisory Board meeting in April 2026. The prototype opens on a code-gated entry screen over a full-bleed photo, with the meeting title and date beside a four-digit code input.",
+      },
+    ],
+  },
+  {
+    slug: "spice-ai-website",
+    year: 2026,
+    employer: { label: "Spice AI" },
+    client: "Website and design system",
+    description: "The Spice AI website, its design system and media kit.",
+    teaser: "One system behind the website, the design system and the media kit",
+    story: [
+      {
+        type: "p",
+        text: "Spice AI builds an open-source runtime that gives developers one SQL interface to query and accelerate data from databases, warehouses and lakes. I started working with them through Toptal and continued as a part-time client.",
+      },
+      {
+        type: "p",
+        text: "The Spice AI folder holds the website design from February 2026, the Spice AI design system and a media kit, with the old website kept for comparison.",
+      },
+    ],
+  },
+
+  // ---------- 2025 ----------
   {
     slug: "spice-org",
     year: 2025,
@@ -52,39 +245,410 @@ export const projects: Project[] = [
     client: "Spice.org",
     description: "A developer site for Spice, an open-source SQL runtime for data and AI apps.",
     teaser: "A live query explorer in the hero, so developers see the product before they install it",
-    image: {
-      src: "/images/projects/spice-org.webp",
-      alt: "Spice.org home page: the headline, install and docs buttons, and a SQL query explorer",
-      width: 1000,
-      height: 694,
-    },
-  },
-  {
-    slug: "statements",
-    year: 2024,
-    employer: { label: "Mercado Libre", brand: "mercadolibre" },
-    client: "Statements",
-    description: "One place for vendors selling to Mercado Libre to track every payment and invoice.",
-    teaser: "Making payment dates honest: states, differences and late payments a vendor can trust",
-    image: {
-      src: "/images/projects/statements.webp",
-      alt: "Statements: a paid payment with its two invoices, each with reception date, status, payment date and amount",
-      width: 1000,
-      height: 504,
-    },
+    image: SPICE,
+    story: [
+      { type: "images", items: [SPICE, SPICE_CAPS, SPICE_INSTALL] },
+      {
+        type: "p",
+        text: "Spice AI builds an open-source runtime with a unified SQL interface for querying and accelerating data from databases, warehouses and lakes. Spice.org is its developer-facing site. I started working with Spice AI through Toptal and continued with them as a part-time client.",
+      },
+      { type: "h", text: "Show the product in the hero" },
+      {
+        type: "p",
+        text: "The hero states the product in one line and pairs Installation and Documentation buttons with a live query explorer: a sample SQL query on one side, a results panel on the other, and arrows to step through example queries.",
+      },
+      { type: "h", text: "From capabilities to the CLI" },
+      {
+        type: "p",
+        text: "The page continues through customer logos, four capability cards, example use cases, a before-and-after architecture diagram, an install section with CLI commands for macOS, Linux and Windows, a code-editor demo and a closing call to action. The file holds three dated high-fidelity rounds, wireframes, a responsive set at 393 px, components, an icon library, and color, spacing and border tokens.",
+      },
+    ],
   },
   {
     slug: "cocuy",
-    year: 2024,
-    employer: { label: "Mercado Libre", brand: "mercadolibre" },
+    year: 2025,
+    employer: ML,
     client: "Cocuy",
     description: "The B2B component library I started for Mercado Libre's First Party tools.",
     teaser: "From launch in June to 62,000+ component insertions and a squad of its own",
-    image: {
-      src: "/images/projects/cocuy.webp",
-      alt: "Cover of Cocuy, the 1P Main Library, over a photo of the Púlpito del Diablo in El Cocuy",
-      width: 1000,
-      height: 562,
-    },
+    image: COCUY,
+    story: [
+      { type: "images", items: [COCUY] },
+      {
+        type: "p",
+        text: "Cocuy is a B2B sub-library of Andes, Mercado Libre's design system, and the component library behind First Party's vendor and internal tools. I started the initiative and did all of its design execution; other designers began contributing once it gained traction.",
+      },
+      { type: "h", text: "Results" },
+      {
+        type: "p",
+        text: "From its launch on June 19, the library logged more than 62,000 component insertions in design files and grew past 20 components, patterns and guidelines. A Cocuy squad was formed to build its technical path. Navbar is its most used component, with 12,920 instances.",
+      },
+      { type: "h", text: "Fixing the frame every tool shares" },
+      {
+        type: "p",
+        text: "The work standardized resolutions, grids, spacing and container widths, and produced a single Layout component with breadcrumbs, navbar, side menu, headers and toolbars built in. The navbar and side menu were unified and published as one component, with Andes-compliant iconography and rules for behavior, color, size, spacing and labels.",
+      },
+      {
+        type: "p",
+        text: "Next on the roadmap: make Cocuy an official satellite library of Andes, migrate reusable patterns to the Seller Experience library, and build it in code as 1P UI Core.",
+      },
+    ],
+  },
+  {
+    slug: "appraiser",
+    year: 2025, // estimate
+    employer: CB,
+    client: "Appraiser V2",
+    description: "One Coverbase product surface, from low-fidelity rounds to high fidelity.",
+    teaser: "Every round saved as a dated version: how Appraiser evolved",
+    story: [
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "The Appraiser V2 file runs from low-fidelity rounds to high-fidelity rounds, each saved as a dated version, which makes it the clearest record of one Coverbase surface evolving over time.",
+      },
+    ],
+  },
+  {
+    slug: "assessments",
+    year: 2025, // estimate
+    employer: CB,
+    client: "Assessments",
+    description: "Vendor assessments in Coverbase, designed through dated iterations.",
+    teaser: "Dated iterations from April and May, through to a finished design",
+    story: [
+      { type: "p", text: CB_NOTE },
+      { type: "p", text: "Assessments is marked finished, with dated iteration files from April and May." },
+    ],
+  },
+  {
+    slug: "inspect-zero-touch",
+    year: 2025, // estimate
+    employer: CB,
+    client: "Inspect and Zero Touch",
+    description: "Two Coverbase product areas, each redesigned into a v2.",
+    teaser: "Inspect v2 and Zero Touch v2, both finished",
+    story: [
+      { type: "p", text: CB_NOTE },
+      { type: "p", text: "Inspect v2 and Zero Touch v2 are both marked finished design work." },
+    ],
+  },
+  {
+    slug: "coverbase-design-system",
+    year: 2025, // estimate
+    employer: CB,
+    client: "V2 Brand and UI Library",
+    description: "The design system Coverbase's product and marketing share.",
+    teaser: "One brand library and one UI library for product and marketing",
+    story: [
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "I built the design system shared by product and marketing as two published libraries: Coverbase V2 Brand and Coverbase V2 UI Library.",
+      },
+    ],
+  },
+  {
+    slug: "coverbase-website",
+    year: 2025, // estimate
+    employer: CB,
+    client: "Marketing website",
+    description: "Coverbase's marketing website, case studies, changelog and campaign assets.",
+    teaser: "Website v3, case studies and a lead-magnet report on third-party risk in the age of AI",
+    story: [
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "Marketing Website v3, a case-study template and its redesign, a changelog, and marketing assets for social posts, email templates, a one-pager, a sales deck, print material and a lead-magnet report on third-party risk management in the age of AI.",
+      },
+    ],
+  },
+
+  // ---------- 2024 ----------
+  {
+    slug: "statements",
+    year: 2024,
+    employer: ML,
+    client: "Statements",
+    description: "One place for vendors selling to Mercado Libre to track every payment and invoice.",
+    teaser: "Making payment dates honest: states, differences and late payments a vendor can trust",
+    image: STATEMENTS,
+    story: [
+      { type: "images", items: [STATEMENTS] },
+      {
+        type: "p",
+        text: "Vendors who sell to Mercado Libre had their financial documents spread across several systems, handled manually, and internal teams fielded a steady stream of questions about document status, payment dates and amounts. The goal: let vendors see and manage every financial movement from a single section, and cut those questions. As UX Technical Lead for First Party, I led the project and designed it myself.",
+      },
+      { type: "h", text: "A payment, then the documents inside it" },
+      {
+        type: "p",
+        text: "The page leads with the payment itself: ID, date, status, document count and total received. Each invoice row below carries reception date, number, status, payment date and amount. A side panel tracks documents still to upload and offers a payment report, and the page can be scoped to one subsidiary.",
+      },
+      { type: "h", text: "Making payment dates honest" },
+      {
+        type: "p",
+        text: "Rows move through in review, differences to resolve, approved, paid and cancelled. When amounts don't match, the row strikes the original amount, shows the new one, and prompts to upload a credit note or download the differences. Tooltips explain the estimated date and the late-payment rule.",
+      },
+      { type: "h", text: "Everything around the happy path" },
+      {
+        type: "p",
+        text: "The file covers onboarding, empty states, a blocked account, single and multiple subsidiaries, pagination, access without permissions, the help form and entry points from purchase orders and shipments. Every screen starts with a stated screen objective, and the empty-state illustrations were rebuilt into animation-ready layers for After Effects.",
+      },
+    ],
+  },
+  {
+    slug: "bulk-search",
+    year: 2024,
+    employer: ML,
+    client: "Bulk search",
+    description: "A search field that takes dozens of IDs at once, for First Party's internal tools.",
+    teaser: "Covering a case Andes didn't: paste dozens of IDs, search once",
+    story: [
+      {
+        type: "p",
+        text: "Shown in Pandora's First Party offer-removal tool, the bulk search field takes dozens of IDs at once. It solves a use case Andes did not cover, as a complement to it, works with or without split view, and comes with its own guidelines, wordings and toolbar integration. It was implemented.",
+      },
+    ],
+  },
+  {
+    slug: "technical-errors",
+    year: 2024,
+    employer: ML,
+    client: "Technical errors",
+    description: "One language for 403, 404, 500 and offline errors across First Party tools.",
+    teaser: "From unstyled browser pages to one documented pattern every team adopted",
+    story: [
+      {
+        type: "p",
+        text: "Every First Party tool handled 403, 404, 500, offline and mobile errors differently, from unstyled browser pages to mismatched illustrations. The work documented the most frequent errors, wrote guidance for each type, and got First Party teams to adopt the standard illustrations and wordings, aligned with the front-end technical lead so it could ship as a pattern.",
+      },
+    ],
+  },
+  {
+    slug: "screen-objectives",
+    year: 2024,
+    employer: ML,
+    client: "Screen objectives",
+    description: "A working method that ties every screen to a business and communication objective.",
+    teaser: "Templates, guidelines and an AI prompt that checks whether an objective is well written",
+    story: [
+      {
+        type: "p",
+        text: "A method for the team rather than a screen: guidelines with do's and don'ts, a template that breaks business objectives down into experience, communication and screen objectives, and an AI prompt that checks whether an experience objective is well written. Figma components attach the objectives to every screen; Statements uses them throughout.",
+      },
+    ],
+  },
+  {
+    slug: "cool-earth",
+    year: 2024,
+    employer: TT,
+    client: "Cool Earth",
+    description: "A gamified donor experience that won Toptal's global hackathon.",
+    teaser: "Leading design for the winning team, from design sprint to UI library",
+    story: [
+      {
+        type: "p",
+        text: "I led design for Cool Earth's gamified donor experience in Toptal's global hackathon in Q1 2024, which our team won. The work runs from a design sprint board through explorations to a published Cool Earth UI library.",
+      },
+    ],
+  },
+  {
+    slug: "rainforest-kids",
+    year: 2024,
+    employer: { label: "Volunteer", brand: "rainforest" },
+    client: "Rainforest Foundation US",
+    description: "A section of the Rainforest Foundation US website made for kids.",
+    teaser: "From a sitemap and tree testing to a kids' section of the website",
+    story: [
+      {
+        type: "p",
+        text: "As a volunteer from 2022 to 2024, I designed the kids' section of the Rainforest Foundation US website, with wireframes, mockups and assets. Related work covers the main website library, a sitemap, tree-testing conclusions and insights, and the 2024 annual report.",
+      },
+    ],
+  },
+
+  // ---------- 2023 (estimates) ----------
+  {
+    slug: "charmed",
+    year: 2023, // estimate
+    employer: TT,
+    client: "Charmed",
+    description: "A suite of AI-assisted creation tools for game creators.",
+    teaser: "Hub, texture generator, 3D designer and animator under one design system",
+    story: [
+      { type: "p", text: TT_NOTE },
+      {
+        type: "p",
+        text: "Charmed's suite covers HUB 2.0, Texture generator 2.0, 3D Designer, 3D Animator MVP, Geometry generator MVP and a Unity plugin, plus a design system, branding, onboarding, marketing emails and the website.",
+      },
+    ],
+  },
+  {
+    slug: "atlas",
+    year: 2023, // estimate
+    employer: TT,
+    client: "Atlas",
+    description: "One product organized around three roles: contractors, clients and admins.",
+    teaser: "Designing one product for three kinds of users",
+    story: [
+      { type: "p", text: TT_NOTE },
+      {
+        type: "p",
+        text: "The pilot handoff has passwordless and password sign-in, capture, profile and subscription, a contractor area for projects and clients, a client area for captures, and an admin area for projects, clients, team, lead capture and measurement requests, followed by an MVP handoff and a Scenarios AI file.",
+      },
+    ],
+  },
+  {
+    slug: "augmend",
+    year: 2023, // estimate
+    employer: TT,
+    client: "Augmend",
+    description: "Product, design system and landing page for Augmend.",
+    teaser: "From a demo prototype to brand, pitch and landing page",
+    story: [
+      { type: "p", text: TT_NOTE },
+      {
+        type: "p",
+        text: "Seven files: the product with a demo prototype, the Augmend design system, a landing page with desktop mockups, plus brand, pitch, emails and flows.",
+      },
+    ],
+  },
+  {
+    slug: "grandstand",
+    year: 2023, // estimate
+    employer: TT,
+    client: "Grandstand",
+    description: "Grandstand V3: a clickable soccer prototype and an athlete deck.",
+    teaser: "A clickable soccer prototype, an athlete deck and a Miami showcase",
+    story: [
+      { type: "p", text: TT_NOTE },
+      {
+        type: "p",
+        text: "Grandstand V3 includes a clickable soccer prototype, a finished athlete deck and a Miami Showcase file.",
+      },
+    ],
+  },
+  {
+    slug: "swippr",
+    year: 2023, // estimate
+    employer: { label: "Founder" },
+    client: "Swippr",
+    description: "A product I founded, took to production and sold.",
+    teaser: "From MVP to a B2B line with its own admin, design system and sales deck",
+    story: [
+      {
+        type: "p",
+        text: "Swippr is a product I founded. It went into production and made sales. The record spans an MVP, a second release, white-label websites, then a B2B line with an admin, a design system, landing pages, branding, a one-pager, a sales deck and a pitch, after strategy work on goals, prioritization, information architecture, customer journeys and benchmarks.",
+      },
+    ],
+  },
+  {
+    slug: "mi-cupo",
+    year: 2023, // estimate
+    employer: { label: "Founder" },
+    client: "Mi Cupo",
+    description: "A product I founded and took to production, with sales.",
+    teaser: "Founding, designing and selling a product of my own",
+    story: [{ type: "p", text: "Mi Cupo is a product I founded and took to production, with sales." }],
+  },
+
+  // ---------- 2022 ----------
+  {
+    slug: "nomicol",
+    year: 2022,
+    employer: RV,
+    client: "Nomicol",
+    description: "A payroll platform that moves small businesses off spreadsheets.",
+    teaser: "14 interviews, two sprints, and a payroll summary managers can read at a glance",
+    story: [
+      { type: "p", text: RV_NOTE },
+      {
+        type: "p",
+        text: "Nomicol helps small businesses move payroll off spreadsheets. Businesses register employees and keep a history of payment periods; managers update each period with overtime, deductions and other payments, and employees see the status of their next payment in real time.",
+      },
+      {
+        type: "p",
+        text: "As UX lead I ran the process from start to finish: research over two sprints with 14 interviews, a benchmark and desk research, information architecture, interaction design, prototypes, the first release of the platform and the employee mobile app, and usability testing.",
+      },
+    ],
+  },
+  {
+    slug: "docucol",
+    year: 2022,
+    employer: RV,
+    client: "Docucol",
+    description: "Contract lifecycle management: templates, digital signatures and reminders.",
+    teaser: "From template to signed contract, with reviewers, reminders and expiration dates",
+    story: [
+      { type: "p", text: RV_NOTE },
+      {
+        type: "p",
+        text: "Docucol lets people and companies create contracts from templates, invite others to review or sign digitally, add reminders and expiration dates, and organize documents in folders. I led the process from research and information architecture to user flows, wireframes and high-fidelity prototypes.",
+      },
+    ],
+  },
+  {
+    slug: "sweat-440",
+    year: 2022,
+    employer: RV,
+    client: "Sweat 440",
+    description: "A TV interface redesign and admin portal for a HIIT gym chain.",
+    teaser: "Four stations, 40 minutes: redesigning the screens that guide every class",
+    story: [
+      { type: "p", text: RV_NOTE },
+      {
+        type: "p",
+        text: "Sweat 440 runs 40-minute sessions split into four 10-minute stations, each guided by TV screens. I redesigned the TV interface, with the exercise video, station count and countdown, and designed an admin portal to create and edit training sessions.",
+      },
+    ],
+  },
+  {
+    slug: "allthenticate",
+    year: 2022,
+    employer: RV,
+    client: "Allthenticate",
+    description: "Dashboard, groups and permissions for an authentication startup.",
+    teaser: "Dashboard, groups and permissions, on web and mobile",
+    story: [
+      { type: "p", text: RV_NOTE },
+      {
+        type: "p",
+        text: "An authentication startup's dashboard, groups and permissions management, and mobile screens.",
+      },
+    ],
+  },
+  {
+    slug: "bff",
+    year: 2022,
+    employer: RV,
+    client: "BFF (Best Friend Famoso)",
+    description: "An app that connects celebrities with their fans.",
+    teaser: "A client web app and design system that connect celebrities and fans",
+    story: [
+      { type: "p", text: RV_NOTE },
+      { type: "p", text: "An app connecting celebrities with their fans, with a client web app and a design system." },
+    ],
+  },
+  {
+    slug: "check-mig",
+    year: 2022,
+    employer: { label: "Personal" },
+    client: "Check Mig",
+    description: "A redesign of Colombia's migration form, to spend less time at the desk.",
+    teaser: "Tree testing, task flows and usability tests for a form every traveler fills",
+    story: [
+      {
+        type: "p",
+        text: "A personal redesign concept, not the live government service: the form travelers fill out before entering or leaving Colombia, so they can preload trip details and spend less time at immigration.",
+      },
+      {
+        type: "p",
+        text: "Travelers complete the registration for themselves and their companions, choose how they travel, and download the resulting certificate. The goal was less time on task and a higher success rate. I ran research, personas, information architecture validated with tree testing, wireframes, a design system, motion and usability testing.",
+      },
+    ],
   },
 ];
+
+export function getProject(slug: string) {
+  return projects.find((p) => p.slug === slug);
+}

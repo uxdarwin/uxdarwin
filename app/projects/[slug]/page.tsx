@@ -1,0 +1,52 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ImageCluster } from "../../components/ImageCluster";
+import { ProjectMeta } from "../../components/ProjectMeta";
+import { Shell } from "../../components/Shell";
+import { getProject, projects } from "../../content/projects";
+import styles from "../../components/feed.module.css";
+
+export function generateStaticParams() {
+  return projects.map((p) => ({ slug: p.slug }));
+}
+
+export const dynamicParams = false;
+
+type Params = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const p = getProject((await params).slug);
+  if (!p) return {};
+  return { title: `${p.client} · Darwin Álvarez`, description: p.description };
+}
+
+export default async function ProjectPage({ params }: Params) {
+  const p = getProject((await params).slug);
+  if (!p) notFound();
+
+  let cluster = 0;
+  return (
+    <Shell page="project">
+      <article className={styles.page}>
+        <header className={styles.pageHead}>
+          <Link href="/" className={styles.back} aria-label="Back to projects" data-sound-hover="" data-cuelume-tap="">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="1" />
+            </svg>
+          </Link>
+          <p className={styles.title}>Projects</p>
+        </header>
+        <div className={styles.pageBody}>
+          <ProjectMeta project={p} withUrl />
+          <h1 className={styles.headline}>{p.description}</h1>
+          {p.story.map((b, i) => {
+            if (b.type === "images") return <ImageCluster key={i} images={b.items} variant={cluster++} seed={`${p.slug}-${i}`} />;
+            if (b.type === "h") return <h2 key={i} className={styles.sectionTitle}>{b.text}</h2>;
+            return <p key={i} className={styles.paragraph}>{b.text}</p>;
+          })}
+        </div>
+      </article>
+    </Shell>
+  );
+}

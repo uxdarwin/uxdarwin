@@ -1,37 +1,15 @@
 "use client";
 
-import { useCallback, useRef, useState, useSyncExternalStore } from "react";
+import Link from "next/link";
+import { useCallback, useRef, useState } from "react";
 import { projects, type Project } from "../content/projects";
-import { MercadoLibreMono } from "./logos";
+import { ProjectMeta } from "./ProjectMeta";
+import { seeded, useCanDrag } from "./drag";
 import styles from "./feed.module.css";
-
-// Dragging needs a mouse-like pointer; on touch the page scrolls instead.
-const DRAG_QUERY = "(hover: hover) and (pointer: fine)";
-
-function useCanDrag() {
-  return useSyncExternalStore(
-    (cb) => {
-      const mq = window.matchMedia(DRAG_QUERY);
-      mq.addEventListener("change", cb);
-      return () => mq.removeEventListener("change", cb);
-    },
-    () => window.matchMedia(DRAG_QUERY).matches,
-    () => false,
-  );
-}
-
-/** Stable pseudo-random number in [-1, 1] from a string, so tilts survive reloads. */
-function seeded(key: string) {
-  let h = 2166136261;
-  for (let i = 0; i < key.length; i++) {
-    h ^= key.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return ((h >>> 0) / 4294967295) * 2 - 1;
-}
 
 const TILT_MAX = 2; // degrees
 const NUDGE_MAX = 20; // px, horizontal jitter so the columns don't read as a grid
+const CLICK_SLOP = 4; // px a press may move and still count as a click
 
 type Offset = { x: number; y: number };
 
@@ -49,9 +27,11 @@ export function ProjectsFeed() {
 
   return (
     <section className={styles.feed} aria-labelledby="projects-title">
-      <h2 id="projects-title" className={styles.title}>
-        Projects
-      </h2>
+      <header className={styles.pageHead}>
+        <h1 id="projects-title" className={styles.title}>
+          Projects
+        </h1>
+      </header>
       {years.map((year) => {
         const items = projects.filter((p) => p.year === year);
         const cols: Project[][] = [[], []];
@@ -61,7 +41,7 @@ export function ProjectsFeed() {
             <span className={styles.yearNumber} aria-hidden="true">
               {year}
             </span>
-            <h3 className={styles.srOnly}>{year}</h3>
+            <h2 className={styles.srOnly}>{year}</h2>
             {cols.map((col, c) => (
               <div key={c} className={styles.column} data-col={c}>
                 {col.map((p) => (
@@ -107,33 +87,42 @@ function ProjectCard({
 }) {
   const tilt = (seeded(p.slug) * TILT_MAX).toFixed(2);
   const nudge = Math.round(seeded(`${p.slug}-x`) * NUDGE_MAX);
-  const drag = useRef<{ id: number; sx: number; sy: number; ox: number; oy: number } | null>(null);
+  const drag = useRef<{ id: number; sx: number; sy: number; ox: number; oy: number; moved: boolean } | null>(null);
+  const suppressClick = useRef(false);
 
   const onPointerDown = (e: React.PointerEvent<HTMLElement>) => {
     if (!canDrag || e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
-    drag.current = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: offset.x, oy: offset.y };
+    drag.current = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: offset.x, oy: offset.y, moved: false };
+    suppressClick.current = false;
     onLift(true);
   };
   const onPointerMove = (e: React.PointerEvent<HTMLElement>) => {
     const d = drag.current;
     if (!d || d.id !== e.pointerId) return;
-    onMove({ x: d.ox + e.clientX - d.sx, y: d.oy + e.clientY - d.sy });
+    const dx = e.clientX - d.sx;
+    const dy = e.clientY - d.sy;
+    if (!d.moved && Math.hypot(dx, dy) < CLICK_SLOP) return;
+    d.moved = true;
+    onMove({ x: d.ox + dx, y: d.oy + dy });
   };
   const end = (e: React.PointerEvent<HTMLElement>) => {
-    if (!drag.current || drag.current.id !== e.pointerId) return;
+    const d = drag.current;
+    if (!d || d.id !== e.pointerId) return;
+    suppressClick.current = d.moved; // a drag is not a click
     drag.current = null;
     onLift(false);
   };
 
   return (
-    <article
+    <Link
+      href={`/projects/${p.slug}`}
       className={styles.card}
+      draggable={false}
       data-draggable={canDrag || undefined}
       data-lifted={lifted || undefined}
-      data-sound-hover
-      tabIndex={0}
-      aria-label={`${p.client}, ${p.year}. ${p.description}`}
+      data-sound-hover=""
+      data-cuelume-tap=""
       style={
         {
           "--tilt": `${tilt}deg`,
@@ -147,31 +136,34 @@ function ProjectCard({
       onPointerMove={onPointerMove}
       onPointerUp={end}
       onPointerCancel={end}
+      onClick={(e) => {
+        if (suppressClick.current) {
+          e.preventDefault();
+          suppressClick.current = false;
+        }
+      }}
     >
       <div className={styles.head}>
-        <p className={styles.meta}>
-          <span className={styles.metaYear}>{p.year}</span>
-          <span aria-hidden="true">·</span>
-          <span className={styles.employer}>
-            {p.employer.brand === "mercadolibre" && <MercadoLibreMono className={styles.logo} />}
-            {p.employer.label}
-          </span>
-          <span aria-hidden="true">·</span>
-          <span>{p.client}</span>
-        </p>
+        <ProjectMeta project={p} />
         <p className={styles.description}>{p.description}</p>
       </div>
       <div className={styles.media}>
-        <img
-          className={styles.image}
-          src={p.image.src}
-          alt={p.image.alt}
-          width={p.image.width}
-          height={p.image.height}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-        />
+        {p.image ? (
+          <img
+            className={styles.image}
+            src={p.image.src}
+            alt={p.image.alt}
+            width={p.image.width}
+            height={p.image.height}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        ) : (
+          <div className={styles.cover} data-brand={p.employer.brand ?? "none"} aria-hidden="true">
+            <span>{p.client}</span>
+          </div>
+        )}
         <div className={styles.teaser}>
           <span>{p.teaser}</span>
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={styles.arrow}>
@@ -179,6 +171,6 @@ function ProjectCard({
           </svg>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }

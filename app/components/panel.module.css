@@ -814,3 +814,10 @@
 .companyLogo:has(.loopIntro[data-playing="true"]) > svg {
   opacity: 0 !important;
 }
+
+/* Project pages lead with the project on tablet and phone; the panel stays on the home feed. */
+@media (max-width: 1023px) {
+  .shell[data-page="project"] > .panel {
+    display: none;
+  }
+}
