@@ -8,6 +8,7 @@ import { MotionGrid } from "./MotionGrid";
 import { MetaLogo } from "./ProjectMeta";
 import { useCompany } from "./filter";
 import { YearTile } from "./YearTile";
+import { useReveal } from "./reveal";
 import styles from "./feed.module.css";
 
 // Grid from Figma 75:12973: three columns (two beside the company panel or on tablets, one on
@@ -73,6 +74,7 @@ export function ProjectsFeed() {
 
   const gridRef = useRef<HTMLDivElement>(null);
   useParallax(gridRef, `${cols}-${company}`);
+  useReveal(gridRef, `${cols}-${company}`);
 
   return (
     <section className={styles.feed} aria-label="Projects">
@@ -156,7 +158,7 @@ function useParallax(ref: React.RefObject<HTMLDivElement | null>, key: string) {
 
 function ProjectCard({ project: p, order }: { project: Project; order: number }) {
   return (
-    <Link href={`/projects/${p.slug}`} className={styles.card} style={{ order }} data-sound-hover="" data-cuelume-tap="">
+    <Link href={`/projects/${p.slug}`} className={styles.card} style={{ order }} data-reveal="" data-sound-hover="" data-cuelume-tap="">
       <div className={styles.thumb}>
         {p.motion ? (
           <MotionGrid clips={p.motion.slice(0, 4)} />

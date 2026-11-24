@@ -94,7 +94,8 @@ export function YearTile({ year, order }: { year: number; order: number }) {
       const r = text.getBoundingClientRect();
       ctx.textBaseline = "alphabetic";
       ctx.textAlign = "left";
-      ctx.fillText(String(year), r.left - t.left, r.bottom - t.top);
+      const k = t.width / w || 1; // the tile may still be scaled by its scroll-in intro
+      ctx.fillText(String(year), (r.left - t.left) / k, (r.bottom - t.top) / k);
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
       gl.uniform1f(u.aspect, w / h);
@@ -252,7 +253,7 @@ export function YearTile({ year, order }: { year: number; order: number }) {
   }, [year]);
 
   return (
-    <div ref={tileRef} className={styles.yearTile} style={{ order }} role="heading" aria-level={2} data-fx="off">
+    <div ref={tileRef} className={styles.yearTile} style={{ order }} role="heading" aria-level={2} data-fx="off" data-reveal="">
       <span ref={textRef}>{year}</span>
       <canvas ref={canvasRef} className={styles.yearFx} aria-hidden="true" />
     </div>

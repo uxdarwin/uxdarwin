@@ -98,6 +98,21 @@
   user-select: none;
 }
 
+/* Scroll-in intro (reveal.ts): cards below the window wait low, small, soft and faint. */
+.grid [data-reveal="wait"] {
+  opacity: 0.15;
+  transform: translateY(24px) scale(0.96);
+  filter: blur(6px);
+}
+
+.grid [data-reveal="in"] {
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms var(--ease-out),
+    background-color 220ms var(--ease-out);
+}
+
 /* ---------- Card ---------- */
 
 .card {
