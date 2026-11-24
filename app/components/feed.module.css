@@ -73,9 +73,6 @@
 
 .yearTile {
   position: relative;
-  transition:
-    scale 420ms var(--bounce),
-    rotate 420ms var(--bounce);
 }
 
 /* WebGL layer for the hover ripple (YearTile); shown only while it runs. */
@@ -113,9 +110,7 @@
     opacity 700ms var(--ease-out),
     transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
     filter 700ms var(--ease-out),
-    background-color 220ms var(--ease-out),
-    scale 420ms var(--bounce),
-    rotate 420ms var(--bounce);
+    background-color 220ms var(--ease-out);
 }
 
 /* ---------- Card ---------- */
@@ -135,10 +130,7 @@
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   outline: none;
-  transition:
-    background-color 220ms var(--ease-out),
-    scale 420ms var(--bounce),
-    rotate 420ms var(--bounce);
+  transition: background-color 220ms var(--ease-out);
   animation: tileIn 520ms var(--ease-out) backwards;
 }
 
@@ -154,10 +146,10 @@
     background-color: rgb(255 255 255 / 0.1);
   }
 
-  /* Hover only: a slight grow and a seeded ±1° tilt, the same on every visit. At rest, flat. */
-  .card:hover,
-  .yearTile:hover {
-    scale: 1.02;
+  /* Hover only: the cover (not the card) grows a little and tilts its seeded ±1°, the same
+     on every visit. At rest, flat. The teaser rides along with the cover. */
+  .card:hover .thumb {
+    scale: 1.03;
     rotate: var(--tilt, 0deg);
   }
 }
@@ -170,6 +162,9 @@
 .thumb {
   position: relative;
   align-self: stretch;
+  transition:
+    scale 420ms var(--bounce),
+    rotate 420ms var(--bounce);
 }
 
 .cardMeta {

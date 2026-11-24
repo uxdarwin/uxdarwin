@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { seeded } from "./drag";
 import styles from "./feed.module.css";
 
 // Hover effect for the blue year tiles: rings ripple out from the pointer through the pixel
@@ -43,7 +42,6 @@ const MAX_ENERGY = 0.9;
 const rgb = (css: string) => (css.match(/[\d.]+/g) ?? ["0", "0", "0"]).slice(0, 3).map((n) => Number(n) / 255);
 
 export function YearTile({ year, order }: { year: number; order: number }) {
-  const tilt = `${(seeded(`year-${year}`) * 1).toFixed(2)}deg`;
   const tileRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -92,7 +90,7 @@ export function YearTile({ year, order }: { year: number; order: number }) {
       // Place the digits exactly where the page draws them, so switching to the canvas never
       // shifts them: the span is trimmed to cap height and baseline, so its left edge is the
       // text origin and its bottom edge is the baseline.
-      // Layout offsets ignore transforms, so the hover grow and tilt and the scroll-in scale
+      // Layout offsets ignore transforms, so the scroll-in scale
       // never skew the measurement (the tile is position: relative, so it is the offsetParent).
       ctx.textBaseline = "alphabetic";
       ctx.textAlign = "left";
@@ -254,7 +252,7 @@ export function YearTile({ year, order }: { year: number; order: number }) {
   }, [year]);
 
   return (
-    <div ref={tileRef} className={styles.yearTile} style={{ order, "--tilt": tilt } as React.CSSProperties} role="heading" aria-level={2} data-fx="off" data-reveal="">
+    <div ref={tileRef} className={styles.yearTile} style={{ order }} role="heading" aria-level={2} data-fx="off" data-reveal="">
       <span ref={textRef}>{year}</span>
       <canvas ref={canvasRef} className={styles.yearFx} aria-hidden="true" />
     </div>
