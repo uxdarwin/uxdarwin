@@ -1,97 +1,120 @@
 "use client";
 
 import Link from "next/link";
-import { Fragment, useLayoutEffect, useMemo, useRef, useSyncExternalStore } from "react";
-import { projects, type Project } from "../content/projects";
+import { useLayoutEffect, useMemo, useRef } from "react";
+import { media, type MediaTile } from "../content/media";
+import { projects, type Project, type ProjectImage } from "../content/projects";
 import { CompanyPanel } from "./CompanyPanel";
+import { Lottie } from "./Lottie";
 import { MotionGrid } from "./MotionGrid";
 import { MetaLogo } from "./ProjectMeta";
 import { seeded } from "./drag";
 import { useCompany } from "./filter";
-import { YearTile } from "./YearTile";
 import { useReveal } from "./reveal";
 import styles from "./feed.module.css";
 
-// Grid from Figma 75:12973: three columns (two beside the company panel or on tablets, one on
-// phones), newest first across the rows, a blue year tile ahead of each year's projects.
+// Rows from Figma 79:13196, newest first. Seven row types:
+//   three        three cards, square covers
+//   cardMedia    a card (one third) and a wide photo (two thirds)
+//   mediaCard    the same, mirrored
+//   strip        one project across the row, its images in a strip that bleeds off both edges
+//   two          two cards, wide covers
+//   wideMedia    a wide card (two thirds) and a tall photo (one third)
+//   mediaWide    the same, mirrored
+// Projects with several images take a strip row; the rest follow PATTERN, which drops a photo
+// row once its kind of photo runs out. Covers are cropped to their frames.
 
-type Item = { kind: "year"; year: number } | { kind: "project"; project: Project };
+type RowType = "three" | "two" | "cardMedia" | "mediaCard" | "wideMedia" | "mediaWide" | "strip" | "single";
+type Row = { type: RowType; projects: Project[]; media?: MediaTile };
 
-const keyOf = (it: Item) => (it.kind === "year" ? `year-${it.year}` : it.project.slug);
+const PATTERN: RowType[] = ["three", "cardMedia", "two", "wideMedia", "three", "mediaCard", "two", "mediaWide"];
+const NEED: Record<RowType, number> = { three: 3, two: 2, cardMedia: 1, mediaCard: 1, wideMedia: 1, mediaWide: 1, strip: 1, single: 1 };
+const MEDIA_KIND: Partial<Record<RowType, MediaTile["kind"]>> = {
+  cardMedia: "wide",
+  mediaCard: "wide",
+  wideMedia: "narrow",
+  mediaWide: "narrow",
+};
 
-/** Height of an item relative to the column width, for balancing the columns before measuring. */
-function estimate(it: Item) {
-  if (it.kind === "year") return 240 / 360;
-  const p = it.project;
-  const ratio = p.motion ? 0.56 : p.image ? p.image.height / p.image.width : 0.62;
-  return (ratio * 312 + 110) / 360;
+/** The images a strip row shows: Lottie clips, or the cover followed by the story images. */
+function stripOf(p: Project): { motion?: Project["motion"]; images?: ProjectImage[] } | null {
+  if (p.motion && p.motion.length > 1) return { motion: p.motion };
+  const seen = new Set<string>();
+  const images = [p.image, ...p.story.flatMap((b) => (b.type === "images" ? b.items : []))].filter(
+    (i): i is ProjectImage => !!i && !seen.has(i.src) && !!seen.add(i.src),
+  );
+  return images.length >= 3 ? { images } : null;
 }
 
-// Relative scroll speed of each column. Columns get content in proportion, so a faster column is
-// a longer one, and the parallax below can start and end every column together.
-const SPEEDS: Record<number, number[]> = { 1: [1], 2: [1, 1.16], 3: [1, 1.2, 1.1] };
+function rowsOf(list: Project[], pool: MediaTile[]): Row[] {
+  const left = { wide: pool.filter((m) => m.kind === "wide"), narrow: pool.filter((m) => m.kind === "narrow") };
+  const rows: Row[] = [];
+  let i = 0;
+  let step = 0;
+  while (i < list.length) {
+    if (stripOf(list[i])) {
+      rows.push({ type: "strip", projects: [list[i++]] });
+      continue;
+    }
+    // Cards available before the next strip project.
+    let room = 0;
+    while (i + room < list.length && !stripOf(list[i + room])) room++;
 
-/** Each item goes into the column with the most room left for its speed, in reading order. */
-function columnsOf(items: Item[], cols: number) {
-  const out: { it: Item; i: number }[][] = Array.from({ length: cols }, () => []);
-  const h = new Array(cols).fill(0);
-  const speed = SPEEDS[cols];
-  items.forEach((it, i) => {
-    let c = 0;
-    for (let k = 1; k < cols; k++) if (h[k] / speed[k] < h[c] / speed[c] - 0.05) c = k;
-    out[c].push({ it, i });
-    h[c] += estimate(it);
-  });
-  return out;
-}
-
-// Column count follows the viewport; the server renders three.
-const queries = ["(max-width: 639px)", "(max-width: 1023px)"];
-function subscribe(cb: () => void) {
-  const mqs = queries.map((q) => window.matchMedia(q));
-  mqs.forEach((m) => m.addEventListener("change", cb));
-  return () => mqs.forEach((m) => m.removeEventListener("change", cb));
-}
-function viewport() {
-  if (window.matchMedia(queries[0]).matches) return "phone";
-  if (window.matchMedia(queries[1]).matches) return "tablet";
-  return "desktop";
+    let type: RowType | null = null;
+    for (let tries = 0; tries < PATTERN.length && !type; tries++, step++) {
+      const t = PATTERN[step % PATTERN.length];
+      const kind = MEDIA_KIND[t];
+      if (kind && !left[kind].length) continue;
+      if (NEED[t] > room) continue;
+      // Never leave a lone card before a strip or the end when no photo can pair with it.
+      if (room - NEED[t] === 1 && !left.wide.length && !left.narrow.length) continue;
+      type = t;
+    }
+    if (!type) {
+      // Not enough cards left for the next row: pair one with a photo if any remain, else
+      // two side by side, else one across the row.
+      if (room >= 2) type = "two";
+      else if (left.wide.length) type = "cardMedia";
+      else if (left.narrow.length) type = "wideMedia";
+      else type = "single";
+    }
+    const kind = MEDIA_KIND[type];
+    rows.push({ type, projects: list.slice(i, i + NEED[type]), media: kind ? left[kind].shift() : undefined });
+    i += NEED[type];
+  }
+  return rows;
 }
 
 export function ProjectsFeed() {
   const company = useCompany();
-  const size = useSyncExternalStore(subscribe, viewport, () => "desktop" as const);
-  const cols = size === "phone" ? 1 : size === "tablet" || company ? 2 : 3;
 
-  const items = useMemo(() => {
+  const rows = useMemo(() => {
     const list = company ? projects.filter((p) => p.employer.brand === company) : projects;
-    const years = [...new Set(list.map((p) => p.year))].sort((a, b) => b - a);
-    return years.flatMap<Item>((year) => [
-      { kind: "year", year },
-      ...list.filter((p) => p.year === year).map((project) => ({ kind: "project" as const, project })),
-    ]);
+    // A filtered feed skips team photos: the company panel beside it already shows its own.
+    const pool = company ? media.filter((m) => !m.brand) : media;
+    return rowsOf(list, pool);
   }, [company]);
-  const columns = useMemo(() => columnsOf(items, cols), [items, cols]);
 
   const gridRef = useRef<HTMLDivElement>(null);
-  useParallax(gridRef, `${cols}-${company}`);
-  useReveal(gridRef, `${cols}-${company}`);
+  useReveal(gridRef, company ?? "all");
 
   return (
     <section className={styles.feed} aria-label="Projects">
       <div className={styles.feedBody} data-panel={company ? "" : undefined}>
-        <div ref={gridRef} className={styles.grid} style={{ "--cols": cols } as React.CSSProperties}>
-          {columns.map((col, c) => (
-            <div key={c} className={styles.column}>
-              {col.map(({ it, i }) => (
-                <Fragment key={keyOf(it)}>
-                  {it.kind === "year" ? (
-                    <YearTile year={it.year} order={i} />
-                  ) : (
-                    <ProjectCard project={it.project} order={i} />
-                  )}
-                </Fragment>
-              ))}
+        <div ref={gridRef} className={styles.rows}>
+          {rows.map((row) => (
+            <div key={row.projects[0].slug} className={styles.row} data-type={row.type}>
+              {row.type === "strip" ? (
+                <StripCard project={row.projects[0]} />
+              ) : (
+                <>
+                  {(row.type === "mediaCard" || row.type === "mediaWide") && row.media && <Media tile={row.media} />}
+                  {row.projects.map((p) => (
+                    <ProjectCard key={p.slug} project={p} />
+                  ))}
+                  {(row.type === "cardMedia" || row.type === "wideMedia") && row.media && <Media tile={row.media} />}
+                </>
+              )}
             </div>
           ))}
         </div>
@@ -101,65 +124,55 @@ export function ProjectsFeed() {
   );
 }
 
-/**
- * Columns scroll at different speeds: the grid is as tall as its shortest column, and the taller
- * ones travel faster so every column starts at the top and ends at the bottom together.
- */
-function useParallax(ref: React.RefObject<HTMLDivElement | null>, key: string) {
-  useLayoutEffect(() => {
-    const grid = ref.current;
-    if (!grid) return;
-    const cols = [...grid.children] as HTMLElement[];
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let heights: number[] = [];
-    let short = 0;
-    let frame = 0;
-
-    const apply = () => {
-      frame = 0;
-      if (cols.length < 2 || still.matches) return;
-      const rect = grid.getBoundingClientRect();
-      const top = rect.top + window.scrollY;
-      const range = Math.max(1, top + short - window.innerHeight);
-      const p = Math.min(1, Math.max(0, window.scrollY / range));
-      cols.forEach((col, i) => {
-        col.style.transform = `translate3d(0, ${(-(heights[i] - short) * p).toFixed(1)}px, 0)`;
-      });
-    };
-    const measure = () => {
-      cols.forEach((col) => (col.style.transform = ""));
-      grid.style.height = "";
-      if (cols.length < 2 || still.matches) return;
-      heights = cols.map((c) => c.offsetHeight);
-      short = Math.min(...heights);
-      grid.style.height = `${short}px`;
-      apply();
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(apply);
-    };
-
-    measure();
-    const ro = new ResizeObserver(measure);
-    cols.forEach((c) => ro.observe(c));
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    still.addEventListener("change", measure);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      still.removeEventListener("change", measure);
-      cancelAnimationFrame(frame);
-      cols.forEach((col) => (col.style.transform = ""));
-      grid.style.height = "";
-    };
-  }, [ref, key]);
+function Media({ tile }: { tile: MediaTile }) {
+  return (
+    <figure className={styles.media} data-reveal="">
+      <img
+        src={tile.src}
+        alt={tile.alt}
+        width={tile.width}
+        height={tile.height}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+        style={tile.focus ? { objectPosition: tile.focus } : undefined}
+      />
+    </figure>
+  );
 }
 
-function ProjectCard({ project: p, order }: { project: Project; order: number }) {
+function Teaser({ text }: { text: string }) {
   return (
-    <Link href={`/projects/${p.slug}`} className={styles.card} style={{ order, "--tilt": `${seeded(p.slug).toFixed(2)}deg` } as React.CSSProperties} data-reveal="" data-sound-hover="" data-cuelume-tap="">
+    <div className={styles.teaser}>
+      <span>{text}</span>
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={styles.arrow}>
+        <path d="M7 17 17 7M7 7h10v10" stroke="currentColor" strokeWidth="1" />
+      </svg>
+    </div>
+  );
+}
+
+function CardText({ project: p }: { project: Project }) {
+  return (
+    <div className={styles.cardText}>
+      <p className={styles.cardMeta}>
+        <span className={styles.metaYear}>{p.year}</span>
+        <span aria-hidden="true">·</span>
+        <span className={styles.employer}>
+          {p.employer.brand && <MetaLogo brand={p.employer.brand} id={`card-${p.slug}`} />}
+          {p.employer.label}
+        </span>
+      </p>
+      <h3 className={styles.cardTitle}>{p.description}</h3>
+    </div>
+  );
+}
+
+const tiltOf = (key: string) => ({ "--tilt": `${seeded(key).toFixed(2)}deg` }) as React.CSSProperties;
+
+function ProjectCard({ project: p }: { project: Project }) {
+  return (
+    <Link href={`/projects/${p.slug}`} className={styles.card} style={tiltOf(p.slug)} data-reveal="" data-sound-hover="" data-cuelume-tap="">
       <div className={styles.thumb}>
         {p.motion ? (
           <MotionGrid clips={p.motion.slice(0, 4)} />
@@ -179,22 +192,85 @@ function ProjectCard({ project: p, order }: { project: Project; order: number })
             <span>{p.client}</span>
           </div>
         )}
-        <div className={styles.teaser}>
-          <span>{p.teaser}</span>
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={styles.arrow}>
-            <path d="M7 17 17 7M7 7h10v10" stroke="currentColor" strokeWidth="1" />
-          </svg>
-        </div>
+        <Teaser text={p.teaser} />
       </div>
-      <p className={styles.cardMeta}>
-        <span className={styles.metaYear}>{p.year}</span>
-        <span aria-hidden="true">·</span>
-        <span className={styles.employer}>
-          {p.employer.brand && <MetaLogo brand={p.employer.brand} id={`card-${p.slug}`} />}
-          {p.employer.label}
-        </span>
-      </p>
-      <h3 className={styles.cardTitle}>{p.description}</h3>
+      <CardText project={p} />
+    </Link>
+  );
+}
+
+/**
+ * One project across the row (Figma row 4): its images sit in a strip that bleeds off both
+ * edges, starts centered and can be dragged sideways (or swiped) to see the rest.
+ */
+function StripCard({ project: p }: { project: Project }) {
+  const strip = stripOf(p)!;
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const dragged = useRef(false);
+
+  useLayoutEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const center = () => (el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2);
+    center();
+    const ro = new ResizeObserver(center);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    const el = scrollRef.current;
+    if (!el || e.pointerType !== "mouse" || e.button !== 0) return;
+    const x0 = e.clientX;
+    const s0 = el.scrollLeft;
+    dragged.current = false;
+    const move = (ev: PointerEvent) => {
+      const dx = ev.clientX - x0;
+      if (Math.abs(dx) > 4) dragged.current = true;
+      el.scrollLeft = s0 - dx;
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  };
+
+  const frames = strip.motion ? strip.motion.length : strip.images!.length;
+
+  return (
+    <Link
+      href={`/projects/${p.slug}`}
+      className={`${styles.card} ${styles.stripCard}`}
+      draggable={false}
+      data-reveal=""
+      data-sound-hover=""
+      data-cuelume-tap=""
+      onClickCapture={(e) => {
+        if (dragged.current) {
+          e.preventDefault();
+          dragged.current = false;
+        }
+      }}
+    >
+      <div className={styles.stripWrap}>
+        <div ref={scrollRef} className={styles.strip} style={{ "--frames": frames } as React.CSSProperties} onPointerDown={onPointerDown}>
+          {strip.motion
+            ? strip.motion.map((c) => (
+                <div key={c.src} className={`${styles.frame} ${styles.motionFrame}`} style={tiltOf(c.src)} data-icon={c.width === c.height || undefined}>
+                  <Lottie src={c.src} label={`${c.label} animation`} className={styles.motionPlayer} />
+                </div>
+              ))
+            : strip.images!.map((im) => (
+                <div key={im.src} className={styles.frame} style={tiltOf(im.src)}>
+                  <img src={im.src} alt={im.alt} width={im.width} height={im.height} loading="lazy" decoding="async" draggable={false} />
+                </div>
+              ))}
+        </div>
+        <Teaser text={p.teaser} />
+      </div>
+      <CardText project={p} />
     </Link>
   );
 }

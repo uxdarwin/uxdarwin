@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 /**
  * Scroll-in intro for the grid: cards below the window start a little low, small, soft and
- * faint, and settle once as they come into view. Cards in the same row are staggered by column.
+ * faint, and settle once as they come into view. Tiles in the same row are staggered left to right.
  */
 export function useReveal(ref: React.RefObject<HTMLElement | null>, key: string) {
   useEffect(() => {
@@ -17,7 +17,7 @@ export function useReveal(ref: React.RefObject<HTMLElement | null>, key: string)
         entries.forEach((e) => {
           if (!e.isIntersecting) return;
           const el = e.target as HTMLElement;
-          const col = [...grid.children].indexOf(el.parentElement as Element);
+          const col = el.parentElement ? [...el.parentElement.children].indexOf(el) : 0;
           el.style.transitionDelay = `${Math.max(0, col) * 70}ms`;
           el.dataset.reveal = "in";
           // Drop the stagger afterwards so it never delays the hover.

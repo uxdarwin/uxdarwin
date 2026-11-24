@@ -1,5 +1,5 @@
-/* Projects feed (center column). Grid from Figma 75:12973: three columns 2px apart, frosted
-   cards with the cover inset 32px, the year and employer centered below, then the title. */
+/* Projects feed (center column). Rows from Figma 79:13196, 2px apart: frosted cards with the
+   cover inset 32px, the year and employer centered below, then the title; photo tiles between. */
 
 .feed,
 .page {
@@ -41,71 +41,75 @@
   white-space: nowrap;
 }
 
-/* ---------- Grid ---------- */
+/* ---------- Rows (Figma 79:13196) ---------- */
 
-/* ProjectsFeed sets --cols and, for the parallax, the height of the shortest column. */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
-  gap: 2px; /* Figma 75:11861 */
-  align-items: start;
-}
-
-.column {
+/* Rows 2px apart, as wide as the feed. Heights follow the feed width (444px at 1084), so the
+   rows keep their shape on narrower screens and beside the company panel, like mikemake.com. */
+.rows {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  min-width: 0;
-  will-change: transform;
-}
-
-/* Blue year tile in Geist Pixel (Figma 75:12583: 240px tall at 360 wide, 160px digits). */
-.yearTile {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 3 / 2;
-  border-radius: 19px;
-  background: #001ba5;
-  overflow: hidden;
   container-type: inline-size;
-  animation: tileIn 520ms var(--ease-out) backwards;
 }
 
-.yearTile {
+.row {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr); /* tiles fill the row and never stretch it */
+  gap: 2px;
+  min-width: 0;
+  height: 40.96cqi;
+}
+
+.row[data-type="three"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto;
+  height: auto;
+}
+.row[data-type="two"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.row[data-type="cardMedia"],
+.row[data-type="mediaWide"] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+.row[data-type="mediaCard"],
+.row[data-type="wideMedia"] {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+.row[data-type="strip"],
+.row[data-type="single"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.row[data-type="strip"] {
+  height: 44.65cqi; /* 484 at 1084 */
+}
+
+/* Photo tiles: full-bleed, cropped to the tile. */
+.media {
   position: relative;
+  margin: 0;
+  min-width: 0;
+  border-radius: 19px;
+  overflow: hidden;
+  background: rgb(255 255 255 / 0.04);
 }
 
-/* WebGL layer for the hover ripple (YearTile); shown only while it runs. */
-.yearFx {
-  position: absolute;
-  inset: 0;
+.media > img {
+  display: block;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.yearTile[data-fx="on"] .yearFx {
-  opacity: 1;
-}
-
-.yearTile > span {
-  font-family: var(--font-pixel), var(--font-mono), monospace;
-  font-size: min(160px, 32cqi);
-  line-height: 1;
-  color: #2448ff;
-  text-box: trim-both cap alphabetic;
-  user-select: none;
+  object-fit: cover;
+  -webkit-user-drag: none;
 }
 
 /* Scroll-in intro (reveal.ts): cards below the window wait low, small, soft and faint. */
-.grid [data-reveal="wait"] {
+.rows [data-reveal="wait"] {
   opacity: 0.15;
   transform: translateY(24px) scale(0.96);
   filter: blur(6px);
 }
 
-.grid [data-reveal="in"] {
+.rows [data-reveal="in"] {
   transition:
     opacity 700ms var(--ease-out),
     transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -377,7 +381,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .card,
-  .yearTile,
+  .thumb,
+  .frame,
   .teaser {
     animation: none !important;
     transition-duration: 0ms !important;
@@ -397,21 +402,154 @@
   }
 }
 
-/* Phones: one column in reading order (the order styles hold the sequence before hydration). */
+/* ---------- Cards inside rows: covers cropped to their frames ---------- */
+
+.rows .card {
+  min-width: 0;
+  min-height: 0;
+}
+
+.rows .thumb {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+.row[data-type="three"] .thumb {
+  flex: none;
+  aspect-ratio: 1;
+}
+
+.rows .thumb > .image,
+.rows .thumb > .cover {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.cardText {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Strip row: the images run edge to edge past both sides of the card. */
+.stripCard {
+  padding: 32px 0;
+  overflow: hidden;
+}
+
+.stripCard > .cardText {
+  padding: 0 32px;
+}
+
+.stripWrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+.strip {
+  display: flex;
+  gap: 2px;
+  height: calc(100% + 16px);
+  margin: -8px 0; /* room for the hover grow, which the scroller would clip */
+  padding: 8px 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+.strip:active {
+  cursor: grabbing;
+}
+
+.frame {
+  position: relative;
+  flex: none;
+  height: 100%;
+  width: calc((118cqi - (var(--frames, 4) - 1) * 2px) / var(--frames, 4));
+  border-radius: 6px;
+  overflow: hidden;
+  outline: 0.5px solid rgb(255 255 255 / 0.08);
+  outline-offset: -0.5px;
+  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+  transition:
+    scale 420ms var(--bounce),
+    rotate 420ms var(--bounce);
+}
+
+.frame > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.motionFrame {
+  background: #fff;
+}
+
+.motionFrame[data-icon] .motionPlayer {
+  inset: 22% 0;
+}
+
+.stripWrap > .teaser {
+  left: 50%;
+  right: auto;
+  width: min(440px, calc(100% - 64px));
+  translate: -50% 0;
+}
+
+@media (hover: hover) {
+  .stripCard:hover .frame {
+    scale: 1.03;
+    rotate: var(--tilt, 0deg);
+  }
+}
+
+/* Phones: one tile per row, in reading order. The strip keeps scrolling sideways. */
 @media (max-width: 639px) {
   .feed {
     padding-bottom: 48px;
   }
 
-  .grid {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 2px;
+  .row,
+  .row[data-type] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    height: auto;
   }
 
-  .column {
-    display: contents;
+  .rows .thumb,
+  .row[data-type="three"] .thumb {
+    flex: none;
+    aspect-ratio: 16 / 10;
+  }
+
+  .media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .stripWrap {
+    flex: none;
+    height: 56cqi;
+  }
+
+  .frame {
+    width: 72cqi;
   }
 
   /* No hover on touch: the cover stays clear and the title carries the card. */

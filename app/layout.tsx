@@ -25,15 +25,6 @@ const display = localFont({
   display: "swap",
 });
 
-// Year tiles: Geist Pixel (Grid) by Vercel, SIL Open Font License.
-const pixel = localFont({
-  src: "./fonts/GeistPixel-Grid.woff2",
-  weight: "400",
-  style: "normal",
-  variable: "--font-pixel",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Darwin Álvarez · Staff Product Designer",
   description:
@@ -50,7 +41,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${geistMono.variable} ${display.variable} ${pixel.variable}`}
+      className={`${geist.variable} ${geistMono.variable} ${display.variable}`}
     >
       <body id="top">
         {children}
