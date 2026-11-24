@@ -1,0 +1,1229 @@
+/* Projects feed (center column). Rows from Figma 79:13196, 2px apart: frosted cards with the
+   cover inset 32px, the year and employer centered below, then the title; photo tiles between. */
+
+.feed,
+.page {
+  --title-inset: 52px;
+  --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.feed {
+  position: relative;
+  padding: 0 0 120px;
+}
+
+/* Project pages keep the "Projects" back link (Figma 43:9981). */
+.pageHead {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: var(--title-inset);
+}
+
+.title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+  position: relative;
+  z-index: 2;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Rows (Figma 79:13196) ---------- */
+
+/* Rows 2px apart, as wide as the feed. Heights follow the feed width (444px at 1084), so the
+   rows keep their shape on narrower screens and beside the company panel, like mikemake.com. */
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  container-type: inline-size;
+}
+
+.row {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr); /* tiles fill the row and never stretch it */
+  gap: 2px;
+  min-width: 0;
+  height: 40.96cqi;
+}
+
+.row[data-type="three"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto;
+  height: auto;
+}
+.row[data-type="two"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.row[data-type="cardMedia"],
+.row[data-type="mediaWide"] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+.row[data-type="mediaCard"],
+.row[data-type="wideMedia"] {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+.row[data-type="strip"],
+.row[data-type="single"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.row[data-type="strip"] {
+  height: 44.65cqi; /* 484 at 1084 */
+}
+
+/* Photo tiles: full-bleed, cropped to the tile. */
+.media {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+  border-radius: 19px;
+  overflow: hidden;
+  background: rgb(255 255 255 / 0.04);
+}
+
+.media > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+}
+
+/* Scroll-in intro (reveal.ts): cards below the window wait low, small, soft and faint. */
+.rows [data-reveal="wait"] {
+  opacity: 0.15;
+  transform: translateY(24px) scale(0.96);
+  filter: blur(6px);
+}
+
+.rows [data-reveal="in"] {
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 700ms var(--ease-out),
+    background-color 220ms var(--ease-out);
+}
+
+/* ---------- Card ---------- */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  border-radius: 19px;
+  color: inherit;
+  text-decoration: none;
+  background: var(--noise);
+  background-color: rgb(255 255 255 / 0.04);
+  /* Prefixed first: the CSS minifier keeps only the last of the pair when it holds a var(). */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  outline: none;
+  transition: background-color 220ms var(--ease-out);
+  animation: tileIn 520ms var(--ease-out) backwards;
+}
+
+@keyframes tileIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (hover: hover) {
+  .card:hover {
+    background-color: rgb(255 255 255 / 0.1);
+  }
+
+  /* Hover only: the cover (not the card) grows a little and tilts its seeded ±1°, the same
+     on every visit. At rest, flat. The teaser rides along with the cover. */
+  .card:hover .thumb {
+    scale: 1.03;
+    rotate: var(--tilt, 0deg);
+  }
+}
+
+.card:focus-visible {
+  background-color: rgb(255 255 255 / 0.1);
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px rgb(255 255 255 / 0.6);
+}
+
+.thumb {
+  position: relative;
+  align-self: stretch;
+  transition:
+    scale 420ms var(--bounce),
+    rotate 420ms var(--bounce);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-box: trim-both cap alphabetic;
+}
+
+.cardTitle {
+  max-width: 272px;
+  margin-top: 13px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text);
+  text-wrap: balance;
+  text-box: trim-both cap alphabetic;
+}
+
+/* Shared with the meta line on project pages. */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 2px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.metaYear {
+  color: var(--text);
+}
+
+.employer {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* The 40px logo slot holds a 24px mark; crop it to the 14×12 the meta line uses. */
+.logo {
+  width: 20px;
+  height: 20px;
+  margin: -4px -2px -4px -3px;
+  flex: none;
+}
+
+.logoFlat {
+  filter: brightness(0) invert(1);
+  opacity: 0.6;
+}
+
+.metaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.metaArrow {
+  width: 11px;
+  height: 11px;
+}
+
+.metaLink:hover {
+  color: var(--text);
+}
+
+/* ---------- Cover + teaser ---------- */
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto; /* natural height: never cropped */
+  border-radius: 12px;
+  outline: 0.5px solid rgb(255 255 255 / 0.08);
+  outline-offset: -0.5px;
+  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+  -webkit-user-drag: none;
+}
+
+/* Sub-grid covers (Motion) sit in the same 12px-radius frame, up to 2×2. */
+.thumb > .motionGrid {
+  border-radius: 12px;
+}
+
+/* Typographic cover for projects whose images are still being gathered. */
+.cover {
+  --tint: var(--brand-coverbase);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  aspect-ratio: 312 / 200;
+  padding: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  background:
+    var(--noise),
+    radial-gradient(120% 90% at 100% 100%, rgb(var(--tint) / 0.55), transparent 70%),
+    radial-gradient(80% 60% at 0% 0%, rgb(var(--tint) / 0.18), transparent 70%),
+    #111117;
+  outline: 0.5px solid rgb(255 255 255 / 0.08);
+  outline-offset: -0.5px;
+  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+  container-type: inline-size;
+}
+
+.cover > span {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(20px, 8cqi, 30px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  max-width: 85%;
+  text-wrap: balance;
+}
+
+.cover[data-brand="mercadolibre"] { --tint: var(--brand-mercadolibre); }
+.cover[data-brand="toptal"] { --tint: var(--brand-toptal); }
+.cover[data-brand="redvalley"] { --tint: var(--brand-redvalley); }
+.cover[data-brand="rainforest"] { --tint: var(--brand-rainforest); }
+.cover[data-brand="none"] { --tint: 120 120 140; }
+
+/* Blue label over the bottom of the cover, bouncing in on hover. */
+.teaser {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 6px 4px 6px 16px;
+  border-radius: 12px;
+  background: var(--blue-press);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 300;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(16px) scale(0.92);
+  transform-origin: 50% 100%;
+  transition:
+    opacity 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+  pointer-events: none;
+}
+
+.teaser > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.arrow {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 8px;
+}
+
+.card:focus-visible .teaser {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: hover) {
+  .card:hover .teaser {
+    opacity: 1;
+    transform: none;
+    animation: teaserBounce 620ms var(--ease-out) 40ms backwards;
+    transition: opacity 180ms var(--ease-out) 40ms;
+  }
+}
+
+@keyframes teaserBounce {
+  0% {
+    transform: translateY(16px) scale(0.92);
+  }
+  45% {
+    transform: translateY(-6px) scale(1.02);
+  }
+  70% {
+    transform: translateY(2px) scale(0.995);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .thumb,
+  .frame,
+  .teaser {
+    animation: none !important;
+    transition-duration: 0ms !important;
+  }
+}
+
+/* ---------- Narrower screens ---------- */
+
+@media (max-width: 1023px) {
+  .feed,
+  .page {
+    --title-inset: 0px;
+  }
+
+  .feed {
+    padding-top: 0;
+  }
+}
+
+/* ---------- Cards inside rows: covers cropped to their frames ---------- */
+
+.rows .card {
+  min-width: 0;
+  min-height: 0;
+}
+
+.rows .thumb {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+.row[data-type="three"] .thumb {
+  flex: none;
+  aspect-ratio: 1;
+}
+
+.rows .thumb > .image,
+.rows .thumb > .cover {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.cardText {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Strip row: the images run edge to edge past both sides of the card. */
+.stripCard {
+  padding: 32px 0;
+  overflow: hidden;
+}
+
+.stripCard > .cardText {
+  padding: 0 32px;
+}
+
+.stripWrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+.strip {
+  display: flex;
+  gap: 2px;
+  height: calc(100% + 16px);
+  margin: -8px 0; /* room for the hover grow, which the scroller would clip */
+  padding: 8px 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+.strip:active {
+  cursor: grabbing;
+}
+
+.frame {
+  position: relative;
+  flex: none;
+  height: 100%;
+  width: calc((118cqi - (var(--frames, 4) - 1) * 2px) / var(--frames, 4));
+  border-radius: 6px;
+  overflow: hidden;
+  outline: 0.5px solid rgb(255 255 255 / 0.08);
+  outline-offset: -0.5px;
+  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+  transition:
+    scale 420ms var(--bounce),
+    rotate 420ms var(--bounce);
+}
+
+.frame > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.motionFrame {
+  background: #fff;
+}
+
+.motionFrame[data-icon] .motionPlayer {
+  inset: 22% 0;
+}
+
+.stripWrap > .teaser {
+  left: 50%;
+  right: auto;
+  width: min(440px, calc(100% - 64px));
+  translate: -50% 0;
+}
+
+@media (hover: hover) {
+  .stripCard:hover .frame {
+    scale: 1.03;
+    rotate: var(--tilt, 0deg);
+  }
+}
+
+/* Phones: one tile per row, in reading order. The strip keeps scrolling sideways. */
+@media (max-width: 639px) {
+  .feed {
+    padding-bottom: 48px;
+  }
+
+  .row,
+  .row[data-type] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    height: auto;
+  }
+
+  .rows .thumb,
+  .row[data-type="three"] .thumb {
+    flex: none;
+    aspect-ratio: 16 / 10;
+  }
+
+  .media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .stripWrap {
+    flex: none;
+    height: 56cqi;
+  }
+
+  .frame {
+    width: 72cqi;
+  }
+
+  /* No hover on touch: the cover stays clear and the title carries the card. */
+  .teaser {
+    display: none;
+  }
+}
+
+/* ---------- Project page (Figma 43:9981) ---------- */
+
+.page {
+  position: relative;
+  padding: 30px 0 0;
+}
+
+/* Arrow and title are one link. The arrow hangs in the gutter so "Projects" keeps the
+   same position as on the feed (Figma 43:9981: arrow at 368, title at 396). */
+.back {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.back svg {
+  position: absolute;
+  left: -28px;
+  width: 24px;
+  height: 24px;
+  transition: transform 300ms var(--bounce);
+}
+
+.back:hover svg {
+  transform: translateX(-3px);
+}
+
+.back:hover .title {
+  color: var(--text-2);
+}
+
+.back .title {
+  transition: color 160ms var(--ease-out);
+}
+
+.back:focus-visible {
+  outline: 1.5px solid rgb(255 255 255 / 0.6);
+  outline-offset: 4px;
+}
+
+.pageBody {
+  padding-left: var(--title-inset);
+  padding-top: 40px;
+}
+
+.pageBody > .meta,
+.headline,
+.sectionTitle,
+.paragraph {
+  max-width: 720px;
+}
+
+.headline {
+  margin-top: 16px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.sectionTitle {
+  margin-top: 72px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.paragraph {
+  margin-top: 20px;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 300;
+  color: var(--text-2);
+  text-wrap: pretty;
+}
+
+.headline + .paragraph {
+  margin-top: 64px;
+}
+
+.cluster {
+  position: relative;
+  margin: 72px 0;
+  max-width: 1032px;
+}
+
+.cluster + .sectionTitle {
+  margin-top: 0;
+}
+
+.clusterItem {
+  position: absolute;
+  margin: 0;
+  touch-action: none;
+  transition: box-shadow 200ms var(--ease-out);
+}
+
+.clusterItem[data-draggable] {
+  cursor: grab;
+  user-select: none;
+  transition: scale 420ms var(--bounce);
+}
+
+/* Grow a little on hover, like the feed cards. */
+.clusterItem[data-draggable]:hover,
+.clusterItem[data-selected] {
+  scale: 1.02;
+}
+
+.clusterItem[data-draggable]:active {
+  cursor: grabbing;
+}
+
+/* Selection chrome is square like Figma's, so the image corners stay rounded inside it. */
+.clusterItem[data-selected] .clusterImg {
+  box-shadow: 4px 4px 16px rgb(0 0 0 / 0.5);
+}
+
+.clusterImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  outline: 0.5px solid rgb(255 255 255 / 0.08);
+  outline-offset: -0.5px;
+  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+  -webkit-user-drag: none;
+}
+
+/* Figma-style selection: blue outline, white square handles on corners and edges, and a
+   size label. Hover shows the outline; selecting (pointer down) shows the handles. */
+.selection {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #0d99ff;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms var(--ease-out);
+}
+
+.clusterItem[data-draggable]:hover .selection,
+.clusterItem[data-selected] .selection {
+  opacity: 1;
+}
+
+.handle {
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.clusterItem[data-selected] .handle {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Corners: 8px white squares with a blue border. */
+.handle[data-h="nw"],
+.handle[data-h="ne"],
+.handle[data-h="se"],
+.handle[data-h="sw"] {
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border: 1px solid #0d99ff;
+  border-radius: 1px;
+}
+
+.handle[data-h="nw"] { left: -4px; top: -4px; cursor: nwse-resize; }
+.handle[data-h="ne"] { right: -4px; top: -4px; cursor: nesw-resize; }
+.handle[data-h="se"] { right: -4px; bottom: -4px; cursor: nwse-resize; }
+.handle[data-h="sw"] { left: -4px; bottom: -4px; cursor: nesw-resize; }
+
+/* Edges: invisible 8px hit strips along each side, between the corners. */
+.handle[data-h="n"],
+.handle[data-h="s"] {
+  left: 6px;
+  right: 6px;
+  height: 8px;
+  cursor: ns-resize;
+}
+
+.handle[data-h="e"],
+.handle[data-h="w"] {
+  top: 6px;
+  bottom: 6px;
+  width: 8px;
+  cursor: ew-resize;
+}
+
+.handle[data-h="n"] { top: -4px; }
+.handle[data-h="s"] { bottom: -4px; }
+.handle[data-h="e"] { right: -4px; }
+.handle[data-h="w"] { left: -4px; }
+
+.dims {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: #0d99ff;
+  color: #fff;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 14px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms var(--ease-out);
+}
+
+.clusterItem[data-selected] .dims {
+  opacity: 1;
+}
+
+.clusterStack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 48px 0;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  /* Same inset on both sides: 52px from the column, 64px from the panel on the left. */
+  margin: 160px var(--footer-inset, 52px) 0;
+  padding: 24px 0 24px;
+  border-top: 0.5px solid var(--border);
+}
+
+.footerMain {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.footerName {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.footerName > span,
+.footerFine {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.footerLinks {
+  display: flex;
+  gap: 24px;
+}
+
+.footerLinks a,
+.footerFine a {
+  color: var(--text-2);
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+  text-underline-offset: 4px;
+  transition: color 160ms var(--ease-out);
+}
+
+.footerLinks a {
+  font-size: 14px;
+}
+
+.footerLinks a:hover,
+.footerFine a:hover {
+  color: var(--text);
+}
+
+.footerFine {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+@media (max-width: 1023px) {
+  .footer {
+    margin: 96px 0 0;
+  }
+
+  .back {
+    padding-left: 28px;
+  }
+
+  .back svg {
+    left: 0;
+  }
+
+  .pageBody {
+    padding-top: 32px;
+  }
+}
+
+@media (max-width: 639px) {
+  .headline {
+    font-size: 30px;
+  }
+
+  .headline + .paragraph {
+    margin-top: 40px;
+  }
+
+  .paragraph {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .sectionTitle {
+    margin-top: 48px;
+  }
+}
+
+/* ---------- Company side panel (feed filtered by an Experience row) ---------- */
+
+.feedBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.feedBody[data-panel] {
+  grid-template-columns: minmax(0, 1fr) 320px; /* same width as the left column */
+  column-gap: var(--gap); /* 12px beside the side columns */
+}
+
+/* Layout from Figma 74:11110: 24px inset, full-bleed dividers between sections. */
+.companyPanel {
+  position: sticky;
+  top: var(--sticky-top, var(--gap));
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 23.5px 23.5px 24px;
+  border: 0.5px solid var(--card-border);
+  border-radius: var(--radius-card);
+  background: var(--noise);
+  background-color: var(--surface);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  z-index: 3;
+  animation: panelIn 560ms var(--ease-out) both;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+}
+
+.companyPanel > * {
+  animation: panelItemIn 520ms var(--ease-out) backwards; /* backwards: releases transform after, so hover transitions still run */
+}
+.companyPanel > :nth-child(2) { animation-delay: 60ms; }
+.companyPanel > :nth-child(3) { animation-delay: 110ms; }
+.companyPanel > :nth-child(4) { animation-delay: 160ms; }
+.companyPanel > :nth-child(5) { animation-delay: 210ms; }
+
+@keyframes panelItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.cpHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cpMark {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  flex: none;
+  border-radius: 12px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  background: rgb(var(--brand) / 0.24);
+}
+
+.cpMark > svg {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.cpName {
+  flex: 1;
+  min-width: 0;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cpName h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+}
+
+.cpName p {
+  font-size: 14px;
+  line-height: 1;
+  color: var(--text-3);
+  text-box: trim-both cap alphabetic;
+}
+
+.cpName .cpDomain {
+  align-self: flex-start;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+  text-underline-offset: 3px;
+  text-box: trim-both cap alphabetic;
+  transition: color 160ms var(--ease-out);
+}
+
+.cpName .cpDomain:hover {
+  color: var(--text);
+}
+
+.cpClose {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.cpClose:hover,
+.cpClose:focus-visible {
+  background: rgb(255 255 255 / 0.08);
+  color: var(--text);
+}
+
+.cpClose svg {
+  width: 20px;
+  height: 20px;
+}
+
+.cpAbout {
+  margin-top: 32px;
+  padding-bottom: 24px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 18px;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.cpRoles {
+  list-style: none;
+  margin: 0 -23.5px;
+  padding: 24px 23.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border-top: 0.5px solid var(--card-border);
+  border-bottom: 0.5px solid var(--card-border);
+}
+
+.cpRoles li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 18px;
+  color: var(--text);
+}
+
+.cpDates {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.cpPoints {
+  list-style: none;
+  padding: 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 18px;
+  color: var(--text-3);
+}
+
+/* Team photo: full width, its own aspect ratio (never cropped), shown in grayscale
+   like the Figma's luminosity blend, with the caption over a bottom fade. */
+.cpPhoto {
+  position: relative;
+  margin: 24px 0 0;
+  border: 0.5px solid var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 -10px 8px rgb(0 0 0 / 0.4);
+  transform-origin: 85% 60%; /* grows mostly left and up, into the feed, not off-screen */
+  transition:
+    transform 380ms var(--ease-out),
+    box-shadow 380ms var(--ease-out),
+    border-radius 380ms var(--ease-out),
+    border-color 380ms var(--ease-out);
+}
+
+.cpPhoto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: grayscale(1);
+  transition: filter 380ms var(--ease-out);
+}
+
+/* Hover: 20% larger with a 2° turn, square corners, no stroke, overflowing the panel, in full color. */
+.cpPhoto[data-hover="true"] {
+  z-index: 5;
+  border-radius: 0;
+  border-color: transparent;
+  transform: scale(1.2) rotate(2deg);
+  box-shadow: 0 24px 48px rgb(0 0 0 / 0.55);
+}
+
+.cpPhoto[data-hover="true"] img {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cpPhoto {
+    transition: none;
+  }
+}
+
+.cpPhoto figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 24px 12px 12px;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0), rgb(0 0 0 / 0.8) 50%);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 14px;
+  line-height: 1;
+  color: #fff;
+  text-box: trim-both cap alphabetic;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .companyPanel,
+  .companyPanel > * {
+    animation: none;
+  }
+}
+
+/* Tablet and phone: the panel sits above the cards, full width. */
+@media (max-width: 1023px) {
+  .feedBody[data-panel] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .companyPanel {
+    position: relative;
+    top: auto;
+    order: -1;
+    margin: 0 0 var(--gap);
+  }
+}
+
+/* ---------- Motion (Lottie) sheet ---------- */
+
+.motionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 16px;
+  background: #ecebe6;
+  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+  overflow: hidden;
+}
+
+.motionCell {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.motionPlayer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Square icons sit at 70% of the cell height so they read at the same weight as the scenes. */
+.motionCell[data-icon] .motionPlayer {
+  inset: 15% 0;
+}
+
+.motionGrid[data-size="page"] {
+  max-width: 860px;
+  margin: 72px 0;
+  rotate: -0.5deg;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 20px;
+}
+
+.motionGrid[data-size="page"] .motionCell {
+  border-radius: 14px;
+}
+
+.motionLabel {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: rgb(0 0 0 / 0.5);
+}
+
+@media (max-width: 559px) {
+  .motionGrid[data-size="page"] {
+    rotate: none;
+    grid-template-columns: 1fr;
+  }
+}

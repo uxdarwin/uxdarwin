@@ -43,7 +43,7 @@ export default function RootLayout({
       lang="en"
       className={`${geist.variable} ${geistMono.variable} ${display.variable}`}
     >
-      <body>
+      <body id="top">
         {children}
         <Sounds />
       </body>

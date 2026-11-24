@@ -1,9 +1,11 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { experience } from "../content/profile";
 import { BrandMark } from "./BrandMark";
 import { CvModal } from "./CvModal";
+import { setCompany, useCompany } from "./filter";
 import { FileTextIcon } from "./logos";
 import styles from "./panel.module.css";
 import { TenureLabel } from "./TenureLabel";
@@ -12,6 +14,23 @@ export function ExperienceCard() {
   const [cvOpen, setCvOpen] = useState(false);
   const tipRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const company = useCompany();
+  const pathname = usePathname();
+  const router = useRouter();
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  // "Show projects" filters the feed to that company; clicking the active row clears it.
+  // From a project page it goes back to the feed, already filtered.
+  const toggle = (brand: (typeof experience)[number]["brand"]) => {
+    const next = company === brand ? null : brand;
+    if (pathname !== "/") {
+      router.push(next ? `/?company=${next}` : "/");
+      setCompany(next);
+      return;
+    }
+    // No scrolling: the page stays where it is and the feed re-packs in place.
+    setCompany(next);
+  };
 
   // The "Show projects" tooltip follows the pointer along the row.
   const moveTip = (e: React.PointerEvent<HTMLLIElement>) => {
@@ -39,7 +58,21 @@ export function ExperienceCard() {
               className={styles.row}
               style={{ "--brand": `var(--brand-${item.brand})` } as React.CSSProperties}
               onPointerMove={moveTip}
+              onPointerEnter={() => setHovered(item.brand)}
+              onClick={() => toggle(item.brand)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  toggle(item.brand);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-pressed={company === item.brand}
+              aria-label={`${item.company}, ${item.role}. ${company === item.brand ? "Show all projects" : "Show projects"}`}
+              data-active={company === item.brand ? "true" : undefined}
               data-sound-hover=""
+              data-cuelume-tap=""
               data-loop-host={item.brand === "coverbase" ? "" : undefined}
             >
               <BrandMark brand={item.brand} id={`exp-${i}`} />
@@ -47,12 +80,28 @@ export function ExperienceCard() {
                 <span className={styles.rowTitle}>{item.company}</span>
                 <span className={styles.rowSub}>{item.role}</span>
               </span>
-              <TenureLabel tenure={item.tenure} className={styles.rowMeta} />
+              {company === item.brand ? (
+                <span
+                  className={styles.rowClear}
+                  aria-hidden="true"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggle(item.brand);
+                    hideTip();
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7 7l10 10M17 7 7 17" stroke="currentColor" strokeWidth="1.25" />
+                  </svg>
+                </span>
+              ) : (
+                <TenureLabel tenure={item.tenure} className={styles.rowMeta} />
+              )}
             </li>
           ))}
         </ul>
         <div ref={tipRef} className={styles.tooltip} data-show="false" aria-hidden="true">
-          Show projects
+          {hovered && hovered === company ? "Show all projects" : "Show projects"}
         </div>
       </div>
 
