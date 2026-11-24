@@ -855,7 +855,7 @@
 }
 
 .companyPanel > * {
-  animation: panelItemIn 520ms var(--ease-out) both;
+  animation: panelItemIn 520ms var(--ease-out) backwards; /* backwards: releases transform after, so hover transitions still run */
 }
 .companyPanel > :nth-child(2) { animation-delay: 60ms; }
 .companyPanel > :nth-child(3) { animation-delay: 110ms; }
@@ -1009,6 +1009,10 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 -10px 8px rgb(0 0 0 / 0.4);
+  transform-origin: 85% 60%; /* grows mostly left and up, into the feed, not off-screen */
+  transition:
+    transform 380ms var(--ease-out),
+    box-shadow 380ms var(--ease-out);
 }
 
 .cpPhoto img {
@@ -1016,6 +1020,24 @@
   width: 100%;
   height: auto;
   filter: grayscale(1);
+  transition: filter 380ms var(--ease-out);
+}
+
+/* Hover: 30% larger, overflowing the panel, in full color. */
+.cpPhoto[data-hover="true"] {
+  z-index: 5;
+  transform: scale(1.3);
+  box-shadow: 0 24px 48px rgb(0 0 0 / 0.55);
+}
+
+.cpPhoto[data-hover="true"] img {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cpPhoto {
+    transition: none;
+  }
 }
 
 .cpPhoto figcaption {

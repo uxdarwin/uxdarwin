@@ -2,6 +2,7 @@ import { companies } from "../content/companies";
 import { experience, type Brand } from "../content/profile";
 import { CoverbaseLogo, MercadoLibreColor, RedValleyLogo, ToptalLogo } from "./logos";
 import { setCompany } from "./filter";
+import { PanelPhoto } from "./PanelPhoto";
 import styles from "./feed.module.css";
 
 /** Narrow side panel with short company context, shown while the feed is filtered to that company. */
@@ -52,13 +53,7 @@ export function CompanyPanel({ brand }: { brand: Brand }) {
         ))}
       </ul>
 
-      {c.photo && (
-        <figure className={styles.cpPhoto}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={c.photo.src} alt={c.photo.caption} width={c.photo.width} height={c.photo.height} loading="lazy" />
-          <figcaption>{c.photo.caption}</figcaption>
-        </figure>
-      )}
+      {c.photo && <PanelPhoto photo={c.photo} />}
     </aside>
   );
 }
