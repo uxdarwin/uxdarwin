@@ -35,7 +35,7 @@ export const companies: Partial<Record<Brand, CompanyContext>> = {
     domain: "mercadolibre.com",
     photo: { src: "/images/companies/mercadolibre.webp", width: 960, height: 720, caption: "Bogotá · Technical Talk, Team On-site" },
     about:
-      "First Party, the business unit behind vendor and internal-team tools, within the 200+ person Seller Experience org. I worked with teams across 6 countries in Latin America.",
+      "Latin America’s largest e-commerce and fintech company, running its marketplace, Mercado Pago and its own logistics network across 18 countries. I worked with teams across 6 countries in Latin America.",
     roles: [
       { title: "UX Technical Lead", dates: "Mar 2024 – Feb 2026" },
       { title: "UX Lead", dates: "Oct 2022 – Mar 2024" },
