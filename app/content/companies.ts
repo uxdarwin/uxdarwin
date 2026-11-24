@@ -1,7 +1,7 @@
 import type { Brand } from "./profile";
 
 // Short context for the side panel that opens when a company is picked in Experience.
-// Every line comes from the CV (public/cv/Darwin-Alvarez-CV.pdf); nothing here goes beyond it.
+// Every line comes from the CV (public/cv/Darwin-Alvarez-CV.pdf) or from Darwin directly (Coverbase customers).
 export type CompanyContext = {
   where: string;
   about: string;
@@ -13,7 +13,7 @@ export type CompanyContext = {
 export const companies: Partial<Record<Brand, CompanyContext>> = {
   coverbase: {
     where: "San Francisco · Remote",
-    about: "AI procurement and vendor-risk platform. $20M Series A, with customers like Coinbase and Okta.",
+    about: "AI procurement and vendor-risk platform. $20M Series A, with customers like CVS Health, Cencora and BlackRock.",
     roles: [
       { title: "Founding Designer, full-time", dates: "Feb 2026 – Now" },
       { title: "Founding Designer, contractor", dates: "Nov 2024 – Jan 2026" },

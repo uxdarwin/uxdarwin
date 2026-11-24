@@ -5,7 +5,7 @@ import { setCompany } from "./filter";
 import styles from "./feed.module.css";
 
 /** Narrow side panel with short company context, shown while the feed is filtered to that company. */
-export function CompanyPanel({ brand, count }: { brand: Brand; count: number }) {
+export function CompanyPanel({ brand }: { brand: Brand }) {
   const c = companies[brand];
   const item = experience.find((e) => e.brand === brand);
   if (!c || !item) return null;
@@ -46,7 +46,7 @@ export function CompanyPanel({ brand, count }: { brand: Brand; count: number }) 
       </ul>
 
       <dl className={styles.cpFacts}>
-        {[...c.facts, { value: String(count), label: count === 1 ? "project here" : "projects here" }].map((f) => (
+        {c.facts.map((f) => (
           <div key={f.label}>
             <dt>{f.label}</dt>
             <dd>{f.value}</dd>

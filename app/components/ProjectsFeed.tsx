@@ -196,7 +196,7 @@ export function ProjectsFeed() {
           </div>
         ))}
       </div>
-      {company && <CompanyPanel brand={company} count={visible.length} />}
+      {company && <CompanyPanel brand={company} />}
       </div>
     </section>
   );
