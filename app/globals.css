@@ -6,7 +6,7 @@
   --button-solid: #1a1a1f; /* --bg + card surface + button surface, flattened */
   --border: rgb(255 255 255 / 0.08);
   --card-border: rgb(255 255 255 / 0.16);
-  /* Figma Noise effect: Multi, size 0.5, density 20%, opacity 12.5%. 256px tile at 0.5px per grain. */
+  /* Figma Noise effect: Multi, size 0.5, density 10%, opacity 8%. 256px tile at 0.5px per grain. */
   --noise: url("/images/noise.png") 0 0 / 128px 128px repeat;
   --text: #ffffff;
   --text-2: rgb(255 255 255 / 0.8);
