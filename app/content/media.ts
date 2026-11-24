@@ -30,7 +30,7 @@ export const media: MediaTile[] = [
     height: 720,
     kind: "wide",
     focus: "50% 40%",
-    caption: "Evening session at my desk, heads down on product UI",
+    caption: "Where magic happens",
   },
   {
     key: "desk",
