@@ -46,8 +46,9 @@
 .card,
 .roundBtn {
   background: var(--surface);
-  backdrop-filter: var(--glass-blur);
+  /* Prefixed first: the CSS minifier keeps only the last of the pair when it holds a var(). */
   -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
 }
 
 .trim {

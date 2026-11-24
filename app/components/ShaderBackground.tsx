@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { ChromaFlow, FlutedGlass, Shader, Swirl } from "shaders/react";
 
 // Darkest palette color (--bg) instead of pure black.
 const BG = "#0a0a0f";
+// Darwin wants a very subtle effect: 20% of the full-strength shader over --bg.
+const STRENGTH = 0.2;
 
 const REDUCE = "(prefers-reduced-motion: reduce)";
 
@@ -28,12 +30,42 @@ function useReducedMotion() {
 export function ShaderBackground() {
   const reduce = useReducedMotion();
   const [state, setState] = useState("loading");
+
+  // The shader follows the cursor through window "mousemove" events. Some interactions
+  // (pressing on controls, focus moves) can leave the browser sending only pointer
+  // events for a while, which froze the effect. Re-emit a mousemove whenever the
+  // pointer moves and no native mousemove came with it.
+  useEffect(() => {
+    if (reduce) return;
+    let lastMouse = 0;
+    let pending = 0;
+    const onMouse = (e: MouseEvent) => {
+      if (e.isTrusted) lastMouse = e.timeStamp;
+    };
+    const onPointer = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      const { clientX, clientY, timeStamp } = e;
+      cancelAnimationFrame(pending);
+      pending = requestAnimationFrame(() => {
+        if (lastMouse >= timeStamp) return; // the browser already sent one
+        window.dispatchEvent(new MouseEvent("mousemove", { clientX, clientY }));
+      });
+    };
+    window.addEventListener("mousemove", onMouse, true);
+    window.addEventListener("pointermove", onPointer, { passive: true });
+    return () => {
+      cancelAnimationFrame(pending);
+      window.removeEventListener("mousemove", onMouse, true);
+      window.removeEventListener("pointermove", onPointer);
+    };
+  }, [reduce]);
+
   if (reduce || state.startsWith("unavailable")) return null;
   return (
     <div
       aria-hidden="true"
       data-shader-state={state}
-      style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}
+      style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", opacity: STRENGTH }}
     >
       <Shader
         disableTelemetry
