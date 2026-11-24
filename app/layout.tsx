@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
-import { InkwellCursor } from "./components/InkwellCursor";
 import "./globals.css";
-import "./cursor.css";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -46,7 +44,6 @@ export default function RootLayout({
     >
       <body>
         {children}
-        <InkwellCursor />
       </body>
     </html>
   );
