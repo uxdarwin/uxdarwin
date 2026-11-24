@@ -28,8 +28,8 @@ export function ExperienceCard() {
       setCompany(next);
       return;
     }
+    // No scrolling: the page stays where it is and the feed re-packs in place.
     setCompany(next);
-    document.getElementById("projects-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // The "Show projects" tooltip follows the pointer along the row.

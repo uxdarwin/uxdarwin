@@ -1,6 +1,6 @@
 import { companies } from "../content/companies";
 import { experience, type Brand } from "../content/profile";
-import { BrandMark } from "./BrandMark";
+import { CoverbaseLogo, MercadoLibreColor, RedValleyLogo, ToptalLogo } from "./logos";
 import { setCompany } from "./filter";
 import styles from "./feed.module.css";
 
@@ -14,7 +14,7 @@ export function CompanyPanel({ brand }: { brand: Brand }) {
     <aside key={brand} className={styles.companyPanel} aria-label={`About my time at ${item.company}`}>
       <div className={styles.cpHead}>
         <span className={styles.cpMark} style={{ "--brand": `var(--brand-${brand})` } as React.CSSProperties}>
-          <BrandMark brand={brand} id={`cp-${brand}`} />
+          <ColorLogo brand={brand} />
         </span>
         <div className={styles.cpName}>
           <h2>{item.company}</h2>
@@ -61,4 +61,20 @@ export function CompanyPanel({ brand }: { brand: Brand }) {
       </ul>
     </aside>
   );
+}
+
+/** The brand-color logo, the same one the Experience row shows on hover. */
+function ColorLogo({ brand }: { brand: Brand }) {
+  switch (brand) {
+    case "coverbase":
+      return <CoverbaseLogo id="cp-coverbase" />;
+    case "mercadolibre":
+      return <MercadoLibreColor />;
+    case "toptal":
+      return <ToptalLogo />;
+    case "redvalley":
+      return <RedValleyLogo />;
+    default:
+      return null;
+  }
 }
