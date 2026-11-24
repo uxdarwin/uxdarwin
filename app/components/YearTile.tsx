@@ -90,12 +90,8 @@ export function YearTile({ year, order }: { year: number; order: number }) {
       // Place the digits exactly where the page draws them, so switching to the canvas never
       // shifts them: the span is trimmed to cap height and baseline, so its left edge is the
       // text origin and its bottom edge is the baseline.
-      // The bottom-edge tilt is lifted for the measurement, so a tilted tile still lines up.
-      const tilt = tile.style.transform;
-      tile.style.transform = "";
       const t = tile.getBoundingClientRect();
       const r = text.getBoundingClientRect();
-      tile.style.transform = tilt;
       ctx.textBaseline = "alphabetic";
       ctx.textAlign = "left";
       ctx.fillText(String(year), r.left - t.left, r.bottom - t.top);
@@ -256,7 +252,7 @@ export function YearTile({ year, order }: { year: number; order: number }) {
   }, [year]);
 
   return (
-    <div ref={tileRef} className={styles.yearTile} style={{ order }} role="heading" aria-level={2} data-fx="off" data-warp="">
+    <div ref={tileRef} className={styles.yearTile} style={{ order }} role="heading" aria-level={2} data-fx="off">
       <span ref={textRef}>{year}</span>
       <canvas ref={canvasRef} className={styles.yearFx} aria-hidden="true" />
     </div>
