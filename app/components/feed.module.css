@@ -1033,3 +1033,66 @@
     margin: 32px 0 0 var(--title-inset);
   }
 }
+
+/* ---------- Motion (Lottie) sheet ---------- */
+
+.motionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 16px;
+  background: #ecebe6;
+  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+  overflow: hidden;
+}
+
+.motionCell {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.motionPlayer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Square icons sit at 70% of the cell height so they read at the same weight as the scenes. */
+.motionCell[data-icon] .motionPlayer {
+  inset: 15% 0;
+}
+
+.motionGrid[data-size="page"] {
+  max-width: 860px;
+  margin: 72px 0;
+  rotate: -0.5deg;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 20px;
+}
+
+.motionGrid[data-size="page"] .motionCell {
+  border-radius: 14px;
+}
+
+.motionLabel {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: rgb(0 0 0 / 0.5);
+}
+
+@media (max-width: 559px) {
+  .motionGrid[data-size="page"] {
+    rotate: none;
+    grid-template-columns: 1fr;
+  }
+}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { projects, type Project } from "../content/projects";
 import { CompanyPanel } from "./CompanyPanel";
+import { MotionGrid } from "./MotionGrid";
 import { ProjectMeta } from "./ProjectMeta";
 import { seeded, useCanDrag } from "./drag";
 import { setCompany, useCompany } from "./filter";
@@ -29,7 +30,7 @@ type Box = { x: number; y: number; w: number; h: number };
 /** Height before the browser has measured: header + description lines + media. */
 function estimate(p: Project, w: number) {
   const lines = Math.max(1, Math.ceil((p.description.length * 8.2) / (w - 32)));
-  const ratio = p.image ? p.image.height / p.image.width : 170 / 391;
+  const ratio = p.motion ? 0.5 + 8 / w : p.image ? p.image.height / p.image.width : 170 / 391;
   return 16 + 12 + 12 + lines * 19.2 + 16 + (w - 8) * ratio + 5;
 }
 
@@ -290,7 +291,9 @@ function ProjectCard({
         <p className={styles.description}>{p.description}</p>
       </div>
       <div className={styles.media}>
-        {p.image ? (
+        {p.motion ? (
+          <MotionGrid clips={p.motion} />
+        ) : p.image ? (
           <img
             className={styles.image}
             src={p.image.src}

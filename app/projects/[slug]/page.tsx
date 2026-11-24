@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { MotionGrid } from "../../components/MotionGrid";
 import { ImageCluster } from "../../components/ImageCluster";
 import { ProjectMeta } from "../../components/ProjectMeta";
 import { Shell } from "../../components/Shell";
@@ -42,6 +43,7 @@ export default async function ProjectPage({ params }: Params) {
           <h1 className={styles.headline}>{p.description}</h1>
           {p.story.map((b, i) => {
             if (b.type === "images") return <ImageCluster key={i} images={b.items} variant={cluster++} seed={`${p.slug}-${i}`} />;
+            if (b.type === "motion") return p.motion ? <MotionGrid key={i} clips={p.motion} size="page" /> : null;
             if (b.type === "h") return <h2 key={i} className={styles.sectionTitle}>{b.text}</h2>;
             return <p key={i} className={styles.paragraph}>{b.text}</p>;
           })}

@@ -9,7 +9,11 @@ export type ProjectImage = { src: string; alt: string; width: number; height: nu
 export type Block =
   | { type: "p"; text: string }
   | { type: "h"; text: string }
-  | { type: "images"; items: ProjectImage[] };
+  | { type: "images"; items: ProjectImage[] }
+  | { type: "motion" };
+
+/** A Lottie animation served from public/motion. */
+export type MotionClip = { src: string; label: string; width: number; height: number };
 
 export type Project = {
   slug: string;
@@ -25,6 +29,8 @@ export type Project = {
   teaser: string;
   /** Feed image. Projects without one get a typographic cover until assets are gathered. */
   image?: ProjectImage;
+  /** Lottie animations: played in the card instead of an image, and by a "motion" block. */
+  motion?: MotionClip[];
   story: Block[];
 };
 
@@ -367,6 +373,28 @@ export const projects: Project[] = [
   },
 
   // ---------- 2024 ----------
+  {
+    // Employer and year are a guess from the files (yellow palette, bills, Spanish names): confirm with Darwin.
+    slug: "motion",
+    year: 2024,
+    employer: ML,
+    client: "Motion",
+    description: "Lottie animations for product moments: a greeting, a team, a bill and a bill with a warning.",
+    teaser: "Four looping animations, the largest under 125 KB",
+    motion: [
+      { src: "/motion/saludo.json", label: "Greeting", width: 320, height: 160 },
+      { src: "/motion/team.json", label: "Team", width: 320, height: 160 },
+      { src: "/motion/bill.json", label: "Bill", width: 100, height: 100 },
+      { src: "/motion/bill-warning.json", label: "Bill warning", width: 100, height: 100 },
+    ],
+    story: [
+      { type: "motion" },
+      {
+        type: "p",
+        text: "Four Lottie animations: two spot illustrations, a greeting and a team, and two icons, a bill and a bill with a warning. Each one loops and is light enough to load like an image: the icons are 8 and 14 KB, the illustrations 109 and 123 KB.",
+      },
+    ],
+  },
   {
     slug: "statements",
     year: 2024,
