@@ -71,6 +71,24 @@
   animation: tileIn 520ms var(--ease-out) backwards;
 }
 
+.yearTile {
+  position: relative;
+}
+
+/* WebGL layer for the hover ripple (YearTile); shown only while it runs. */
+.yearFx {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.yearTile[data-fx="on"] .yearFx {
+  opacity: 1;
+}
+
 .yearTile > span {
   font-family: var(--font-pixel), var(--font-mono), monospace;
   font-size: min(160px, 32cqi);

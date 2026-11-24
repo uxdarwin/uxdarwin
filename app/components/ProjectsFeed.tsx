@@ -7,6 +7,7 @@ import { CompanyPanel } from "./CompanyPanel";
 import { MotionGrid } from "./MotionGrid";
 import { MetaLogo } from "./ProjectMeta";
 import { useCompany } from "./filter";
+import { YearTile } from "./YearTile";
 import styles from "./feed.module.css";
 
 // Grid from Figma 75:12973: three columns (two beside the company panel or on tablets, one on
@@ -82,9 +83,7 @@ export function ProjectsFeed() {
               {col.map(({ it, i }) => (
                 <Fragment key={keyOf(it)}>
                   {it.kind === "year" ? (
-                    <div className={styles.yearTile} style={{ order: i }} role="heading" aria-level={2}>
-                      <span>{it.year}</span>
-                    </div>
+                    <YearTile year={it.year} order={i} />
                   ) : (
                     <ProjectCard project={it.project} order={i} />
                   )}
