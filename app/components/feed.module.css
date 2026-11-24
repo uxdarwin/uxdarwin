@@ -825,18 +825,18 @@
 }
 
 .feedBody[data-panel] {
-  grid-template-columns: minmax(0, 1fr) 272px;
+  grid-template-columns: minmax(0, 1fr) 320px; /* same width as the left column */
   column-gap: 40px;
 }
 
+/* Layout from Figma 74:11110: 24px inset, full-bleed dividers between sections. */
 .companyPanel {
   position: sticky;
   top: 24px;
   margin-top: 40px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
+  padding: 23.5px 23.5px 24px;
   border: 0.5px solid var(--card-border);
   border-radius: var(--radius-card);
   background: var(--noise);
@@ -871,18 +871,19 @@
 
 .cpHead {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
 }
 
 .cpMark {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   flex: none;
   border-radius: 12px;
-  background: rgb(var(--brand) / 0.16);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  background: rgb(var(--brand) / 0.24);
 }
 
 .cpMark > svg {
@@ -894,19 +895,30 @@
 .cpName {
   flex: 1;
   min-width: 0;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .cpName h2 {
   font-family: var(--font-display), Georgia, serif;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
-  line-height: 24px;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
 }
 
 .cpName p {
+  font-size: 14px;
+  line-height: 1;
+  color: var(--text-3);
+  text-box: trim-both cap alphabetic;
+}
+
+.cpName .cpDomain {
   font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  line-height: 16px;
+  font-size: 10px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: var(--text-3);
@@ -915,10 +927,9 @@
 .cpClose {
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   flex: none;
-  align-self: flex-start;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -934,87 +945,89 @@
 }
 
 .cpClose svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 
 .cpAbout {
+  margin-top: 32px;
+  padding-bottom: 24px;
   font-size: 14px;
-  line-height: 21px;
-  color: var(--text-2);
+  font-weight: 300;
+  line-height: 18px;
+  color: rgb(255 255 255 / 0.8);
 }
 
 .cpRoles {
   list-style: none;
-  padding-left: 0;
+  margin: 0 -23.5px;
+  padding: 24px 23.5px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding-top: 16px;
-  border-top: 0.5px solid var(--border);
+  gap: 18px;
+  border-top: 0.5px solid var(--card-border);
+  border-bottom: 0.5px solid var(--card-border);
 }
 
 .cpRoles li {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 6px;
   font-size: 14px;
+  font-weight: 300;
   line-height: 18px;
+  color: var(--text);
 }
 
 .cpDates {
   font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  line-height: 16px;
+  font-size: 10px;
+  line-height: 14px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: var(--text-3);
 }
 
-.cpFacts {
+.cpPoints {
+  list-style: none;
+  padding: 24px 0 0;
   display: flex;
   flex-direction: column;
-}
-
-.cpFacts > div {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  align-items: baseline;
-  gap: 10px;
-  padding: 8px 0;
-  border-top: 0.5px solid var(--border);
-}
-
-.cpFacts > div:last-child {
-  border-bottom: 0.5px solid var(--border);
-}
-
-.cpFacts dd {
-  min-width: 76px;
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 22px;
-  line-height: 28px;
-}
-
-.cpFacts dt {
-  font-size: 13px;
+  gap: 15px;
+  font-size: 12px;
+  font-weight: 300;
   line-height: 18px;
   color: var(--text-3);
 }
 
-.cpPoints {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-left: 16px;
-  font-size: 13px;
-  line-height: 19px;
-  color: var(--text-2);
+/* Team photo: full width, its own aspect ratio (never cropped), shown in grayscale
+   like the Figma's luminosity blend, with the caption over a bottom fade. */
+.cpPhoto {
+  position: relative;
+  margin: 24px 0 0;
+  border: 0.5px solid var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 -10px 8px rgb(0 0 0 / 0.4);
 }
 
-.cpPoints li::marker {
-  color: var(--text-3);
+.cpPhoto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: grayscale(1);
+}
+
+.cpPhoto figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 24px 12px 12px;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0), rgb(0 0 0 / 0.8) 50%);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 14px;
+  line-height: 1;
+  color: #fff;
+  text-box: trim-both cap alphabetic;
 }
 
 @media (prefers-reduced-motion: reduce) {

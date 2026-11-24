@@ -19,6 +19,7 @@ export function CompanyPanel({ brand }: { brand: Brand }) {
         <div className={styles.cpName}>
           <h2>{item.company}</h2>
           <p>{c.where}</p>
+          {c.domain && <p className={styles.cpDomain}>{c.domain}</p>}
         </div>
         <button
           type="button"
@@ -45,20 +46,19 @@ export function CompanyPanel({ brand }: { brand: Brand }) {
         ))}
       </ul>
 
-      <dl className={styles.cpFacts}>
-        {c.facts.map((f) => (
-          <div key={f.label}>
-            <dt>{f.label}</dt>
-            <dd>{f.value}</dd>
-          </div>
-        ))}
-      </dl>
-
       <ul className={styles.cpPoints}>
         {c.points.map((p) => (
           <li key={p}>{p}</li>
         ))}
       </ul>
+
+      {c.photo && (
+        <figure className={styles.cpPhoto}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={c.photo.src} alt={c.photo.caption} width={c.photo.width} height={c.photo.height} loading="lazy" />
+          <figcaption>{c.photo.caption}</figcaption>
+        </figure>
+      )}
     </aside>
   );
 }
