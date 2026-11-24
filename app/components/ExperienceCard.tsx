@@ -80,7 +80,23 @@ export function ExperienceCard() {
                 <span className={styles.rowTitle}>{item.company}</span>
                 <span className={styles.rowSub}>{item.role}</span>
               </span>
-              <TenureLabel tenure={item.tenure} className={styles.rowMeta} />
+              {company === item.brand ? (
+                <span
+                  className={styles.rowClear}
+                  aria-hidden="true"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggle(item.brand);
+                    hideTip();
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7 7l10 10M17 7 7 17" stroke="currentColor" strokeWidth="1.25" />
+                  </svg>
+                </span>
+              ) : (
+                <TenureLabel tenure={item.tenure} className={styles.rowMeta} />
+              )}
             </li>
           ))}
         </ul>

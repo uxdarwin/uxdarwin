@@ -1,18 +1,24 @@
+"use client";
+
+import { useRef } from "react";
 import { companies } from "../content/companies";
 import { experience, type Brand } from "../content/profile";
 import { CoverbaseLogo, MercadoLibreColor, RedValleyLogo, ToptalLogo } from "./logos";
 import { setCompany } from "./filter";
 import { PanelPhoto } from "./PanelPhoto";
+import { useStickyFit } from "./sticky";
 import styles from "./feed.module.css";
 
 /** Narrow side panel with short company context, shown while the feed is filtered to that company. */
 export function CompanyPanel({ brand }: { brand: Brand }) {
+  const ref = useRef<HTMLElement>(null);
+  useStickyFit(ref);
   const c = companies[brand];
   const item = experience.find((e) => e.brand === brand);
   if (!c || !item) return null;
 
   return (
-    <aside key={brand} className={styles.companyPanel} aria-label={`About my time at ${item.company}`}>
+    <aside ref={ref} key={brand} className={styles.companyPanel} aria-label={`About my time at ${item.company}`}>
       <div className={styles.cpHead}>
         <span className={styles.cpMark} style={{ "--brand": `var(--brand-${brand})` } as React.CSSProperties}>
           <ColorLogo brand={brand} />

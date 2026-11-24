@@ -6,7 +6,7 @@ import { CoverbaseLogo, MercadoLibreMono, RainforestLogo, RedValleyLogo, ToptalL
 import styles from "./feed.module.css";
 
 /** Employer logo in the muted 60% white of the meta line. */
-function MetaLogo({ brand, id }: { brand: Brand; id: string }) {
+export function MetaLogo({ brand, id }: { brand: Brand; id: string }) {
   switch (brand) {
     case "mercadolibre":
       return <MercadoLibreMono className={styles.logo} />;

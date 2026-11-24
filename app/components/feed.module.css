@@ -1,20 +1,18 @@
-/* Projects feed (center column). Measurements from Figma frame 34:1934: cards are 400px wide,
-   tilted and staggered over big mono year numbers. */
+/* Projects feed (center column). Grid from Figma 75:12973: three columns 2px apart, frosted
+   cards with the cover inset 24px, the year and employer centered below, then the title. */
 
 .feed,
 .page {
   --title-inset: 52px;
+  --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .feed {
-  --card-w: 400px;
-  --col-gap: 48px;
-  --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
-  padding: 30px 0 120px;
+  padding: 0 0 120px;
 }
 
-/* 64px between the left panel and the page title (Figma 34:1934 and 43:9981): the shell gap is 12. */
+/* Project pages keep the "Projects" back link (Figma 43:9981). */
 .pageHead {
   position: relative;
   z-index: 2;
@@ -30,7 +28,6 @@
   font-weight: 400;
   line-height: 1;
   text-box: trim-both cap alphabetic;
-  margin-left: 0;
   position: relative;
   z-index: 2;
 }
@@ -44,181 +41,118 @@
   white-space: nowrap;
 }
 
-/* ---------- Pile ---------- */
+/* ---------- Grid ---------- */
 
-/* Filter chip beside the title: "Coverbase · 12 projects ×". */
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: 16px;
-  /* Taller than the title: negative block margins keep it from pushing "Projects" down. */
-  margin-block: -12px;
-  padding: 6px 8px 6px 12px;
-  border: 0.5px solid var(--card-border);
-  border-radius: 999px;
-  background: rgb(var(--brand-coverbase) / 0.28);
-  color: var(--text);
-  font: inherit;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10px;
-  line-height: 12px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  cursor: pointer;
-  animation: chipIn 420ms var(--bounce) both;
-  transition: background-color 160ms var(--ease-out);
+/* ProjectsFeed sets --cols and, for the parallax, the height of the shortest column. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: var(--gap);
+  align-items: start;
 }
 
-.chip:hover {
-  background: var(--blue-press);
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  min-width: 0;
+  will-change: transform;
 }
 
-.chip svg {
-  width: 14px;
-  height: 14px;
+/* Blue year tile in Geist Pixel (Figma 75:12583: 240px tall at 360 wide, 160px digits). */
+.yearTile {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 2;
+  border-radius: 19px;
+  background: #001ba5;
+  overflow: hidden;
+  container-type: inline-size;
+  animation: tileIn 520ms var(--ease-out) backwards;
 }
 
-@keyframes chipIn {
-  from {
-    opacity: 0;
-    transform: translateX(-8px) scale(0.9);
-  }
-}
-
-/* Cards are placed absolutely by ProjectsFeed (seeded skyline pack); this box holds them. */
-.pile {
-  position: relative;
-  margin: 40px 0 0 var(--title-inset);
-}
-
-.yearGroup {
-  display: contents;
-}
-
-/* Big year sits behind the cards, top right, partly covered. Black on near-black with a faint
-   white glow, like the Figma text (fill #000, 2% white shadow at 24px). */
-.yearNumber {
-  position: absolute;
-  right: 0;
-  z-index: 0;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 200px;
+.yearTile > span {
+  font-family: var(--font-pixel), var(--font-mono), monospace;
+  font-size: min(160px, 32cqi);
   line-height: 1;
-  letter-spacing: 0.03em;
+  color: #2448ff;
   text-box: trim-both cap alphabetic;
-  color: #000;
-  text-shadow: 0 0 24px rgb(255 255 255 / 0.02);
   user-select: none;
-  pointer-events: none;
-}
-
-.pile[data-ready] .yearNumber {
-  transition:
-    top 700ms var(--ease-out),
-    opacity 320ms var(--ease-out);
-}
-
-.yearNumber[data-hidden] {
-  opacity: 0;
-}
-
-/* Re-packing after a filter: cards glide to their new spots and sizes; the others fade out. */
-.pile[data-ready] .card {
-  transition:
-    transform 520ms var(--bounce),
-    scale 420ms var(--bounce),
-    background-color 200ms var(--ease-out),
-    left 700ms var(--ease-out),
-    top 700ms var(--ease-out),
-    width 700ms var(--ease-out),
-    opacity 320ms var(--ease-out),
-    display 320ms allow-discrete;
-}
-
-.pile[data-ready] .card[data-lifted] {
-  transition:
-    background-color 200ms var(--ease-out),
-    scale 200ms var(--ease-out);
-}
-
-.card[data-hidden] {
-  display: none;
-  opacity: 0;
-  scale: 0.92;
-}
-
-@starting-style {
-  .card:not([data-hidden]) {
-    opacity: 0;
-    scale: 0.92;
-  }
 }
 
 /* ---------- Card ---------- */
 
 .card {
-  position: absolute;
+  position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 24px 32px;
+  border-radius: 19px;
   color: inherit;
   text-decoration: none;
-  -webkit-user-drag: none;
-  flex-direction: column;
-  gap: 16px;
-  padding: 16px 4px 4px;
-  border: 0.5px solid var(--card-border);
-  border-radius: var(--radius-card);
   background: var(--noise);
-  background-color: rgb(0 0 0 / 0.8);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  transform: translate(var(--dx), var(--dy)) rotate(var(--tilt));
-  transition:
-    transform 520ms var(--bounce),
-    scale 420ms var(--bounce),
-    background-color 200ms var(--ease-out);
+  background-color: rgb(255 255 255 / 0.04);
+  /* Prefixed first: the CSS minifier keeps only the last of the pair when it holds a var(). */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   outline: none;
-  touch-action: auto;
+  transition: background-color 220ms var(--ease-out);
+  animation: tileIn 520ms var(--ease-out) backwards;
 }
 
-.card[data-draggable] {
-  cursor: grab;
-  user-select: none;
-}
-
-.card[data-lifted] {
-  cursor: grabbing;
-  transition: background-color 200ms var(--ease-out);
-  transform: translate(var(--dx), var(--dy)) rotate(calc(var(--tilt) + 1deg))
-    scale(1.02);
+@keyframes tileIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }
 
 @media (hover: hover) {
-  /* Grow a little on hover (the scale property composes with the tilt transform). */
   .card:hover {
-    scale: 1.03;
-    background-color: rgb(255 255 255 / 0.16);
-    transform: translate(var(--dx), var(--dy)) rotate(calc(var(--tilt) + 1deg));
-  }
-
-  .card[data-lifted]:hover {
-    transform: translate(var(--dx), var(--dy)) rotate(calc(var(--tilt) + 1deg))
-      scale(1.02);
+    background-color: rgb(255 255 255 / 0.1);
   }
 }
 
 .card:focus-visible {
-  background-color: rgb(255 255 255 / 0.16);
+  background-color: rgb(255 255 255 / 0.1);
   box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px rgb(255 255 255 / 0.6);
 }
 
-.head {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 0 12px;
+.thumb {
+  position: relative;
+  align-self: stretch;
 }
 
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-box: trim-both cap alphabetic;
+}
+
+.cardTitle {
+  max-width: 272px;
+  margin-top: 13px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text);
+  text-wrap: balance;
+  text-box: trim-both cap alphabetic;
+}
+
+/* Shared with the meta line on project pages. */
 .meta {
   display: flex;
   flex-wrap: wrap;
@@ -257,16 +191,13 @@
 }
 
 .metaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
   color: inherit;
   text-decoration: underline;
   text-decoration-color: var(--underline);
   text-underline-offset: 3px;
-}
-
-.metaLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
   cursor: pointer;
 }
 
@@ -279,29 +210,22 @@
   color: var(--text);
 }
 
-.description {
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 16px;
-  line-height: 1.2;
-  color: var(--text);
-  text-wrap: pretty;
-}
-
-/* ---------- Image + teaser ---------- */
-
-.media {
-  position: relative;
-}
+/* ---------- Cover + teaser ---------- */
 
 .image {
   display: block;
   width: 100%;
   height: auto; /* natural height: never cropped */
-  border-radius: 16px;
+  border-radius: 12px;
   outline: 0.5px solid rgb(255 255 255 / 0.08);
   outline-offset: -0.5px;
   box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
   -webkit-user-drag: none;
+}
+
+/* Sub-grid covers (Motion) sit in the same 12px-radius frame, up to 2×2. */
+.thumb > .motionGrid {
+  border-radius: 12px;
 }
 
 /* Typographic cover for projects whose images are still being gathered. */
@@ -310,9 +234,9 @@
   position: relative;
   display: flex;
   align-items: flex-start;
-  aspect-ratio: 391 / 170;
-  padding: 20px 20px;
-  border-radius: 16px;
+  aspect-ratio: 312 / 200;
+  padding: 20px;
+  border-radius: 12px;
   overflow: hidden;
   background:
     var(--noise),
@@ -341,6 +265,7 @@
 .cover[data-brand="rainforest"] { --tint: var(--brand-rainforest); }
 .cover[data-brand="none"] { --tint: 120 120 140; }
 
+/* Blue label over the bottom of the cover, bouncing in on hover. */
 .teaser {
   position: absolute;
   left: 8px;
@@ -358,7 +283,7 @@
   font-weight: 300;
   color: var(--text);
   opacity: 0;
-  transform: translateY(10px) scale(0.96);
+  transform: translateY(16px) scale(0.92);
   transform-origin: 50% 100%;
   transition:
     opacity 160ms var(--ease-out),
@@ -378,51 +303,45 @@
   margin: 8px;
 }
 
-.card:focus-visible .teaser,
-.card[data-lifted] .teaser {
+.card:focus-visible .teaser {
   opacity: 1;
   transform: none;
-  transition:
-    opacity 200ms var(--ease-out) 40ms,
-    transform 520ms var(--bounce) 40ms;
 }
 
 @media (hover: hover) {
   .card:hover .teaser {
     opacity: 1;
     transform: none;
-    transition:
-      opacity 200ms var(--ease-out) 40ms,
-      transform 520ms var(--bounce) 40ms;
+    animation: teaserBounce 620ms var(--ease-out) 40ms backwards;
+    transition: opacity 180ms var(--ease-out) 40ms;
   }
 }
 
-/* Touch screens have no hover, so the teaser is always shown. */
-@media (hover: none) {
-  .teaser {
-    opacity: 1;
+@keyframes teaserBounce {
+  0% {
+    transform: translateY(16px) scale(0.92);
+  }
+  45% {
+    transform: translateY(-6px) scale(1.02);
+  }
+  70% {
+    transform: translateY(2px) scale(0.995);
+  }
+  100% {
     transform: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .card,
+  .yearTile,
   .teaser {
+    animation: none !important;
     transition-duration: 0ms !important;
   }
 }
 
 /* ---------- Narrower screens ---------- */
-
-@media (max-width: 1279px) {
-  .feed {
-    --col-gap: 32px;
-  }
-
-  .yearNumber {
-    font-size: 160px;
-  }
-}
 
 @media (max-width: 1023px) {
   .feed,
@@ -431,54 +350,32 @@
   }
 
   .feed {
-    padding-top: 20px;
+    padding-top: 0;
   }
 }
 
+/* Phones: one column in reading order (the order styles hold the sequence before hydration). */
 @media (max-width: 639px) {
   .feed {
     padding-bottom: 48px;
   }
 
-  /* Phones: one column in reading order, years inline. */
-  .pile {
-    height: auto !important;
+  .grid {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    margin-top: 24px;
+    align-items: stretch;
+    gap: var(--gap);
   }
 
-  .yearGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  .column {
+    display: contents;
   }
 
-  .yearNumber {
+  /* No hover on touch: the cover stays clear and the title carries the card. */
+  .teaser {
     display: none;
   }
-
-  .yearGroup::before {
-    content: attr(aria-label);
-    margin: 24px 0 -8px;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 96px;
-    line-height: 1;
-    letter-spacing: 0.03em;
-    color: #000;
-    text-shadow: 0 0 24px rgb(255 255 255 / 0.02);
-  }
-
-  .card {
-    position: relative;
-    left: auto !important;
-    top: auto !important;
-    width: auto !important;
-    transform: rotate(calc(var(--tilt) / 2));
-  }
 }
-
 
 /* ---------- Project page (Figma 43:9981) ---------- */
 
@@ -826,14 +723,14 @@
 
 .feedBody[data-panel] {
   grid-template-columns: minmax(0, 1fr) 320px; /* same width as the left column */
-  column-gap: 40px;
+  column-gap: var(--gap);
 }
 
 /* Layout from Figma 74:11110: 24px inset, full-bleed dividers between sections. */
 .companyPanel {
   position: sticky;
-  top: 24px;
-  margin-top: 40px;
+  top: var(--sticky-top, var(--gap));
+  margin-top: 0;
   display: flex;
   flex-direction: column;
   padding: 23.5px 23.5px 24px;
@@ -1072,7 +969,7 @@
     position: relative;
     top: auto;
     order: -1;
-    margin: 32px 0 0 var(--title-inset);
+    margin: 0 0 var(--gap);
   }
 }
 
