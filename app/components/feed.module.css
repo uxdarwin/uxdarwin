@@ -832,11 +832,22 @@
 }
 
 .cpName .cpDomain {
+  align-self: flex-start;
   font-family: var(--font-mono), monospace;
   font-size: 10px;
+  line-height: 1;
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: var(--text-3);
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+  text-underline-offset: 3px;
+  text-box: trim-both cap alphabetic;
+  transition: color 160ms var(--ease-out);
+}
+
+.cpName .cpDomain:hover {
+  color: var(--text);
 }
 
 .cpClose {

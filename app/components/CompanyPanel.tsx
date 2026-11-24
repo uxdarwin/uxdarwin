@@ -26,7 +26,11 @@ export function CompanyPanel({ brand }: { brand: Brand }) {
         <div className={styles.cpName}>
           <h2>{item.company}</h2>
           <p>{c.where}</p>
-          {c.domain && <p className={styles.cpDomain}>{c.domain}</p>}
+          {c.domain && (
+            <a className={styles.cpDomain} href={`https://${c.domain}`} target="_blank" rel="noreferrer">
+              {c.domain}
+            </a>
+          )}
         </div>
         <button
           type="button"
