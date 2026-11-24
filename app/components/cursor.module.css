@@ -1,0 +1,70 @@
+/* Hide the system cursor only when the custom one is running (fine pointers). */
+.hideNative,
+.hideNative * {
+  cursor: none !important;
+}
+
+/* The CV dialog sits in the browser's top layer, above everything: use the system cursor there. */
+.hideNative:has(dialog[open]),
+.hideNative:has(dialog[open]) * {
+  cursor: auto !important;
+}
+
+.hideNative:has(dialog[open]) .cursor {
+  display: none;
+}
+
+.cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.cursor[data-visible="true"] {
+  opacity: 1;
+}
+
+.ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  will-change: transform;
+}
+
+.ring svg {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  overflow: visible;
+  transform: scale(1);
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * 14ms);
+}
+
+/* Over something clickable, the rings fan out like a ripple, wider toward the edge. */
+.cursor[data-hover="true"] .ring svg {
+  transform: scale(calc(1 + var(--i) * 0.16));
+}
+
+.cursor[data-hover="true"] .ring:first-child svg {
+  transform: scale(0);
+}
+
+/* Press: everything pulls in quickly. */
+.cursor[data-press="true"] .ring svg {
+  transform: scale(calc(0.7 + var(--i) * 0.05));
+  transition-duration: 120ms;
+  transition-delay: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring svg {
+    transition: none;
+  }
+}
