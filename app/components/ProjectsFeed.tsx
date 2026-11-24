@@ -172,12 +172,41 @@ function CardText({ project: p }: { project: Project }) {
 
 const tiltOf = (key: string) => ({ "--tilt": `${seeded(key).toFixed(2)}deg` }) as React.CSSProperties;
 
+// Card cover video: fitted whole inside the cover box, plays only on screen and never with reduced motion.
+function CoverVideo({ video, label }: { video: NonNullable<Project["coverVideo"]>; label: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()));
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <video
+      ref={ref}
+      className={styles.coverVideo}
+      src={video.src}
+      poster={video.poster}
+      width={video.width}
+      height={video.height}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      aria-label={label}
+    />
+  );
+}
+
 function ProjectCard({ project: p }: { project: Project }) {
   return (
     <Link href={`/projects/${p.slug}`} className={styles.card} style={tiltOf(p.slug)} data-reveal="" data-sound-hover="" data-cuelume-tap="">
       <div className={styles.thumb}>
         {p.motion ? (
           <MotionGrid clips={p.motion.slice(0, 4)} />
+        ) : p.coverVideo ? (
+          <CoverVideo video={p.coverVideo} label={p.image?.alt ?? p.client} />
         ) : p.image ? (
           <img
             className={styles.image}
