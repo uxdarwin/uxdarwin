@@ -48,7 +48,6 @@ export function HighlightsCard() {
                 type="button"
                 className={styles.row}
                 data-active={isActive}
-                data-cursor-plain=""
                 aria-expanded={floating ? undefined : isActive}
                 aria-describedby={isActive ? `hl-preview-${i}` : undefined}
                 style={{ "--brand": `var(--brand-${h.brand})` } as React.CSSProperties}
