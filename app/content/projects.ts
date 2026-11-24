@@ -102,6 +102,10 @@ const SWIPPR_COVER = img("swippr-cover.webp", "Swippr website: Find your next jo
 const NOMICOL_COVER = img("nomicol-cover.webp", "Nomicol payroll web app: period summary with payroll status and the employee list, plus the mobile sign-up", 1600, 1000);
 const DOCUCOL_COVER = img("docucol-cover.webp", "Docucol: the assigned documents list beside an illustration of a person signing", 1600, 1000);
 const SWEAT_440_COVER = img("sweat-440-cover.webp", "Sweat 440: station screens for group classes and the trainer video console", 1600, 1000);
+const CHARMED_COVER = img("charmed-cover.webp", "Charmed HUB: the texture generator on a 3D potion bottle, between the folder and geometry views", 1600, 1000);
+const ATLAS_COVER = img("atlas-cover.webp", "Atlas leads capture: Explore our 3D navigator tools, with a 3D capture of a garage", 1600, 1000);
+const AUGMEND_COVER = img("augmend-cover.webp", "Augmend workspace: an incident summary with its hypothesis beside shared windows and a CloudWatch log", 1600, 1000);
+const COOL_EARTH_COVER = img("cool-earth-cover.webp", "Cool Club by Cool Earth: badges and certificates on the home, beside the Learn section and the leaderboard", 1600, 1000);
 const ML = { label: "Mercado Libre", brand: "mercadolibre" } as const;
 const CB = { label: "Coverbase", brand: "coverbase" } as const;
 const TT = { label: "Toptal", brand: "toptal" } as const;
@@ -513,7 +517,9 @@ export const projects: Project[] = [
     client: "Cool Earth",
     description: "A gamified donor experience that won Toptal's global hackathon.",
     teaser: "Leading design for the winning team, from design sprint to UI library",
+    image: COOL_EARTH_COVER,
     story: [
+      { type: "images", items: [COOL_EARTH_COVER] },
       {
         type: "p",
         text: "I led design for Cool Earth's gamified donor experience in Toptal's global hackathon in Q1 2024, which our team won. The work runs from a design sprint board through explorations to a published Cool Earth UI library.",
@@ -545,7 +551,9 @@ export const projects: Project[] = [
     client: "Charmed",
     description: "A suite of AI-assisted creation tools for game creators.",
     teaser: "Hub, texture generator, 3D designer and animator under one design system",
+    image: CHARMED_COVER,
     story: [
+      { type: "images", items: [CHARMED_COVER] },
       { type: "p", text: TT_NOTE },
       {
         type: "p",
@@ -560,7 +568,9 @@ export const projects: Project[] = [
     client: "Atlas",
     description: "One product organized around three roles: contractors, clients and admins.",
     teaser: "Designing one product for three kinds of users",
+    image: ATLAS_COVER,
     story: [
+      { type: "images", items: [ATLAS_COVER] },
       { type: "p", text: TT_NOTE },
       {
         type: "p",
@@ -575,7 +585,9 @@ export const projects: Project[] = [
     client: "Augmend",
     description: "Product, design system and landing page for Augmend.",
     teaser: "From a demo prototype to brand, pitch and landing page",
+    image: AUGMEND_COVER,
     story: [
+      { type: "images", items: [AUGMEND_COVER] },
       { type: "p", text: TT_NOTE },
       {
         type: "p",
