@@ -86,6 +86,7 @@
 
 .dmark {
   position: relative;
+  z-index: 1; /* the portrait sits on top of the start of "Darwin Design" */
   width: 73.4px;
   height: 56px;
   flex: none;
@@ -146,7 +147,7 @@
 }
 
 .wordmarkSub {
-  color: var(--text-3);
+  color: #2448ff;
 }
 
 .social {
