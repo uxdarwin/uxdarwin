@@ -84,6 +84,24 @@ const ABACUS = img(
   556,
 );
 
+const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: a renewal timeline of contracts with notice deadlines, framed by a contract detail and a reviews view", 1600, 1000);
+const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River Vendor Registry Portal: a search for a meeting-transcription tool with approved, conditional and in-review results", 1600, 1000);
+const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: discovered SaaS apps, posture score and a list of inspections with their status", 1600, 1000);
+const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
+const COVERBASE_DESIGN_SYSTEM_COVER = img("coverbase-design-system-cover.webp", "Coverbase UI Library 2026: the library cover beside color ramps and the button documentation", 1600, 1000);
+const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
+const RAINFOREST_KIDS_COVER = img("rainforest-kids-cover.webp", "Rainforest Foundation kids course: a sloth guide asks a fill-in-the-blank question about greenhouse gases", 1600, 1000);
+const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment results: score, controls evaluated and an analysis summary with strengths, weaknesses and actions", 1600, 1000);
+const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
+const ALLTHENTICATE_COVER = img("allthenticate-cover.webp", "Allthenticate app: Touch ID sign-in and a list of doors and devices to unlock, with brand iconography and patterns", 1600, 1000);
+const BFF_COVER = img("bff-cover.webp", "BFF app: talent lists, service menus and booking flows on a grid of phones", 1600, 1000);
+const CHECK_MIG_COVER = img("check-mig-cover.webp", "Check Mig: migration registration flow screens, a travel record and the design system", 1600, 1000);
+const COVERBASE_WEBSITE_COVER = img("coverbase-website-cover.webp", "Coverbase website: a customer video hero with the headline Agentic third-party risk and security", 1600, 1000);
+const SPICE_AI_WEBSITE_COVER = img("spice-ai-website-cover.webp", "Spice AI website: the hero, The Data and AI Stack in One Engine, beside a SQL playground", 1600, 1000);
+const SWIPPR_COVER = img("swippr-cover.webp", "Swippr website: Find your next job for free, with the free plan's features", 1600, 1000);
+const NOMICOL_COVER = img("nomicol-cover.webp", "Nomicol payroll web app: period summary with payroll status and the employee list, plus the mobile sign-up", 1600, 1000);
+const DOCUCOL_COVER = img("docucol-cover.webp", "Docucol: the assigned documents list beside an illustration of a person signing", 1600, 1000);
+const SWEAT_440_COVER = img("sweat-440-cover.webp", "Sweat 440: station screens for group classes and the trainer video console", 1600, 1000);
 const ML = { label: "Mercado Libre", brand: "mercadolibre" } as const;
 const CB = { label: "Coverbase", brand: "coverbase" } as const;
 const TT = { label: "Toptal", brand: "toptal" } as const;
@@ -158,7 +176,9 @@ export const projects: Project[] = [
     client: "Contracts",
     description: "Contract management inside Coverbase's vendor-risk platform.",
     teaser: "From a contracts area to clause-by-clause review with Contract Guardian",
+    image: CONTRACTS_COVER,
     story: [
+      { type: "images", items: [CONTRACTS_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
@@ -173,7 +193,9 @@ export const projects: Project[] = [
     client: "Vendor Registry Portal",
     description: "The Vendor Registry Portal, one of Coverbase's finished product areas.",
     teaser: "A finished portal design, dated September 2026",
+    image: VENDOR_REGISTRY_COVER,
     story: [
+      { type: "images", items: [VENDOR_REGISTRY_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
@@ -203,7 +225,9 @@ export const projects: Project[] = [
     client: "Cencora workflow audit",
     description: "A design audit of a customer's workflow, with dashboard and configuration studies.",
     teaser: "A customer workflow audit, with dashboard and configuration architecture studies",
+    image: CENCORA_AUDIT_COVER,
     story: [
+      { type: "images", items: [CENCORA_AUDIT_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
@@ -218,7 +242,9 @@ export const projects: Project[] = [
     client: "Customer Advisory Board",
     description: "A code-gated landing page for Coverbase's Customer Advisory Board meeting.",
     teaser: "A private entry screen: meeting title, date and a four-digit code over a full-bleed photo",
+    image: CAB_SITE_COVER,
     story: [
+      { type: "images", items: [CAB_SITE_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
@@ -233,7 +259,9 @@ export const projects: Project[] = [
     client: "Website and design system",
     description: "The Spice AI website, its design system and media kit.",
     teaser: "One system behind the website, the design system and the media kit",
+    image: SPICE_AI_WEBSITE_COVER,
     story: [
+      { type: "images", items: [SPICE_AI_WEBSITE_COVER] },
       {
         type: "p",
         text: "Spice AI builds an open-source runtime that gives developers one SQL interface to query and accelerate data from databases, warehouses and lakes. I started working with them through Toptal and continued as a part-time client.",
@@ -309,7 +337,9 @@ export const projects: Project[] = [
     client: "Appraiser V2",
     description: "One Coverbase product surface, from low-fidelity rounds to high fidelity.",
     teaser: "Every round saved as a dated version: how Appraiser evolved",
+    image: APPRAISER_COVER,
     story: [
+      { type: "images", items: [APPRAISER_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
@@ -324,7 +354,9 @@ export const projects: Project[] = [
     client: "Assessments",
     description: "Vendor assessments in Coverbase, designed through dated iterations.",
     teaser: "Dated iterations from April and May, through to a finished design",
+    image: ASSESSMENTS_COVER,
     story: [
+      { type: "images", items: [ASSESSMENTS_COVER] },
       { type: "p", text: CB_NOTE },
       { type: "p", text: "Assessments is marked finished, with dated iteration files from April and May." },
     ],
@@ -336,7 +368,9 @@ export const projects: Project[] = [
     client: "Inspect and Zero Touch",
     description: "Two Coverbase product areas, each redesigned into a v2.",
     teaser: "Inspect v2 and Zero Touch v2, both finished",
+    image: INSPECT_ZERO_TOUCH_COVER,
     story: [
+      { type: "images", items: [INSPECT_ZERO_TOUCH_COVER] },
       { type: "p", text: CB_NOTE },
       { type: "p", text: "Inspect v2 and Zero Touch v2 are both marked finished design work." },
     ],
@@ -348,7 +382,9 @@ export const projects: Project[] = [
     client: "V2 Brand and UI Library",
     description: "The design system Coverbase's product and marketing share.",
     teaser: "One brand library and one UI library for product and marketing",
+    image: COVERBASE_DESIGN_SYSTEM_COVER,
     story: [
+      { type: "images", items: [COVERBASE_DESIGN_SYSTEM_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
@@ -363,7 +399,9 @@ export const projects: Project[] = [
     client: "Marketing website",
     description: "Coverbase's marketing website, case studies, changelog and campaign assets.",
     teaser: "Website v3, case studies and a lead-magnet report on third-party risk in the age of AI",
+    image: COVERBASE_WEBSITE_COVER,
     story: [
+      { type: "images", items: [COVERBASE_WEBSITE_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
@@ -489,7 +527,9 @@ export const projects: Project[] = [
     client: "Rainforest Foundation US",
     description: "A section of the Rainforest Foundation US website made for kids.",
     teaser: "From a sitemap and tree testing to a kids' section of the website",
+    image: RAINFOREST_KIDS_COVER,
     story: [
+      { type: "images", items: [RAINFOREST_KIDS_COVER] },
       {
         type: "p",
         text: "As a volunteer from 2022 to 2024, I designed the kids' section of the Rainforest Foundation US website, with wireframes, mockups and assets. Related work covers the main website library, a sitemap, tree-testing conclusions and insights, and the 2024 annual report.",
@@ -565,7 +605,9 @@ export const projects: Project[] = [
     client: "Swippr",
     description: "A product I founded, took to production and sold.",
     teaser: "From MVP to a B2B line with its own admin, design system and sales deck",
+    image: SWIPPR_COVER,
     story: [
+      { type: "images", items: [SWIPPR_COVER] },
       {
         type: "p",
         text: "Swippr is a product I founded. It went into production and made sales. The record spans an MVP, a second release, white-label websites, then a B2B line with an admin, a design system, landing pages, branding, a one-pager, a sales deck and a pitch, after strategy work on goals, prioritization, information architecture, customer journeys and benchmarks.",
@@ -590,7 +632,9 @@ export const projects: Project[] = [
     client: "Nomicol",
     description: "A payroll platform that moves small businesses off spreadsheets.",
     teaser: "14 interviews, two sprints, and a payroll summary managers can read at a glance",
+    image: NOMICOL_COVER,
     story: [
+      { type: "images", items: [NOMICOL_COVER] },
       { type: "p", text: RV_NOTE },
       {
         type: "p",
@@ -609,7 +653,9 @@ export const projects: Project[] = [
     client: "Docucol",
     description: "Contract lifecycle management: templates, digital signatures and reminders.",
     teaser: "From template to signed contract, with reviewers, reminders and expiration dates",
+    image: DOCUCOL_COVER,
     story: [
+      { type: "images", items: [DOCUCOL_COVER] },
       { type: "p", text: RV_NOTE },
       {
         type: "p",
@@ -624,7 +670,9 @@ export const projects: Project[] = [
     client: "Sweat 440",
     description: "A TV interface redesign and admin portal for a HIIT gym chain.",
     teaser: "Four stations, 40 minutes: redesigning the screens that guide every class",
+    image: SWEAT_440_COVER,
     story: [
+      { type: "images", items: [SWEAT_440_COVER] },
       { type: "p", text: RV_NOTE },
       {
         type: "p",
@@ -639,7 +687,9 @@ export const projects: Project[] = [
     client: "Allthenticate",
     description: "Dashboard, groups and permissions for an authentication startup.",
     teaser: "Dashboard, groups and permissions, on web and mobile",
+    image: ALLTHENTICATE_COVER,
     story: [
+      { type: "images", items: [ALLTHENTICATE_COVER] },
       { type: "p", text: RV_NOTE },
       {
         type: "p",
@@ -654,7 +704,9 @@ export const projects: Project[] = [
     client: "BFF (Best Friend Famoso)",
     description: "An app that connects celebrities with their fans.",
     teaser: "A client web app and design system that connect celebrities and fans",
+    image: BFF_COVER,
     story: [
+      { type: "images", items: [BFF_COVER] },
       { type: "p", text: RV_NOTE },
       { type: "p", text: "An app connecting celebrities with their fans, with a client web app and a design system." },
     ],
@@ -666,7 +718,9 @@ export const projects: Project[] = [
     client: "Check Mig",
     description: "A redesign of Colombia's migration form, to spend less time at the desk.",
     teaser: "Tree testing, task flows and usability tests for a form every traveler fills",
+    image: CHECK_MIG_COVER,
     story: [
+      { type: "images", items: [CHECK_MIG_COVER] },
       {
         type: "p",
         text: "A personal redesign concept, not the live government service: the form travelers fill out before entering or leaving Colombia, so they can preload trip details and spend less time at immigration.",
