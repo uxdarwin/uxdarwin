@@ -5,6 +5,8 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { projects, type Project } from "../content/projects";
 import { ProjectMeta } from "./ProjectMeta";
 import { seeded, useCanDrag } from "./drag";
+import { setCompany, useCompany } from "./filter";
+import { experience } from "../content/profile";
 import styles from "./feed.module.css";
 
 const TILT_MAX = 2; // degrees
@@ -30,9 +32,9 @@ function estimate(p: Project, w: number) {
   return 16 + 12 + 12 + lines * 19.2 + 16 + (w - 8) * ratio + 5;
 }
 
-function layout(width: number, heights: Record<string, number>) {
-  const k = Math.max(0.62, Math.min(1, width / DESIGN_W));
-  const years = [...new Set(projects.map((p) => p.year))].sort((a, b) => b - a);
+function layout(list: Project[], width: number, heights: Record<string, { w: number; h: number }>, boost = 1) {
+  const k = Math.max(0.62, Math.min(1, width / DESIGN_W)) * boost;
+  const years = [...new Set(list.map((p) => p.year))].sort((a, b) => b - a);
   const boxes: Record<string, Box> = {};
   const yearTops: { year: number; top: number }[] = [];
   let floor = 0;
@@ -42,14 +44,16 @@ function layout(width: number, heights: Record<string, number>) {
     yearTops.push({ year, top });
     const placed: Box[] = [];
     const start = top + YEAR_OVERLAP;
-    projects
+    list
       .filter((p) => p.year === year)
       .forEach((p, i) => {
         const set = p.image ? WIDTHS_IMAGE : WIDTHS_COVER;
         const base = set[Math.floor(((seeded(`${p.slug}-w`) + 1) / 2) * set.length) % set.length] * k;
         // Never narrower than 300px, never wider than about half the pile plus a bit.
-        const w = Math.round(Math.min(Math.max(base, 300), width * 0.6));
-        const h = heights[p.slug] ?? estimate(p, w);
+        const w = Math.round(Math.min(Math.max(base, 300), width * (boost > 1 ? 0.66 : 0.6)));
+        // Measured heights belong to the width the card had; rescale when it changes.
+        const m = heights[p.slug];
+        const h = m && Math.abs(m.w - w) < 2 ? m.h : estimate(p, w);
         const room = Math.max(0, width - w);
         // Skyline candidates: hug the edges, sit beside each placed card, or land somewhere
         // seeded. Each is jittered a little so columns never line up.
@@ -83,7 +87,9 @@ export function ProjectsFeed() {
   const [lifted, setLifted] = useState<string | null>(null);
   const [order, setOrder] = useState<string[]>([]); // last-touched cards sit on top
   const [width, setWidth] = useState(DESIGN_W);
-  const [heights, setHeights] = useState<Record<string, number>>({});
+  const [heights, setHeights] = useState<Record<string, { w: number; h: number }>>({});
+  const [ready, setReady] = useState(false);
+  const company = useCompany();
   const pileRef = useRef<HTMLDivElement>(null);
 
   // Measure the pile and every card, and re-pack when either changes.
@@ -92,23 +98,39 @@ export function ProjectsFeed() {
     if (!pile) return;
     const measure = () => {
       setWidth(pile.clientWidth);
-      const next: Record<string, number> = {};
+      const next: Record<string, { w: number; h: number }> = {};
       pile.querySelectorAll<HTMLElement>("[data-slug]").forEach((el) => {
-        next[el.dataset.slug!] = el.offsetHeight;
+        next[el.dataset.slug!] = { w: el.offsetWidth, h: el.offsetHeight };
       });
       setHeights((prev) => {
-        const same = Object.keys(next).every((k) => Math.abs((prev[k] ?? 0) - next[k]) < 1);
+        const same = Object.keys(next).every(
+          (k) => prev[k] && Math.abs(prev[k].h - next[k].h) < 1 && Math.abs(prev[k].w - next[k].w) < 1,
+        );
         return same ? prev : next;
       });
     };
     measure();
+    // Animate re-packs only after the first real measurement, so the page doesn't slide on load.
+    const t = window.setTimeout(() => setReady(true), 400);
     const ro = new ResizeObserver(measure);
     ro.observe(pile);
     pile.querySelectorAll("[data-slug]").forEach((el) => ro.observe(el));
-    return () => ro.disconnect();
+    return () => {
+      ro.disconnect();
+      window.clearTimeout(t);
+    };
   }, []);
 
-  const { boxes, yearTops, height } = useMemo(() => layout(width, heights), [width, heights]);
+  // Filtering re-packs only the matching cards, a size up, so the feed stays full; the rest
+  // fade out where they were.
+  const visible = useMemo(() => (company ? projects.filter((p) => p.employer.brand === company) : projects), [company]);
+  const full = useMemo(() => layout(projects, width, heights), [width, heights]);
+  const shown = useMemo(
+    () => (company ? layout(visible, width, heights, 1.22) : full),
+    [company, visible, width, heights, full],
+  );
+  const { yearTops, height } = shown;
+  const companyName = experience.find((e) => e.brand === company)?.company;
 
   const raise = useCallback((slug: string) => {
     setOrder((o) => [...o.filter((s) => s !== slug), slug]);
@@ -120,14 +142,34 @@ export function ProjectsFeed() {
         <h1 id="projects-title" className={styles.title}>
           Projects
         </h1>
+        {company && companyName && (
+          <button type="button" className={styles.chip} onClick={() => setCompany(null)} data-cuelume-tap="" data-sound-hover="">
+            <span>
+              {companyName} · {visible.length} {visible.length === 1 ? "project" : "projects"}
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 7l10 10M17 7 7 17" stroke="currentColor" strokeWidth="1.25" />
+            </svg>
+            <span className={styles.srOnly}>Show all projects</span>
+          </button>
+        )}
       </header>
-      <div ref={pileRef} className={styles.pile} style={{ height }}>
-        {yearTops.map(({ year, top }) => (
-          <span key={year} className={styles.yearNumber} style={{ top }} aria-hidden="true">
-            {year}
-          </span>
-        ))}
-        {yearTops.map(({ year }) => (
+      <div ref={pileRef} className={styles.pile} data-ready={ready || undefined} style={{ height }}>
+        {full.yearTops.map(({ year, top }) => {
+          const at = yearTops.find((y) => y.year === year);
+          return (
+            <span
+              key={year}
+              className={styles.yearNumber}
+              data-hidden={!at || undefined}
+              style={{ top: at ? at.top : top }}
+              aria-hidden="true"
+            >
+              {year}
+            </span>
+          );
+        })}
+        {full.yearTops.map(({ year }) => (
           <div key={year} className={styles.yearGroup} role="group" aria-label={String(year)}>
             {projects
               .filter((p) => p.year === year)
@@ -135,7 +177,8 @@ export function ProjectsFeed() {
                 <ProjectCard
                   key={p.slug}
                   project={p}
-                  box={boxes[p.slug]}
+                  box={shown.boxes[p.slug] ?? full.boxes[p.slug]}
+                  hidden={!shown.boxes[p.slug]}
                   canDrag={canDrag}
                   offset={offsets[p.slug]}
                   lifted={lifted === p.slug}
@@ -157,6 +200,7 @@ export function ProjectsFeed() {
 function ProjectCard({
   project: p,
   box,
+  hidden,
   canDrag,
   offset = { x: 0, y: 0 },
   lifted,
@@ -166,6 +210,7 @@ function ProjectCard({
 }: {
   project: Project;
   box: Box;
+  hidden: boolean;
   canDrag: boolean;
   offset?: Offset;
   lifted: boolean;
@@ -209,6 +254,9 @@ function ProjectCard({
       data-slug={p.slug}
       data-draggable={canDrag || undefined}
       data-lifted={lifted || undefined}
+      data-hidden={hidden || undefined}
+      inert={hidden}
+      aria-hidden={hidden || undefined}
       data-sound-hover=""
       data-cuelume-tap=""
       style={

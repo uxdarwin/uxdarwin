@@ -46,6 +46,44 @@
 
 /* ---------- Pile ---------- */
 
+/* Filter chip beside the title: "Coverbase · 12 projects ×". */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 16px;
+  padding: 6px 8px 6px 12px;
+  border: 0.5px solid var(--card-border);
+  border-radius: 999px;
+  background: rgb(var(--brand-coverbase) / 0.28);
+  color: var(--text);
+  font: inherit;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  animation: chipIn 420ms var(--bounce) both;
+  transition: background-color 160ms var(--ease-out);
+}
+
+.chip:hover {
+  background: var(--blue-press);
+}
+
+.chip svg {
+  width: 14px;
+  height: 14px;
+}
+
+@keyframes chipIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px) scale(0.9);
+  }
+}
+
 /* Cards are placed absolutely by ProjectsFeed (seeded skyline pack); this box holds them. */
 .pile {
   position: relative;
@@ -73,6 +111,48 @@
   pointer-events: none;
 }
 
+.pile[data-ready] .yearNumber {
+  transition:
+    top 700ms var(--ease-out),
+    opacity 320ms var(--ease-out);
+}
+
+.yearNumber[data-hidden] {
+  opacity: 0;
+}
+
+/* Re-packing after a filter: cards glide to their new spots and sizes; the others fade out. */
+.pile[data-ready] .card {
+  transition:
+    transform 520ms var(--bounce),
+    scale 420ms var(--bounce),
+    background-color 200ms var(--ease-out),
+    left 700ms var(--ease-out),
+    top 700ms var(--ease-out),
+    width 700ms var(--ease-out),
+    opacity 320ms var(--ease-out),
+    display 320ms allow-discrete;
+}
+
+.pile[data-ready] .card[data-lifted] {
+  transition:
+    background-color 200ms var(--ease-out),
+    scale 200ms var(--ease-out);
+}
+
+.card[data-hidden] {
+  display: none;
+  opacity: 0;
+  scale: 0.92;
+}
+
+@starting-style {
+  .card:not([data-hidden]) {
+    opacity: 0;
+    scale: 0.92;
+  }
+}
+
 /* ---------- Card ---------- */
 
 .card {
@@ -93,6 +173,7 @@
   transform: translate(var(--dx), var(--dy)) rotate(var(--tilt));
   transition:
     transform 520ms var(--bounce),
+    scale 420ms var(--bounce),
     background-color 200ms var(--ease-out);
   outline: none;
   touch-action: auto;
@@ -111,7 +192,9 @@
 }
 
 @media (hover: hover) {
+  /* Grow a little on hover (the scale property composes with the tilt transform). */
   .card:hover {
+    scale: 1.03;
     background-color: rgb(255 255 255 / 0.16);
     transform: translate(var(--dx), var(--dy)) rotate(calc(var(--tilt) + 1deg));
   }
@@ -489,6 +572,13 @@
 .clusterItem[data-draggable] {
   cursor: grab;
   user-select: none;
+  transition: scale 420ms var(--bounce);
+}
+
+/* Grow a little on hover, like the feed cards. */
+.clusterItem[data-draggable]:hover,
+.clusterItem[data-selected] {
+  scale: 1.02;
 }
 
 .clusterItem[data-draggable]:active {
