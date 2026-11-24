@@ -584,21 +584,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "grandstand",
-    year: 2023, // estimate
-    employer: TT,
-    client: "Grandstand",
-    description: "Grandstand V3: a clickable soccer prototype and an athlete deck.",
-    teaser: "A clickable soccer prototype, an athlete deck and a Miami showcase",
-    story: [
-      { type: "p", text: TT_NOTE },
-      {
-        type: "p",
-        text: "Grandstand V3 includes a clickable soccer prototype, a finished athlete deck and a Miami Showcase file.",
-      },
-    ],
-  },
-  {
     slug: "swippr",
     year: 2023, // estimate
     employer: { label: "Founder" },
@@ -613,15 +598,6 @@ export const projects: Project[] = [
         text: "Swippr is a product I founded. It went into production and made sales. The record spans an MVP, a second release, white-label websites, then a B2B line with an admin, a design system, landing pages, branding, a one-pager, a sales deck and a pitch, after strategy work on goals, prioritization, information architecture, customer journeys and benchmarks.",
       },
     ],
-  },
-  {
-    slug: "mi-cupo",
-    year: 2023, // estimate
-    employer: { label: "Founder" },
-    client: "Mi Cupo",
-    description: "A product I founded and took to production, with sales.",
-    teaser: "Founding, designing and selling a product of my own",
-    story: [{ type: "p", text: "Mi Cupo is a product I founded and took to production, with sales." }],
   },
 
   // ---------- 2022 ----------

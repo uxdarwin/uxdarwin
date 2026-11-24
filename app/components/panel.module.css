@@ -47,9 +47,10 @@
   border-radius: var(--radius-card);
 }
 
-/* Shared frosted surface: the four cards and the round contact buttons. */
-.card,
-.roundBtn {
+/* Frosted surface for the four cards. The round contact buttons have a solid fill and
+   no backdrop-filter: a blurred layer nested inside the card's own blur repainted as a
+   lighter box across the card whenever a button changed on hover. */
+.card {
   background: var(--surface);
   /* Prefixed first: the CSS minifier keeps only the last of the pair when it holds a var(). */
   -webkit-backdrop-filter: var(--glass-blur);
@@ -840,10 +841,8 @@
   gap: 6px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgb(20 20 26 / 0.86);
+  background: rgb(20 20 26 / 0.96);
   border: 0.5px solid rgb(255 255 255 / 0.14);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
   box-shadow: 0 6px 20px rgb(0 0 0 / 0.4);
   font-size: 12px;
   line-height: 14px;
