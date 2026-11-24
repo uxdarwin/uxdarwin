@@ -36,7 +36,7 @@ type GlobeHandle = { update: (s: Record<string, unknown>) => void; destroy: () =
 // Offsets are from Medellín: +theta looks further north, +phi turns west.
 const SOUTH = { phi: -0.27, theta: -0.37 }; // ~15°S 60°W
 const NORTH = { phi: 0.43, theta: 0.6 }; // ~40°N 100°W
-const TOUR_MS = 16000; // one full south → north → south loop
+const TOUR_MS = 32000; // one full south → north → south loop
 const REST = { phi: SOUTH.phi, theta: SOUTH.theta, marker: 0.04, light: 0.6 };
 const FOCUS = { phi: 0, theta: 0, marker: 0.06, light: 1 };
 
