@@ -70,13 +70,13 @@ export const highlights: HighlightItem[] = [
   {
     title: "Speaker",
     subtitle: "Friends of Figma Community",
-    date: "2026",
+    date: "2025",
     brand: "figma",
     preview: {
       src: "/images/highlights/speaker.webp",
       alt: "Darwin speaking on stage at a Friends of Figma event, in front of a slide about designing tables for invoices",
-      width: 628,
-      height: 389,
+      width: 624,
+      height: 388,
       left: 291,
       top: -157,
     },
@@ -98,15 +98,15 @@ export const highlights: HighlightItem[] = [
   {
     title: "Volunteer",
     subtitle: "Rainforest Foundation US",
-    date: "2024-2025",
+    date: "2022-2024",
     brand: "rainforest",
     preview: {
       src: "/images/highlights/volunteer.webp",
       alt: "Rainforest Foundation US website home page",
-      width: 628,
-      height: 380,
+      width: 629,
+      height: 400,
       left: 296,
-      top: -52,
+      top: -62,
     },
   },
   {
@@ -117,10 +117,10 @@ export const highlights: HighlightItem[] = [
     preview: {
       src: "/images/highlights/blog.webp",
       alt: "Toptal article “Beyond Text: Designing the Future of AI Prompting”, with Darwin among the featured experts",
-      width: 633,
-      height: 422,
-      left: 281,
-      top: -94,
+      width: 629,
+      height: 446,
+      left: 283,
+      top: -106,
     },
   },
 ];

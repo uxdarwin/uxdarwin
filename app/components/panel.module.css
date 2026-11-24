@@ -662,20 +662,20 @@
   color: var(--text);
 }
 
-/* Globe centered on Medellín, which sits at about (240, 45) in the 320×80 card. */
+/* Globe centered on Medellín, which lands at about (255, 44) in the 320×80 card on hover. */
 .globeWrap {
   position: absolute;
   inset: 0;
   pointer-events: none;
   mix-blend-mode: lighten;
-  mask-image: linear-gradient(90deg, transparent 32%, #000 62%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 32%, #000 62%);
+  mask-image: linear-gradient(90deg, transparent 22%, #000 58%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 22%, #000 58%);
 }
 
 .globe {
   position: absolute;
-  left: calc(100% - 230px);
-  top: -105px;
+  left: calc(100% - 215px);
+  top: -106px;
   width: 300px;
   height: 300px;
   opacity: 0;

@@ -16,10 +16,9 @@ const geistMono = Geist_Mono({
   variable: "--font-mono",
 });
 
-// Display face. The Figma file uses Season Mix (trial); GT Super Text stands in
-// until a Season web license is in place. Swap the file here to change it.
+// Display face from the Figma file: Season Mix by Displaay.
 const display = localFont({
-  src: "./fonts/GTSuperText-Regular.woff2",
+  src: "./fonts/SeasonMix-Regular.woff2",
   weight: "400",
   style: "normal",
   variable: "--font-display",
