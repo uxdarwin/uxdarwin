@@ -33,6 +33,10 @@ const LAYOUTS: Record<number, Slot[][]> = {
 const MIN_W = 160;
 const MAX_W = 1100;
 
+/** Figma-style handles: four corners plus four edges. Images keep their proportions. */
+const HANDLES = ["nw", "n", "ne", "e", "se", "s", "sw", "w"] as const;
+type Handle = (typeof HANDLES)[number];
+
 type State = { dx: number; dy: number; w: number };
 
 export function ImageCluster({ images, variant, seed }: { images: ProjectImage[]; variant: number; seed: string }) {
@@ -44,8 +48,8 @@ export function ImageCluster({ images, variant, seed }: { images: ProjectImage[]
   const slots = options[variant % options.length];
   const [state, setState] = useState<State[]>(() => slots.map((s) => ({ dx: 0, dy: 0, w: s.w })));
   const [order, setOrder] = useState<number[]>(() => slots.map((_, i) => i));
+  const [selected, setSelected] = useState<number | null>(null);
 
-  // Natural layout width, so the cluster scales to the column instead of overflowing it.
   const layoutW = Math.max(...slots.map((s) => s.x + s.w));
   const layoutH = Math.max(...slots.map((s, i) => s.y + (s.w * images[i].height) / images[i].width));
 
@@ -61,9 +65,61 @@ export function ImageCluster({ images, variant, seed }: { images: ProjectImage[]
     return () => ro.disconnect();
   }, [layoutW]);
 
+  // Click anywhere else (or press Escape) to deselect, like Figma.
+  useEffect(() => {
+    if (selected === null) return;
+    const onDown = (e: PointerEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setSelected(null);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setSelected(null);
+    window.addEventListener("pointerdown", onDown);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [selected]);
+
   const raise = (i: number) => setOrder((o) => [...o.filter((k) => k !== i), i]);
   const update = (i: number, patch: Partial<State>) =>
     setState((all) => all.map((s, k) => (k === i ? { ...s, ...patch } : s)));
+
+  const track = (move: (ev: PointerEvent) => void) => {
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      document.body.style.cursor = "";
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  };
+
+  const startResize = (i: number, h: Handle, e: React.PointerEvent) => {
+    if (e.button !== 0) return;
+    e.stopPropagation();
+    e.preventDefault();
+    raise(i);
+    setSelected(i);
+    const st = state[i];
+    const ratio = images[i].height / images[i].width;
+    const sx = e.clientX, sy = e.clientY;
+    const ow = st.w, odx = st.dx, ody = st.dy;
+    document.body.style.cursor = getComputedStyle(e.currentTarget).cursor;
+    track((ev) => {
+      const px = (ev.clientX - sx) / scale; // pointer delta in layout px
+      const py = (ev.clientY - sy) / scale;
+      // Width change implied by each axis; corners follow whichever axis moved more.
+      const fromX = h.includes("e") ? px : h.includes("w") ? -px : 0;
+      const fromY = h.includes("s") ? py / ratio : h.includes("n") ? -py / ratio : 0;
+      const dw = Math.abs(fromX) >= Math.abs(fromY) ? fromX : fromY;
+      const w = Math.max(MIN_W, Math.min(MAX_W, ow + dw));
+      const grow = w - ow;
+      // Keep the opposite edge or corner pinned; edge handles grow around the center.
+      const shiftX = h.includes("w") ? -grow : h === "n" || h === "s" ? -grow / 2 : 0;
+      const shiftY = h.includes("n") ? -grow * ratio : h === "e" || h === "w" ? (-grow * ratio) / 2 : 0;
+      update(i, { w, dx: odx + shiftX * scale, dy: ody + shiftY * scale });
+    });
+  };
 
   if (stack) {
     return (
@@ -90,11 +146,15 @@ export function ImageCluster({ images, variant, seed }: { images: ProjectImage[]
       {images.slice(0, slots.length).map((im, i) => {
         const s = slots[i];
         const st = state[i];
+        const isSel = selected === i;
+        const shownW = Math.round(st.w * scale);
+        const shownH = Math.round(st.w * scale * (im.height / im.width));
         return (
           <figure
             key={im.src}
             className={styles.clusterItem}
             data-draggable={canDrag || undefined}
+            data-selected={isSel || undefined}
             style={{
               left: s.x * scale,
               top: s.y * scale,
@@ -104,17 +164,11 @@ export function ImageCluster({ images, variant, seed }: { images: ProjectImage[]
             }}
             onPointerDown={(e) => {
               if (!canDrag || e.button !== 0) return;
-              if ((e.target as HTMLElement).dataset.handle) return;
-              e.currentTarget.setPointerCapture(e.pointerId);
+              e.preventDefault();
               raise(i);
+              setSelected(i);
               const sx = e.clientX, sy = e.clientY, ox = st.dx, oy = st.dy;
-              const move = (ev: PointerEvent) => update(i, { dx: ox + ev.clientX - sx, dy: oy + ev.clientY - sy });
-              const up = () => {
-                window.removeEventListener("pointermove", move);
-                window.removeEventListener("pointerup", up);
-              };
-              window.addEventListener("pointermove", move);
-              window.addEventListener("pointerup", up);
+              track((ev) => update(i, { dx: ox + ev.clientX - sx, dy: oy + ev.clientY - sy }));
             }}
           >
             <img
@@ -128,26 +182,21 @@ export function ImageCluster({ images, variant, seed }: { images: ProjectImage[]
               draggable={false}
             />
             {canDrag && (
-              <span
-                className={styles.resize}
-                data-handle="resize"
-                role="presentation"
-                onPointerDown={(e) => {
-                  if (e.button !== 0) return;
-                  e.stopPropagation();
-                  e.currentTarget.setPointerCapture(e.pointerId);
-                  raise(i);
-                  const sx = e.clientX, ow = st.w;
-                  const move = (ev: PointerEvent) =>
-                    update(i, { w: Math.max(MIN_W, Math.min(MAX_W, ow + (ev.clientX - sx) / scale)) });
-                  const up = () => {
-                    window.removeEventListener("pointermove", move);
-                    window.removeEventListener("pointerup", up);
-                  };
-                  window.addEventListener("pointermove", move);
-                  window.addEventListener("pointerup", up);
-                }}
-              />
+              <>
+                <span className={styles.selection} aria-hidden="true" />
+                {HANDLES.map((h) => (
+                  <span
+                    key={h}
+                    className={styles.handle}
+                    data-h={h}
+                    aria-hidden="true"
+                    onPointerDown={(e) => startResize(i, h, e)}
+                  />
+                ))}
+                <span className={styles.dims} aria-hidden="true">
+                  {shownW} × {shownH}
+                </span>
+              </>
             )}
           </figure>
         );

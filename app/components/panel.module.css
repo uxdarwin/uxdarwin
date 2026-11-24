@@ -32,6 +32,11 @@
 
 .content {
   min-width: 0;
+  /* Own stacking context: dragged cards and images never rise above the panel and its
+     floating Highlights previews. */
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
 }
 
 /* ---------- Cards ---------- */

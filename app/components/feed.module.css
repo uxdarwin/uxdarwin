@@ -44,26 +44,22 @@
   white-space: nowrap;
 }
 
-/* ---------- Year group ---------- */
+/* ---------- Pile ---------- */
 
-.year {
+/* Cards are placed absolutely by ProjectsFeed (seeded skyline pack); this box holds them. */
+.pile {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, var(--card-w)));
-  justify-content: center;
-  column-gap: var(--col-gap);
-  padding-top: 56px;
+  margin: 40px 0 0 var(--title-inset);
 }
 
-.year + .year {
-  margin-top: 64px;
+.yearGroup {
+  display: contents;
 }
 
 /* Big year sits behind the cards, top right, partly covered. Black on near-black with a faint
    white glow, like the Figma text (fill #000, 2% white shadow at 24px). */
 .yearNumber {
   position: absolute;
-  top: 0;
   right: 0;
   z-index: 0;
   font-family: var(--font-mono), ui-monospace, monospace;
@@ -77,22 +73,10 @@
   pointer-events: none;
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  min-width: 0;
-}
-
-/* The right column starts lower, so cards stagger across the year number. */
-.column[data-col="1"] {
-  padding-top: 110px;
-}
-
 /* ---------- Card ---------- */
 
 .card {
-  position: relative;
+  position: absolute;
   display: flex;
   color: inherit;
   text-decoration: none;
@@ -106,7 +90,7 @@
   background-color: rgb(0 0 0 / 0.8);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  transform: translate(calc(var(--nudge) + var(--dx)), var(--dy)) rotate(var(--tilt));
+  transform: translate(var(--dx), var(--dy)) rotate(var(--tilt));
   transition:
     transform 520ms var(--bounce),
     background-color 200ms var(--ease-out);
@@ -122,18 +106,18 @@
 .card[data-lifted] {
   cursor: grabbing;
   transition: background-color 200ms var(--ease-out);
-  transform: translate(calc(var(--nudge) + var(--dx)), var(--dy)) rotate(calc(var(--tilt) + 1deg))
+  transform: translate(var(--dx), var(--dy)) rotate(calc(var(--tilt) + 1deg))
     scale(1.02);
 }
 
 @media (hover: hover) {
   .card:hover {
     background-color: rgb(255 255 255 / 0.16);
-    transform: translate(calc(var(--nudge) + var(--dx)), var(--dy)) rotate(calc(var(--tilt) + 1deg));
+    transform: translate(var(--dx), var(--dy)) rotate(calc(var(--tilt) + 1deg));
   }
 
   .card[data-lifted]:hover {
-    transform: translate(calc(var(--nudge) + var(--dx)), var(--dy)) rotate(calc(var(--tilt) + 1deg))
+    transform: translate(var(--dx), var(--dy)) rotate(calc(var(--tilt) + 1deg))
       scale(1.02);
   }
 }
@@ -241,11 +225,12 @@
   outline: 0.5px solid rgb(255 255 255 / 0.08);
   outline-offset: -0.5px;
   box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+  container-type: inline-size;
 }
 
 .cover > span {
   font-family: var(--font-display), Georgia, serif;
-  font-size: 30px;
+  font-size: clamp(20px, 8cqi, 30px);
   line-height: 1.05;
   letter-spacing: -0.01em;
   color: var(--text);
@@ -355,32 +340,48 @@
 
 @media (max-width: 639px) {
   .feed {
-    --card-w: 100%;
     padding-bottom: 48px;
   }
 
-  .year {
-    grid-template-columns: minmax(0, 1fr);
-    padding-top: 64px;
+  /* Phones: one column in reading order, years inline. */
+  .pile {
+    height: auto !important;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 24px;
   }
 
-  .column {
+  .yearGroup {
+    display: flex;
+    flex-direction: column;
     gap: 24px;
   }
 
-  .column[data-col="1"] {
-    padding-top: 24px;
+  .yearNumber {
+    display: none;
   }
 
-  .yearNumber {
+  .yearGroup::before {
+    content: attr(aria-label);
+    margin: 24px 0 -8px;
+    font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 96px;
+    line-height: 1;
+    letter-spacing: 0.03em;
+    color: #000;
+    text-shadow: 0 0 24px rgb(255 255 255 / 0.02);
   }
 
   .card {
-    --nudge: 0px !important;
+    position: relative;
+    left: auto !important;
+    top: auto !important;
+    width: auto !important;
     transform: rotate(calc(var(--tilt) / 2));
   }
 }
+
 
 /* ---------- Project page (Figma 43:9981) ---------- */
 
@@ -389,31 +390,40 @@
   padding: 30px 0 0;
 }
 
-/* The back arrow sits in the gutter, so "Projects" keeps the same position as on the feed. */
+/* Arrow and title are one link. The arrow hangs in the gutter so "Projects" keeps the
+   same position as on the feed (Figma 43:9981: arrow at 368, title at 396). */
 .back {
-  position: absolute;
-  left: calc(var(--title-inset) - 28px);
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   color: var(--text);
+  text-decoration: none;
   border-radius: 6px;
-  transition: transform 300ms var(--bounce);
 }
 
 .back svg {
+  position: absolute;
+  left: -28px;
   width: 24px;
   height: 24px;
+  transition: transform 300ms var(--bounce);
 }
 
-.back:hover {
+.back:hover svg {
   transform: translateX(-3px);
+}
+
+.back:hover .title {
+  color: var(--text-2);
+}
+
+.back .title {
+  transition: color 160ms var(--ease-out);
 }
 
 .back:focus-visible {
   outline: 1.5px solid rgb(255 255 255 / 0.6);
-  outline-offset: 2px;
+  outline-offset: 4px;
 }
 
 .pageBody {
@@ -485,6 +495,11 @@
   cursor: grabbing;
 }
 
+/* Selection chrome is square like Figma's, so the image corners stay rounded inside it. */
+.clusterItem[data-selected] .clusterImg {
+  box-shadow: 4px 4px 16px rgb(0 0 0 / 0.5);
+}
+
 .clusterImg {
   display: block;
   width: 100%;
@@ -496,29 +511,96 @@
   -webkit-user-drag: none;
 }
 
-/* Corner handle: drag to resize, keeping the image's proportions. */
-.resize {
+/* Figma-style selection: blue outline, white square handles on corners and edges, and a
+   size label. Hover shows the outline; selecting (pointer down) shows the handles. */
+.selection {
   position: absolute;
-  right: -6px;
-  bottom: -6px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--text);
-  border: 4px solid var(--blue-press);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
-  cursor: nwse-resize;
+  inset: 0;
+  border: 1px solid #0d99ff;
+  border-radius: 2px;
+  pointer-events: none;
   opacity: 0;
-  transform: scale(0.6);
-  transition:
-    opacity 160ms var(--ease-out),
-    transform 300ms var(--bounce);
+  transition: opacity 120ms var(--ease-out);
 }
 
-.clusterItem:hover .resize,
-.resize:active {
+.clusterItem[data-draggable]:hover .selection,
+.clusterItem[data-selected] .selection {
   opacity: 1;
-  transform: none;
+}
+
+.handle {
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.clusterItem[data-selected] .handle {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Corners: 8px white squares with a blue border. */
+.handle[data-h="nw"],
+.handle[data-h="ne"],
+.handle[data-h="se"],
+.handle[data-h="sw"] {
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border: 1px solid #0d99ff;
+  border-radius: 1px;
+}
+
+.handle[data-h="nw"] { left: -4px; top: -4px; cursor: nwse-resize; }
+.handle[data-h="ne"] { right: -4px; top: -4px; cursor: nesw-resize; }
+.handle[data-h="se"] { right: -4px; bottom: -4px; cursor: nwse-resize; }
+.handle[data-h="sw"] { left: -4px; bottom: -4px; cursor: nesw-resize; }
+
+/* Edges: invisible 8px hit strips along each side, between the corners. */
+.handle[data-h="n"],
+.handle[data-h="s"] {
+  left: 6px;
+  right: 6px;
+  height: 8px;
+  cursor: ns-resize;
+}
+
+.handle[data-h="e"],
+.handle[data-h="w"] {
+  top: 6px;
+  bottom: 6px;
+  width: 8px;
+  cursor: ew-resize;
+}
+
+.handle[data-h="n"] { top: -4px; }
+.handle[data-h="s"] { bottom: -4px; }
+.handle[data-h="e"] { right: -4px; }
+.handle[data-h="w"] { left: -4px; }
+
+.dims {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: #0d99ff;
+  color: #fff;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 14px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms var(--ease-out);
+}
+
+.clusterItem[data-selected] .dims {
+  opacity: 1;
 }
 
 .clusterStack {
@@ -531,8 +613,9 @@
 /* ---------- Footer ---------- */
 
 .footer {
-  margin: 160px 0 0 var(--footer-inset, 52px);
-  padding: 24px 0 12px;
+  /* Same inset on both sides: 52px from the column, 64px from the panel on the left. */
+  margin: 160px var(--footer-inset, 52px) 0;
+  padding: 24px 0 24px;
   border-top: 0.5px solid var(--border);
 }
 
@@ -598,7 +681,11 @@
   }
 
   .back {
-    position: static;
+    padding-left: 28px;
+  }
+
+  .back svg {
+    left: 0;
   }
 
   .pageBody {
