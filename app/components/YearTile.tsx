@@ -5,7 +5,8 @@ import styles from "./feed.module.css";
 
 // Hover effect for the blue year tiles: rings ripple out from the pointer through the pixel
 // digits, with a line wave like the logo animation and a red/cyan split like the hover intros.
-// Moving the pointer stirs it; resting lets it settle back to sharp.
+// Moving the pointer stirs it; resting lets it settle back to sharp. It also plays by itself
+// now and then while the tile is in view.
 
 const VERT = `attribute vec2 p;varying vec2 uv;void main(){uv=p*.5+.5;uv.y=1.-uv.y;gl_Position=vec4(p,0.,1.);}`;
 const FRAG = `precision mediump float;
@@ -47,7 +48,6 @@ export function YearTile({ year, order }: { year: number; order: number }) {
     const text = textRef.current;
     const canvas = canvasRef.current;
     if (!tile || !text || !canvas) return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     let gl: WebGLRenderingContext | null = null;
@@ -57,6 +57,9 @@ export function YearTile({ year, order }: { year: number; order: number }) {
     let start = 0;
     let last = 0;
     let hovering = false;
+    let autoUntil = 0; // the self-playing ripple runs until this time
+    let drift = 0;
+    let timer = 0;
     let amp = 0;
     let energy = 0;
     const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
@@ -132,18 +135,21 @@ export function YearTile({ year, order }: { year: number; order: number }) {
     const tick = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
       last = now;
+      const auto = !hovering && now < autoUntil;
+      if (auto) mouse.tx += drift * dt; // the self-playing ripple drifts across the digits
       mouse.x += (mouse.tx - mouse.x) * Math.min(1, dt * 10);
       mouse.y += (mouse.ty - mouse.y) * Math.min(1, dt * 10);
       energy *= Math.exp(-dt * 2.6); // resting settles back to sharp
-      const target = hovering ? Math.min(1, energy) : 0;
-      amp += (target - amp) * Math.min(1, dt * (hovering ? 8 : 5));
+      const active = hovering || auto;
+      const target = active ? Math.min(hovering ? 1 : 0.75, energy) : 0;
+      amp += (target - amp) * Math.min(1, dt * (active ? 8 : 5));
       if (gl) {
         gl.uniform2f(u.mouse, mouse.x, mouse.y);
         gl.uniform1f(u.time, (now - start) / 1000);
         gl.uniform1f(u.amp, amp);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       }
-      if (!hovering && amp < 0.004) {
+      if (!active && amp < 0.004) {
         tile.dataset.fx = "off";
         frame = 0;
         return;
@@ -163,11 +169,7 @@ export function YearTile({ year, order }: { year: number; order: number }) {
       mouse.y = mouse.ty = p.y;
       hovering = true;
       energy = 1.1; // a splash on the way in
-      if (!frame) {
-        start = last = performance.now();
-        tile.dataset.fx = "on";
-        frame = requestAnimationFrame(tick);
-      }
+      run();
     };
     const onMove = (e: PointerEvent) => {
       if (!hovering) return;
@@ -179,6 +181,43 @@ export function YearTile({ year, order }: { year: number; order: number }) {
     const onLeave = () => {
       hovering = false;
     };
+
+    const run = () => {
+      if (!frame) {
+        start = last = performance.now();
+        tile.dataset.fx = "on";
+        frame = requestAnimationFrame(tick);
+      }
+    };
+
+    // Plays on its own: once soon after the tile comes into view, then every 7 to 12 seconds
+    // while it stays in view, from a different spot each time. Touch screens get it too.
+    const autoplay = () => {
+      if (still.matches || hovering || document.hidden) return;
+      if (!gl && !init()) return;
+      const fromLeft = Math.random() < 0.5;
+      mouse.x = mouse.tx = fromLeft ? 0.2 + Math.random() * 0.2 : 0.6 + Math.random() * 0.2;
+      mouse.y = mouse.ty = 0.35 + Math.random() * 0.3;
+      drift = (fromLeft ? 1 : -1) * 0.18;
+      energy = 0.85;
+      autoUntil = performance.now() + 1800;
+      run();
+    };
+    const schedule = (delay: number) => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        autoplay();
+        schedule(7000 + Math.random() * 5000);
+      }, delay);
+    };
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) schedule(400 + Math.random() * 900);
+        else window.clearTimeout(timer);
+      },
+      { threshold: 0.6 },
+    );
+    io.observe(tile);
     const ro = new ResizeObserver(() => paint());
     ro.observe(tile);
     tile.addEventListener("pointerenter", onEnter);
@@ -186,6 +225,8 @@ export function YearTile({ year, order }: { year: number; order: number }) {
     tile.addEventListener("pointerleave", onLeave);
     return () => {
       cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+      io.disconnect();
       ro.disconnect();
       tile.removeEventListener("pointerenter", onEnter);
       tile.removeEventListener("pointermove", onMove);
