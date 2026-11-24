@@ -487,6 +487,30 @@
   border-radius: 6px;
 }
 
+/* Cover video: the whole frame, centred in the cover box. The element hugs the video so the
+   6px radius and the covers' hairline stroke sit on the visible frame. */
+.coverVideo {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  outline: 0.5px solid rgb(255 255 255 / 0.08);
+  outline-offset: -0.5px;
+  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+}
+
+.rows .thumb:has(> .coverVideo) {
+  display: flex;
+  justify-content: center;
+}
+
+.rows .thumb > .coverVideo {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
 .rows .thumb > .motionGrid {
   height: 100%;
   grid-auto-rows: minmax(0, 1fr);
@@ -526,6 +550,11 @@
 
   .media {
     aspect-ratio: 4 / 3;
+  }
+
+  /* A portrait cover video gets a taller box so the whole frame stays legible. */
+  .rows .thumb:has(> .coverVideo) {
+    aspect-ratio: 1;
   }
 
   /* No hover on touch: the cover stays clear and the title carries the card. */

@@ -31,6 +31,8 @@ export type Project = {
   teaser: string;
   /** Feed image. Projects without one get a typographic cover until assets are gathered. */
   image?: ProjectImage;
+  /** Feed cover video: replaces the image in the card, fitted whole (never cropped). */
+  coverVideo?: { src: string; poster: string; width: number; height: number };
   /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
   carousel?: string[];
   /** Lottie animations: played in the card instead of an image, and by a "motion" block. */
@@ -198,6 +200,7 @@ export const projects: Project[] = [
     description: "A pre-launch landing page for a 15-apartment building in Villavicencio, Colombia.",
     teaser: "WhatsApp first: a one-page launch that lets buyers start the conversation",
     image: PC_CARD,
+    coverVideo: { src: "/media/parque-caudal-hero.mp4", poster: "/media/parque-caudal-hero.webp", width: 590, height: 1276 },
     story: [
       { type: "images", items: [PC_COVER] },
       {
