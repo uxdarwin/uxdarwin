@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { ShaderBackground } from "./components/ShaderBackground";
 import "./globals.css";
 import { Sounds } from "./components/Sounds";
 
@@ -44,6 +45,7 @@ export default function RootLayout({
       className={`${geist.variable} ${geistMono.variable} ${display.variable}`}
     >
       <body>
+        <ShaderBackground />
         {children}
         <Sounds />
       </body>

@@ -5,6 +5,8 @@
 /* ---------- Page shell ---------- */
 
 .shell {
+  position: relative;
+  z-index: 1; /* above the fixed shader background */
   min-height: 100dvh;
   display: grid;
   grid-template-columns: 320px minmax(0, 1fr);
