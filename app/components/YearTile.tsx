@@ -253,7 +253,7 @@ export function YearTile({ year, order }: { year: number; order: number }) {
   }, [year]);
 
   return (
-    <div ref={tileRef} className={styles.yearTile} style={{ order }} role="heading" aria-level={2} data-fx="off">
+    <div ref={tileRef} className={styles.yearTile} style={{ order }} role="heading" aria-level={2} data-fx="off" data-warp="">
       <span ref={textRef}>{year}</span>
       <canvas ref={canvasRef} className={styles.yearFx} aria-hidden="true" />
     </div>
