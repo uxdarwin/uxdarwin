@@ -20,11 +20,42 @@ function useFloating() {
   );
 }
 
+// Intro for the floating previews: the image arrives through a soft liquid ripple that
+// settles to sharp while it fades and scales in (SVG turbulence + displacement).
+const DISTORT_MS = 750;
+const DISTORT_MAX = 28; // displacement in px at the first frame
+const SHADOW = "drop-shadow(0 24px 48px rgb(0 0 0 / 0.55))";
+
 export function HighlightsCard() {
   const floating = useFloating();
   const [active, setActive] = useState<number | null>(null);
   const [shift, setShift] = useState(0);
   const cardRef = useRef<HTMLElement>(null);
+  const dispRef = useRef<SVGFEDisplacementMapElement>(null);
+  const [distorting, setDistorting] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!floating || active === null) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const disp = dispRef.current;
+    if (!disp) return;
+    let raf = 0;
+    const start = performance.now();
+    setDistorting(active);
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / DISTORT_MS, 1);
+      const settle = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      disp.setAttribute("scale", String(DISTORT_MAX * (1 - settle)));
+      if (t < 1) raf = requestAnimationFrame(tick);
+      else setDistorting(null); // drop the filter once settled so the image is crisp
+    };
+    disp.setAttribute("scale", String(DISTORT_MAX));
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      setDistorting(null);
+    };
+  }, [active, floating]);
 
   // Keep the floating preview inside the viewport on short screens.
   useEffect(() => {
@@ -80,6 +111,12 @@ export function HighlightsCard() {
 
       {floating && (
         <div className={styles.previewLayer} aria-hidden={active === null}>
+          <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true" focusable="false">
+            <filter id="hl-distort" x="-10%" y="-10%" width="120%" height="120%" colorInterpolationFilters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves={2} seed={7} result="noise" />
+              <feDisplacementMap ref={dispRef} in="SourceGraphic" in2="noise" scale={0} xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </svg>
           {highlights.map((h, i) => (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -91,7 +128,11 @@ export function HighlightsCard() {
               alt={h.preview.alt}
               width={h.preview.width}
               height={h.preview.height}
-              style={{ left: h.preview.left, top: h.preview.top + (active === i ? shift : 0) }}
+              style={{
+                left: h.preview.left,
+                top: h.preview.top + (active === i ? shift : 0),
+                filter: distorting === i ? `url(#hl-distort) ${SHADOW}` : undefined,
+              }}
             />
           ))}
         </div>
