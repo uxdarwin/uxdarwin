@@ -771,14 +771,8 @@
 /* ---------- Mobile: one column of cards ---------- */
 
 @media (max-width: 639px) {
-  .shell {
-    padding: 8px;
-    gap: 8px;
-  }
-
   .panel {
     display: flex;
-    gap: 8px;
   }
 
   .highlights > .list {
