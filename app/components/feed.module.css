@@ -81,7 +81,8 @@
   grid-template-columns: minmax(0, 1fr);
 }
 .row[data-type="strip"] {
-  height: 44.65cqi; /* 484 at 1084 */
+  grid-template-rows: auto;
+  height: auto; /* the Tunnel Strip sizes itself */
 }
 
 /* Photo tiles: full-bleed, cropped to the tile. */
@@ -382,7 +383,6 @@
 @media (prefers-reduced-motion: reduce) {
   .card,
   .thumb,
-  .frame,
   .teaser {
     animation: none !important;
     transition-duration: 0ms !important;
@@ -429,6 +429,16 @@
   border-radius: 6px;
 }
 
+.rows .thumb > .motionGrid {
+  height: 100%;
+  grid-auto-rows: minmax(0, 1fr);
+  border-radius: 6px;
+}
+
+.rows .motionCell {
+  aspect-ratio: auto;
+}
+
 .cardText {
   display: flex;
   flex: none;
@@ -437,90 +447,7 @@
   width: 100%;
 }
 
-/* Strip row: the images run edge to edge past both sides of the card. */
-.stripCard {
-  padding: 32px 0;
-  overflow: hidden;
-}
-
-.stripCard > .cardText {
-  padding: 0 32px;
-}
-
-.stripWrap {
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-}
-
-.strip {
-  display: flex;
-  gap: 2px;
-  height: calc(100% + 16px);
-  margin: -8px 0; /* room for the hover grow, which the scroller would clip */
-  padding: 8px 0;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  cursor: grab;
-}
-
-.strip::-webkit-scrollbar {
-  display: none;
-}
-
-.strip:active {
-  cursor: grabbing;
-}
-
-.frame {
-  position: relative;
-  flex: none;
-  height: 100%;
-  width: calc((118cqi - (var(--frames, 4) - 1) * 2px) / var(--frames, 4));
-  border-radius: 6px;
-  overflow: hidden;
-  outline: 0.5px solid rgb(255 255 255 / 0.08);
-  outline-offset: -0.5px;
-  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
-  transition:
-    scale 420ms var(--bounce),
-    rotate 420ms var(--bounce);
-}
-
-.frame > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  -webkit-user-drag: none;
-  pointer-events: none;
-}
-
-.motionFrame {
-  background: #fff;
-}
-
-.motionFrame[data-icon] .motionPlayer {
-  inset: 22% 0;
-}
-
-.stripWrap > .teaser {
-  left: 50%;
-  right: auto;
-  width: min(440px, calc(100% - 64px));
-  translate: -50% 0;
-}
-
-@media (hover: hover) {
-  .stripCard:hover .frame {
-    scale: 1.03;
-    rotate: var(--tilt, 0deg);
-  }
-}
-
-/* Phones: one tile per row, in reading order. The strip keeps scrolling sideways. */
+/* Phones: one tile per row, in reading order. The carousel keeps its own scaling. */
 @media (max-width: 639px) {
   .feed {
     padding-bottom: 48px;
@@ -541,15 +468,6 @@
 
   .media {
     aspect-ratio: 4 / 3;
-  }
-
-  .stripWrap {
-    flex: none;
-    height: 56cqi;
-  }
-
-  .frame {
-    width: 72cqi;
   }
 
   /* No hover on touch: the cover stays clear and the title carries the card. */

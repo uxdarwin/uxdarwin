@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useLayoutEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { media, type MediaTile } from "../content/media";
-import { projects, type Project, type ProjectImage } from "../content/projects";
+import { projects, type Project } from "../content/projects";
 import { CompanyPanel } from "./CompanyPanel";
-import { Lottie } from "./Lottie";
 import { MotionGrid } from "./MotionGrid";
 import { MetaLogo } from "./ProjectMeta";
 import { seeded } from "./drag";
 import { useCompany } from "./filter";
+import { TunnelStrip } from "./TunnelStrip";
 import { useReveal } from "./reveal";
 import styles from "./feed.module.css";
 
@@ -17,11 +17,11 @@ import styles from "./feed.module.css";
 //   three        three cards, square covers
 //   cardMedia    a card (one third) and a wide photo (two thirds)
 //   mediaCard    the same, mirrored
-//   strip        one project across the row, its images in a strip that bleeds off both edges
+//   strip        one project across the row as a Tunnel Strip carousel (5+ images)
 //   two          two cards, wide covers
 //   wideMedia    a wide card (two thirds) and a tall photo (one third)
 //   mediaWide    the same, mirrored
-// Projects with several images take a strip row; the rest follow PATTERN, which drops a photo
+// Projects with a carousel of 5+ images take a strip row; the rest follow PATTERN, which drops a photo
 // row once its kind of photo runs out. Covers are cropped to their frames.
 
 type RowType = "three" | "two" | "cardMedia" | "mediaCard" | "wideMedia" | "mediaWide" | "strip" | "single";
@@ -36,15 +36,9 @@ const MEDIA_KIND: Partial<Record<RowType, MediaTile["kind"]>> = {
   mediaWide: "narrow",
 };
 
-/** The images a strip row shows: Lottie clips, or the cover followed by the story images. */
-function stripOf(p: Project): { motion?: Project["motion"]; images?: ProjectImage[] } | null {
-  if (p.motion && p.motion.length > 1) return { motion: p.motion };
-  const seen = new Set<string>();
-  const images = [p.image, ...p.story.flatMap((b) => (b.type === "images" ? b.items : []))].filter(
-    (i): i is ProjectImage => !!i && !seen.has(i.src) && !!seen.add(i.src),
-  );
-  return images.length >= 3 ? { images } : null;
-}
+/** Carousel rows need at least 5 images (Darwin's rule); fewer and the project is a card. */
+const MIN_CAROUSEL = 5;
+const isCarousel = (p: Project) => (p.carousel?.length ?? 0) >= MIN_CAROUSEL;
 
 function rowsOf(list: Project[], pool: MediaTile[]): Row[] {
   const left = { wide: pool.filter((m) => m.kind === "wide"), narrow: pool.filter((m) => m.kind === "narrow") };
@@ -52,13 +46,13 @@ function rowsOf(list: Project[], pool: MediaTile[]): Row[] {
   let i = 0;
   let step = 0;
   while (i < list.length) {
-    if (stripOf(list[i])) {
+    if (isCarousel(list[i])) {
       rows.push({ type: "strip", projects: [list[i++]] });
       continue;
     }
     // Cards available before the next strip project.
     let room = 0;
-    while (i + room < list.length && !stripOf(list[i + room])) room++;
+    while (i + room < list.length && !isCarousel(list[i + room])) room++;
 
     let type: RowType | null = null;
     for (let tries = 0; tries < PATTERN.length && !type; tries++, step++) {
@@ -105,7 +99,7 @@ export function ProjectsFeed() {
           {rows.map((row) => (
             <div key={row.projects[0].slug} className={styles.row} data-type={row.type}>
               {row.type === "strip" ? (
-                <StripCard project={row.projects[0]} />
+                <CarouselRow project={row.projects[0]} />
               ) : (
                 <>
                   {(row.type === "mediaCard" || row.type === "mediaWide") && row.media && <Media tile={row.media} />}
@@ -199,78 +193,15 @@ function ProjectCard({ project: p }: { project: Project }) {
   );
 }
 
-/**
- * One project across the row (Figma row 4): its images sit in a strip that bleeds off both
- * edges, starts centered and can be dragged sideways (or swiped) to see the rest.
- */
-function StripCard({ project: p }: { project: Project }) {
-  const strip = stripOf(p)!;
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const dragged = useRef(false);
-
-  useLayoutEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const center = () => (el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2);
-    center();
-    const ro = new ResizeObserver(center);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  const onPointerDown = (e: React.PointerEvent) => {
-    const el = scrollRef.current;
-    if (!el || e.pointerType !== "mouse" || e.button !== 0) return;
-    const x0 = e.clientX;
-    const s0 = el.scrollLeft;
-    dragged.current = false;
-    const move = (ev: PointerEvent) => {
-      const dx = ev.clientX - x0;
-      if (Math.abs(dx) > 4) dragged.current = true;
-      el.scrollLeft = s0 - dx;
-    };
-    const up = () => {
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerup", up);
-    };
-    window.addEventListener("pointermove", move);
-    window.addEventListener("pointerup", up);
-  };
-
-  const frames = strip.motion ? strip.motion.length : strip.images!.length;
-
+function CarouselRow({ project: p }: { project: Project }) {
   return (
-    <Link
+    <TunnelStrip
+      variant="wide"
+      images={p.carousel!}
       href={`/projects/${p.slug}`}
-      className={`${styles.card} ${styles.stripCard}`}
-      draggable={false}
-      data-reveal=""
-      data-sound-hover=""
-      data-cuelume-tap=""
-      onClickCapture={(e) => {
-        if (dragged.current) {
-          e.preventDefault();
-          dragged.current = false;
-        }
-      }}
-    >
-      <div className={styles.stripWrap}>
-        <div ref={scrollRef} className={styles.strip} style={{ "--frames": frames } as React.CSSProperties} onPointerDown={onPointerDown}>
-          {strip.motion
-            ? strip.motion.map((c) => (
-                <div key={c.src} className={`${styles.frame} ${styles.motionFrame}`} style={tiltOf(c.src)} data-icon={c.width === c.height || undefined}>
-                  <Lottie src={c.src} label={`${c.label} animation`} className={styles.motionPlayer} />
-                </div>
-              ))
-            : strip.images!.map((im) => (
-                <div key={im.src} className={styles.frame} style={tiltOf(im.src)}>
-                  <img src={im.src} alt={im.alt} width={im.width} height={im.height} loading="lazy" decoding="async" draggable={false} />
-                </div>
-              ))}
-        </div>
-        <Teaser text={p.teaser} />
-      </div>
-      <CardText project={p} />
-    </Link>
+      year={String(p.year)}
+      client={p.client}
+      title={p.description}
+    />
   );
 }
