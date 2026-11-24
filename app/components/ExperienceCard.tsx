@@ -55,17 +55,15 @@ export function ExperienceCard() {
         </div>
       </div>
 
-      <div className={styles.more}>
+      <button type="button" className={styles.more} onClick={() => setCvOpen(true)} aria-haspopup="dialog">
         <span className={styles.moreIcon} aria-hidden="true">
           <FileTextIcon />
         </span>
         <span className={styles.moreText}>
           <span className={styles.moreTitle}>And more</span>
-          <button type="button" className={styles.textLink} onClick={() => setCvOpen(true)} aria-haspopup="dialog">
-            Read full CV
-          </button>
+          <span className={styles.textLink}>Read full CV</span>
         </span>
-      </div>
+      </button>
 
       <CvModal open={cvOpen} onClose={() => setCvOpen(false)} />
     </section>
