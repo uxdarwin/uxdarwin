@@ -2,6 +2,7 @@ import { ExperienceCard } from "./components/ExperienceCard";
 import { HighlightsCard } from "./components/HighlightsCard";
 import { IntroCard } from "./components/IntroCard";
 import { LocationCard } from "./components/LocationCard";
+import { ProjectsFeed } from "./components/ProjectsFeed";
 import styles from "./components/panel.module.css";
 
 export default function Home() {
@@ -13,8 +14,9 @@ export default function Home() {
         <HighlightsCard />
         <LocationCard />
       </aside>
-      {/* Center and right columns come next. */}
-      <main className={styles.content} />
+      <main className={styles.content}>
+        <ProjectsFeed />
+      </main>
     </div>
   );
 }
