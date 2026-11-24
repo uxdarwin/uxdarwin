@@ -178,25 +178,12 @@
   margin-left: -18px;
 }
 
-/* The two circles overlap by 18px. Whichever is behind is cut away where the
-   front one sits, so the pair reads as one button cleanly in front of the other
-   instead of two translucent discs stacking. Mail is in front by default;
-   hovering LinkedIn brings it forward and the cut flips to the mail button. */
-.linkedinBtn {
-  --cut: radial-gradient(circle at -12px 50%, transparent 30.5px, #000 31px);
-  -webkit-mask-image: var(--cut);
-  mask-image: var(--cut);
-}
-
-.social:has(.linkedinBtn:hover, .linkedinBtn:focus-visible) .linkedinBtn {
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-.social:has(.linkedinBtn:hover, .linkedinBtn:focus-visible) .mailBtn {
-  --cut: radial-gradient(circle at 72px 50%, transparent 30.5px, #000 31px);
-  -webkit-mask-image: var(--cut);
-  mask-image: var(--cut);
+/* The two circles overlap by 18px. A translucent fill let each circle show through
+   the other, so the buttons get a solid fill (the card color one surface step up):
+   whichever is in front fully covers the one behind. Mail is in front by default;
+   hovering LinkedIn raises it (z-index on hover below). */
+.roundBtn {
+  background: var(--button-solid);
 }
 
 .roundBtn:hover,
