@@ -23,7 +23,7 @@ void main(){
   float r=length(d);
   float ring=sin(r*34.-time*9.)*exp(-r*2.4);
   vec2 dir=r>0.0001?d/r:vec2(0.);
-  vec2 off=dir*ring*.022*amp/vec2(aspect,1.);
+  vec2 off=dir*ring*.018*amp/vec2(aspect,1.);
   off.x+=sin(uv.y*90.+time*7.)*.004*amp;
   float ab=.007*amp*(.5+abs(ring));
   vec2 q=uv+off;
@@ -35,6 +35,9 @@ void main(){
   col+=vec3(.2,.85,1.)*max(mb-m,0.)*.75;
   gl_FragColor=vec4(col,1.);
 }`;
+
+const MAX_SPEED = 0.9; // tile widths per second
+const MAX_ENERGY = 0.9;
 
 const rgb = (css: string) => (css.match(/[\d.]+/g) ?? ["0", "0", "0"]).slice(0, 3).map((n) => Number(n) / 255);
 
@@ -84,10 +87,15 @@ export function YearTile({ year, order }: { year: number; order: number }) {
       ctx.fillRect(0, 0, w, h);
       ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
       ctx.fillStyle = "#fff";
-      const m = ctx.measureText(String(year));
-      const x = w / 2 - (m.actualBoundingBoxRight - m.actualBoundingBoxLeft) / 2 + m.actualBoundingBoxLeft;
-      const y = h / 2 + (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2;
-      ctx.fillText(String(year), x, y);
+      // Place the digits exactly where the page draws them, so switching to the canvas never
+      // shifts them: the span is trimmed to cap height and baseline, so its left edge is the
+      // text origin and its bottom edge is the baseline.
+      const t = tile.getBoundingClientRect();
+      const r = text.getBoundingClientRect();
+      const sx = t.width / w || 1; // the tile may be mid entry animation
+      ctx.textBaseline = "alphabetic";
+      ctx.textAlign = "left";
+      ctx.fillText(String(year), (r.left - t.left) / sx, (r.bottom - t.top) / sx);
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
       gl.uniform1f(u.aspect, w / h);
@@ -137,12 +145,19 @@ export function YearTile({ year, order }: { year: number; order: number }) {
       last = now;
       const auto = !hovering && now < autoUntil;
       if (auto) mouse.tx += drift * dt; // the self-playing ripple drifts across the digits
-      mouse.x += (mouse.tx - mouse.x) * Math.min(1, dt * 10);
-      mouse.y += (mouse.ty - mouse.y) * Math.min(1, dt * 10);
+      // The ripple's center follows the pointer at a capped speed, so fast flicks glide.
+      const dx = mouse.tx - mouse.x;
+      const dy = mouse.ty - mouse.y;
+      const dist = Math.hypot(dx, dy);
+      const step = Math.min(dist * Math.min(1, dt * 6), MAX_SPEED * dt);
+      if (dist > 0) {
+        mouse.x += (dx / dist) * step;
+        mouse.y += (dy / dist) * step;
+      }
       energy *= Math.exp(-dt * 2.6); // resting settles back to sharp
       const active = hovering || auto;
-      const target = active ? Math.min(hovering ? 1 : 0.75, energy) : 0;
-      amp += (target - amp) * Math.min(1, dt * (active ? 8 : 5));
+      const target = active ? Math.min(hovering ? 0.85 : 0.7, energy) : 0;
+      amp += (target - amp) * Math.min(1, dt * 4);
       if (gl) {
         gl.uniform2f(u.mouse, mouse.x, mouse.y);
         gl.uniform1f(u.time, (now - start) / 1000);
@@ -168,13 +183,14 @@ export function YearTile({ year, order }: { year: number; order: number }) {
       mouse.x = mouse.tx = p.x;
       mouse.y = mouse.ty = p.y;
       hovering = true;
-      energy = 1.1; // a splash on the way in
+      energy = Math.max(energy, 0.9); // a splash on the way in
       run();
     };
     const onMove = (e: PointerEvent) => {
       if (!hovering) return;
       const p = local(e);
-      energy = Math.min(1.2, energy + Math.hypot(p.x - mouse.tx, p.y - mouse.ty) * 2.2);
+      // Movement adds energy in small, capped steps, so a fast pointer can't overdrive it.
+      energy = Math.min(MAX_ENERGY, energy + Math.min(0.06, Math.hypot(p.x - mouse.tx, p.y - mouse.ty) * 1.2));
       mouse.tx = p.x;
       mouse.ty = p.y;
     };
@@ -219,6 +235,7 @@ export function YearTile({ year, order }: { year: number; order: number }) {
     );
     io.observe(tile);
     const ro = new ResizeObserver(() => paint());
+    document.fonts?.ready.then(() => paint());
     ro.observe(tile);
     tile.addEventListener("pointerenter", onEnter);
     tile.addEventListener("pointermove", onMove);
