@@ -31,10 +31,23 @@ function LocalTime() {
 
 type GlobeHandle = { update: (s: Record<string, unknown>) => void; destroy: () => void };
 
-// Resting pose: the globe sits turned a little away, with a dim marker. On hover it
-// spins Medellín into view and the marker lights up (after dannpetty.com's card).
-const REST = { phi: -0.45, theta: -0.2, marker: 0.04, light: 0.6 };
+// At rest the globe drifts in a slow loop between South and North America with a dim
+// marker. On hover it spins Medellín into view and the marker lights up.
+// Offsets are from Medellín: +theta looks further north, +phi turns west.
+const SOUTH = { phi: -0.27, theta: -0.37 }; // ~15°S 60°W
+const NORTH = { phi: 0.43, theta: 0.6 }; // ~40°N 100°W
+const TOUR_MS = 16000; // one full south → north → south loop
+const REST = { phi: SOUTH.phi, theta: SOUTH.theta, marker: 0.04, light: 0.6 };
 const FOCUS = { phi: 0, theta: 0, marker: 0.06, light: 1 };
+
+function tour(t: number) {
+  const m = (1 - Math.cos((2 * Math.PI * t) / TOUR_MS)) / 2; // 0 → 1 → 0, eased at the ends
+  return {
+    ...REST,
+    phi: SOUTH.phi + (NORTH.phi - SOUTH.phi) * m,
+    theta: SOUTH.theta + (NORTH.theta - SOUTH.theta) * m,
+  };
+}
 
 /** Dotted globe centered on Medellín, drawn with cobe (WebGL). */
 function Globe({ active }: { active: boolean }) {
@@ -73,11 +86,19 @@ function Globe({ active }: { active: boolean }) {
 
     let last = 0;
     let warmUntil = 0;
+    // Only animate while the card is on screen.
+    let visible = true;
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      kick.current();
+    });
+    io.observe(canvas);
     const step = (t: number) => {
       const dt = Math.min((t - (last || t)) / 1000, 1 / 30);
       last = t;
-      const target = activeRef.current ? FOCUS : REST;
-      let moving = false;
+      const touring = !activeRef.current && !reduce && visible;
+      const target = activeRef.current ? FOCUS : touring ? tour(t) : REST;
+      let moving = touring;
       for (const k of keys) {
         if (reduce) {
           pos[k] = target[k];
@@ -129,6 +150,7 @@ function Globe({ active }: { active: boolean }) {
 
     return () => {
       cancelled = true;
+      io.disconnect();
       cancelAnimationFrame(raf);
       globe?.destroy();
     };
