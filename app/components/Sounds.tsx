@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { bind, play, setEnabled, setTheme, setVolume } from "cuelume";
+import { THEMES } from "cuelume/themes";
 
 // Interaction sounds, synthesized live by Cuelume in its Mech theme.
 // Clicks: elements marked `data-cuelume-tap` play `tap` (wired by bind()).
@@ -15,10 +16,26 @@ import { bind, play, setEnabled, setTheme, setVolume } from "cuelume";
 
 const HOVER_SELECTOR = "[data-sound-hover]";
 const HOVER_GAP_MS = 150;
+// Hover cue tuning, per Darwin: half as loud, 1.25x faster.
+const HOVER_VOLUME = 0.5;
+const HOVER_SPEED = 1.25;
+
+// Cuelume has no speed option, so shorten the Mech loading cue's envelope
+// once, in place. Pitch is left alone so it keeps the Mech material.
+let hoverTuned = false;
+function tuneHoverCue() {
+  if (hoverTuned) return;
+  hoverTuned = true;
+  for (const layer of THEMES.mech.loading.layers as Array<{ attack: number; decay: number }>) {
+    layer.attack /= HOVER_SPEED;
+    layer.decay /= HOVER_SPEED;
+  }
+}
 
 export function Sounds() {
   useEffect(() => {
     setTheme("mech");
+    tuneHoverCue();
     setVolume(0.6);
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -41,7 +58,7 @@ export function Sounds() {
       const now = performance.now();
       if (now - lastHover < HOVER_GAP_MS) return;
       lastHover = now;
-      play("loading", { emphasis: "subtle" });
+      play("loading", { emphasis: "subtle", volume: HOVER_VOLUME });
     };
     document.addEventListener("pointerover", onPointerOver);
 
