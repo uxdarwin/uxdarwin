@@ -53,6 +53,8 @@ export type Project = {
   pairNext?: boolean;
   /** With wide: share the row with the previous card, which sits on the left. */
   pairPrev?: boolean;
+  /** Close the feed row after this card, so the cards before it share a row on their own. */
+  rowEnd?: boolean;
   /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
   carousel?: string[];
   /** Four screen animations shown as a mosaic in the card, and by a "mosaic" block. */
@@ -207,7 +209,6 @@ const CB_OKTA_DONE = img("cb-okta-done.webp", "Okta connection completed: three 
 const CB_INSPECT_APPS = img("cb-inspect-apps.webp", "Inspect's Applications tab: counts of added, unavailable, inspected and not-inspected apps, the Okta sync status, and each app with its source and last inspection", 2400, 1500);
 const CB_AD_POINT = img("cb-inspect-ad-point.webp", "Inspect campaign ad: a castle certificate reads Security status while the real castle behind it crumbles. Your vendor passed the test. Is it still true today?", 1620, 1620);
 const CB_AD_VERIFY = img("cb-inspect-ad-verify.webp", "Inspect campaign ad: a small robot with an Inspector badge scans a castle into a wireframe. Test your third parties continuously", 1620, 1620);
-const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
 const BFF_COVER = img("bff-cover.webp", "BFF: two phones with the fan home page and the request menu (comment, like, follow, greeting, serenade) beside a person holding a BFF sign", 1920, 1320);
 const BFF_MOCKUPS = img("bff-mockups.webp", "BFF fan app screens laid out on pink: talent search, featured talent, services, request details and a celebrity video", 1345, 896);
 const BFF_CLIENT = img("bff-client-app.webp", "BFF fan app store screens: home with a celebrity video, a 10% first-request offer, services with prices, and occasions", 1566, 685);
@@ -564,6 +565,7 @@ export const projects: Project[] = [
     description: "Contract management and AI clause review inside Coverbase, redesigned around the questions customers bring to it.",
     teaser: "What expires, and when do I act? Redesigning the contracts portfolio around dates",
     image: CONTRACTS_COVER,
+    coverVideo: { src: "/media/cb-contracts-cover.mp4", poster: "/media/cb-contracts-cover.webp", width: 1600, height: 1000, fill: true },
     story: [
       { type: "images", items: [CONTRACTS_COVER] },
       {
@@ -922,18 +924,68 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "appraiser",
-    year: 2025, // estimate
+    slug: "inspect-zero-touch",
+    year: 2026,
     employer: CB,
-    client: "Appraiser V2",
-    description: "One Coverbase product surface, from low-fidelity rounds to high fidelity.",
-    teaser: "Every round saved as a dated version: how Appraiser evolved",
-    image: APPRAISER_COVER,
+    client: "Inspect and Zero Touch",
+    description: "Two ways to check a vendor without waiting on a questionnaire: test their live service, or assess them from evidence that already exists.",
+    teaser: "Test the service, not the certificate",
+    image: INSPECT_ZERO_TOUCH_COVER,
     story: [
-      { type: "images", items: [APPRAISER_COVER] },
+      { type: "images", items: [INSPECT_ZERO_TOUCH_COVER] },
       {
         type: "p",
-        text: "The Appraiser V2 file runs from low-fidelity rounds to high-fidelity rounds, each saved as a dated version, which makes it the clearest record of one Coverbase surface evolving over time.",
+        text: "A vendor review usually rests on documents: a SOC 2 report, a questionnaire, a certificate. They describe what was true at one point in time. Inspect checks what is true now. Read-only agents sign in to the third-party apps a company uses and test the controls that matter, such as MFA, single sign-on and admin access, and keep time-stamped evidence of what they saw.",
+      },
+      { type: "h", text: "A guided connection to Okta" },
+      {
+        type: "p",
+        text: "Inspect needs access to the company's identity provider before it can test anything. I started with the first screen: say plainly what Inspect does, then offer two ways in, connect Okta or Microsoft Entra to discover managed apps, or browse an application library for a quick test or an app outside the identity provider. The word library mattered: it tells people there are ready-made settings to start from.",
+      },
+      { type: "images", items: [CB_INSPECT_START] },
+      {
+        type: "p",
+        text: "The connection itself became four guided steps: app details, configuring the connection, syncing and selecting applications, and preparing them for inspection. Each step separates what the person does in Okta from what Coverbase checks automatically, and asks for access only when it becomes relevant: the scopes for creating an inspection identity are explained up front but used only after apps are chosen, behind an explicit approval. I designed the loading and error states of every step, plus an empty inventory, so a wrong client ID or a missing role can be fixed in place without starting over.",
+      },
+      { type: "images", items: [CB_OKTA_CONNECT, CB_OKTA_SELECT] },
+      { type: "images", items: [CB_OKTA_DONE] },
+      {
+        type: "p",
+        text: "Connections then got one home under Configuration: a card for each of Okta, Microsoft Entra and Google OAuth, with status, last sync, the inventory available and the apps already added to Inspect.",
+      },
+      { type: "images", items: [CB_INSPECT_CONFIG] },
+      { type: "h", text: "From one inspection to continuous checks" },
+      {
+        type: "p",
+        text: "Once apps are connected, the Applications view shows what is inspected, what isn't, and what can't be reached. Inspections run on a schedule, and each run is compared with the last, separating material changes from noise, so a reviewer sees what changed rather than rereading everything.",
+      },
+      { type: "images", items: [CB_INSPECT_APPS] },
+      { type: "h", text: "Zero Touch Assessments" },
+      {
+        type: "p",
+        text: "Zero Touch is the lightweight sibling: an assessment built from public data and the intelligence Coverbase already holds, with no questionnaire and no outreach to the vendor. The first version treated it like a smaller traditional assessment, so reviewers expected to go through it issue by issue. I reframed it as screening: one assessment-level conclusion with grouped observations and the evidence behind them, and a default path of launch, review the summary, then close, or only when it's warranted, raise a finding or start a full assessment.",
+      },
+      { type: "images", items: [CB_ZERO_TOUCH] },
+      {
+        type: "p",
+        text: "I designed the completed results first and worked backward into launch and processing. While a run is in progress, the old page offered Approve, Escalate and Archive before there was anything to act on, and filled the screen with empty scores, findings and sources. The new running state shows what Coverbase is doing right now, section by section, with a persistent index for jumping around a long report.",
+      },
+      { type: "images", items: [CB_ZT_RUNNING] },
+      {
+        type: "p",
+        text: "On the completed page, the risk level and score come first, risk information is grouped in one place, and the reviewer decision stays in view on the right. Sections carry a confidence label, because evidence quality varies and \u201cnothing found\u201d must never read as \u201cstrong evidence of low risk\u201d.",
+      },
+      { type: "images", items: [CB_ZT_COMPLETED] },
+      { type: "h", text: "Taking it to market" },
+      {
+        type: "p",
+        text: "I also designed the September 2026 launch campaign for Inspect, built on one idea: a certificate says the castle was safe once. These two ads ran on LinkedIn and Meta.",
+      },
+      { type: "images", items: [CB_AD_POINT, CB_AD_VERIFY] },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "Both shipped in the September 2026 release. Inspect gained scheduled inspections, notifications for outcomes that need attention, change comparisons, evidence from browser activity and API responses, an Accounts view and repeatable probes. Zero Touch gained the new summary, six pre-built templates, and a way to build it into intake and other workflows. The first-run page, the guided Okta connection, the Configuration cards and the redesigned running and completed Zero Touch pages all shipped.",
       },
     ],
   },
@@ -1029,72 +1081,6 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    slug: "inspect-zero-touch",
-    year: 2026,
-    employer: CB,
-    client: "Inspect and Zero Touch",
-    description: "Two ways to check a vendor without waiting on a questionnaire: test their live service, or assess them from evidence that already exists.",
-    teaser: "Test the service, not the certificate",
-    image: INSPECT_ZERO_TOUCH_COVER,
-    story: [
-      { type: "images", items: [INSPECT_ZERO_TOUCH_COVER] },
-      {
-        type: "p",
-        text: "A vendor review usually rests on documents: a SOC 2 report, a questionnaire, a certificate. They describe what was true at one point in time. Inspect checks what is true now. Read-only agents sign in to the third-party apps a company uses and test the controls that matter, such as MFA, single sign-on and admin access, and keep time-stamped evidence of what they saw.",
-      },
-      { type: "h", text: "A guided connection to Okta" },
-      {
-        type: "p",
-        text: "Inspect needs access to the company's identity provider before it can test anything. I started with the first screen: say plainly what Inspect does, then offer two ways in, connect Okta or Microsoft Entra to discover managed apps, or browse an application library for a quick test or an app outside the identity provider. The word library mattered: it tells people there are ready-made settings to start from.",
-      },
-      { type: "images", items: [CB_INSPECT_START] },
-      {
-        type: "p",
-        text: "The connection itself became four guided steps: app details, configuring the connection, syncing and selecting applications, and preparing them for inspection. Each step separates what the person does in Okta from what Coverbase checks automatically, and asks for access only when it becomes relevant: the scopes for creating an inspection identity are explained up front but used only after apps are chosen, behind an explicit approval. I designed the loading and error states of every step, plus an empty inventory, so a wrong client ID or a missing role can be fixed in place without starting over.",
-      },
-      { type: "images", items: [CB_OKTA_CONNECT, CB_OKTA_SELECT] },
-      { type: "images", items: [CB_OKTA_DONE] },
-      {
-        type: "p",
-        text: "Connections then got one home under Configuration: a card for each of Okta, Microsoft Entra and Google OAuth, with status, last sync, the inventory available and the apps already added to Inspect.",
-      },
-      { type: "images", items: [CB_INSPECT_CONFIG] },
-      { type: "h", text: "From one inspection to continuous checks" },
-      {
-        type: "p",
-        text: "Once apps are connected, the Applications view shows what is inspected, what isn't, and what can't be reached. Inspections run on a schedule, and each run is compared with the last, separating material changes from noise, so a reviewer sees what changed rather than rereading everything.",
-      },
-      { type: "images", items: [CB_INSPECT_APPS] },
-      { type: "h", text: "Zero Touch Assessments" },
-      {
-        type: "p",
-        text: "Zero Touch is the lightweight sibling: an assessment built from public data and the intelligence Coverbase already holds, with no questionnaire and no outreach to the vendor. The first version treated it like a smaller traditional assessment, so reviewers expected to go through it issue by issue. I reframed it as screening: one assessment-level conclusion with grouped observations and the evidence behind them, and a default path of launch, review the summary, then close, or only when it's warranted, raise a finding or start a full assessment.",
-      },
-      { type: "images", items: [CB_ZERO_TOUCH] },
-      {
-        type: "p",
-        text: "I designed the completed results first and worked backward into launch and processing. While a run is in progress, the old page offered Approve, Escalate and Archive before there was anything to act on, and filled the screen with empty scores, findings and sources. The new running state shows what Coverbase is doing right now, section by section, with a persistent index for jumping around a long report.",
-      },
-      { type: "images", items: [CB_ZT_RUNNING] },
-      {
-        type: "p",
-        text: "On the completed page, the risk level and score come first, risk information is grouped in one place, and the reviewer decision stays in view on the right. Sections carry a confidence label, because evidence quality varies and \u201cnothing found\u201d must never read as \u201cstrong evidence of low risk\u201d.",
-      },
-      { type: "images", items: [CB_ZT_COMPLETED] },
-      { type: "h", text: "Taking it to market" },
-      {
-        type: "p",
-        text: "I also designed the September 2026 launch campaign for Inspect, built on one idea: a certificate says the castle was safe once. These two ads ran on LinkedIn and Meta.",
-      },
-      { type: "images", items: [CB_AD_POINT, CB_AD_VERIFY] },
-      { type: "h", text: "Result" },
-      {
-        type: "p",
-        text: "Both shipped in the September 2026 release. Inspect gained scheduled inspections, notifications for outcomes that need attention, change comparisons, evidence from browser activity and API responses, an Accounts view and repeatable probes. Zero Touch gained the new summary, six pre-built templates, and a way to build it into intake and other workflows. The first-run page, the guided Okta connection, the Configuration cards and the redesigned running and completed Zero Touch pages all shipped.",
-      },
-    ],
-  },
 
   // ---------- 2024 ----------
   {
@@ -1133,6 +1119,7 @@ export const projects: Project[] = [
 
   {
     slug: "atlas",
+    rowEnd: true,
     year: 2024,
     employer: TT,
     client: "Atlas",
