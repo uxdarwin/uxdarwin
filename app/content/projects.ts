@@ -87,6 +87,20 @@ const MOTION_MOSAIC: PageVideoSrc[] = [
   { src: "/media/statements/anim2.mp4", poster: "/media/statements/anim2.webp", alt: "Empty state animation: the bill draws itself and a warning appears above “You have invoices to upload”", width: 688, height: 688 },
 ];
 const MOTION_CLIPS: ProjectImage[] = MOTION_MOSAIC.map((v) => ({ src: v.poster, video: v.src, alt: v.alt, width: v.width, height: v.height }));
+const WED_VIDEO = {
+  src: "/media/wedding/invitation.mp4",
+  poster: "/media/wedding/invitation.webp",
+  alt: "Scroll through the wedding invitation on a phone: the glowing monogram under a starry sky, the invitation over a cherry blossom scene, the RSVP envelope with its wax seal, the story timeline, the venue, the dress code and the questions",
+  width: 800,
+  height: 1732,
+};
+const wed = (n: string, alt: string) => img(`wedding-${n}.webp`, alt, 800, 1732);
+const WED_HERO = wed("hero", "The invitation’s opening: the monogram, “we invite you to our wedding” and a button to answer, over cherry blossoms");
+const WED_RSVP = wed("rsvp", "The RSVP as an envelope with a wax seal: will you join us, with yes, no and not sure yet, and a thank-you once confirmed");
+const WED_STORY = wed("story", "The story timeline: photo cards for each milestone, like where we met, with the place and the year");
+const WED_VENUE = wed("venue", "The venue section: an illustrated estate by the water, with buttons for the map and a guide to get there");
+const WED_DRESS = wed("dress-code", "The dress code: a fabric palette for guests, with white and similar tones reserved for the bride");
+const WED_FAQ = wed("faq", "Other questions, grouped by topic: attendance and guests, schedule, venue and recommendations, and contact");
 const COCUY = img(
   "cocuy.webp",
   "Cover of Cocuy, the 1P Main Library, over a photo of the Púlpito del Diablo in El Cocuy",
@@ -292,6 +306,45 @@ export const projects: Project[] = [
         text: "A render is a flat image. I split it into layers (sky, building, foliage and interface) and animated them strategically, with a slow push-in and parallax at different depths, so the hero feels alive instead of static. The clip at the top shows the intro and the scroll into the project section on mobile. Below, from left to right: the raw render, the same render graded with foliage framing the building, and the layers I split it into for motion.",
       },
       { type: "images", items: [PC_LAYERS] },
+    ],
+  },
+  {
+    slug: "wedding-invitation",
+    year: 2026,
+    employer: { label: "Personal" },
+    client: "Wedding invitation",
+    description: "Our wedding invitation, designed and shipped by me, still in progress.",
+    teaser: "Content first, then shaders: a monogram, a sky of stars and falling petals",
+    image: WED_HERO,
+    coverVideo: { src: WED_VIDEO.src, poster: WED_VIDEO.poster, width: WED_VIDEO.width, height: WED_VIDEO.height },
+    story: [
+      { type: "trio", left: WED_HERO, video: WED_VIDEO, right: WED_RSVP },
+      {
+        type: "p",
+        text: "Our wedding invitation was a personal challenge. The clients were my fiancée and me, so putting myself in the guests’ shoes came easily. I designed everything, from the monogram and the visuals to the animations, and I’m building and shipping it myself. It isn’t the final version yet.",
+      },
+      { type: "h", text: "Content first" },
+      {
+        type: "p",
+        text: "As with every landing page, I started with the content, not the visuals. I set UX goals around the questions guests would have, in what order they’d have them and how much detail each one needs. That shaped the page: the invitation and the RSVP first, then our story, the venue and how to get there, the dress code, and the rest of the questions grouped by topic so nobody has to message us to find an answer.",
+      },
+      { type: "images", items: [WED_STORY, WED_FAQ] },
+      { type: "h", text: "Experimenting with shaders" },
+      {
+        type: "p",
+        text: "The second challenge was the visual direction. I wanted to experiment a lot with shaders from Vercel’s vgpu.sh, and I used them for the glowing monogram, the starry sky, and the particles of cherry blossom petals floating off the tree. The stars are interactive: tap the sky and you trigger a shooting star.",
+      },
+      { type: "h", text: "Rooms with their own mood" },
+      {
+        type: "p",
+        text: "I wanted many references to our relationship, and at the same time a look that holds together. I treated it like interior design: not every room needs the same mood. Each section tells its own story, so the hardest part was the transitions between them, making each change of scene feel smooth rather than abrupt.",
+      },
+      { type: "images", items: [WED_VENUE, WED_DRESS] },
+      { type: "h", text: "What I’d push next" },
+      {
+        type: "p",
+        text: "If I critique my own work, visual consistency is the weakest part of this version, and it’s what I want to work on most in the next iteration. The next big goal is the RSVP system, connected to WhatsApp, which almost all of our guests use, so they get a great experience before and during the wedding.",
+      },
     ],
   },
   {
