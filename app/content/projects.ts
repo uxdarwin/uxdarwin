@@ -108,9 +108,32 @@ const WED_FAQ = wed("faq", "Other questions, grouped by topic: attendance and gu
 const COCUY = img(
   "cocuy.webp",
   "Cover of Cocuy, the 1P Main Library, over a photo of the Púlpito del Diablo in El Cocuy",
-  1000,
-  562,
+  2400,
+  1350,
 );
+const CQ = (f: string, alt: string, w: number, h: number) => img(`cocuy-${f}.webp`, alt, w, h);
+const CQ_ANALYTICS = CQ("analytics", "Figma library analytics for Cocuy: component insertions over the year, top teams and component statistics, with Navbar at 12,920 instances", 1374, 1420);
+const CQ_UPLOAD_BEFORE = CQ("layout-upload-before", "Before: the offer upload page in the supplier center, with its own spacing and container widths", 2000, 1007);
+const CQ_UPLOAD = CQ("layout-upload", "After: the same upload page rebuilt on the shared Layout component", 2000, 1007);
+const CQ_OFFERS = CQ("layout-offers", "After: the offer status table in Scarlet on the shared Layout, navbar and side menu", 2000, 1007);
+const CQ_SEARCH_BEFORE = CQ("layout-offers-before", "Before: offer status search that took one SAP SKU at a time", 2000, 1008);
+const CQ_SEARCH = CQ("bulk-search", "After: the bulk search field open in Scarlet, holding dozens of IDs as tags", 2000, 1007);
+const CQ_SEARCH_PANDORA = CQ("bulk-search-pandora", "After: bulk search implemented in Pandora's First Party offer-removal tool", 2000, 1007);
+const CQ_ROW_BEFORE = CQ("row-before", "Before: purchase order rows in the supplier center", 2000, 1839);
+const CQ_ROW = CQ("row", "After: purchase order rows with a clearer hierarchy, shared with the Sales team's rows", 1775, 1632);
+const CQ_CARDS_BEFORE = CQ("cards-before", "Before: contract cards in Scarlet", 1366, 1500);
+const CQ_CARDS = CQ("cards", "After: contract cards with clearer reading levels and hierarchy", 2000, 2196);
+const CQ_MENU_BEFORE = CQ("sidemenu-before", "Before: three different side menus in Buying Portal, the supplier center and Scarlet", 2000, 1544);
+const CQ_MENU = CQ("sidemenu", "After: one side menu component across Buying Portal, the supplier center and Scarlet", 2000, 1468);
+const CQ_HEADERS_BEFORE = CQ("headers-before", "Before: the size guide manager header", 2000, 1007);
+const CQ_HEADERS = CQ("headers", "After: the size guide manager with standardized header spacing, alignment and hierarchy", 2000, 1070);
+const CQ_TOOLBARS_BEFORE = CQ("toolbars-before", "Before: the commercial agreements toolbar in Buying Portal, with the inconsistencies marked", 2000, 1007);
+const CQ_TOOLBARS = CQ("toolbars", "After: the commercial agreements page on the shared toolbar component", 2000, 1007);
+const CQ_ERRORS_BEFORE = CQ("errors-before", "Before: a generic error page in the supplier center", 1613, 829);
+const CQ_ERRORS_403 = CQ("errors-403", "After: the standard 403 page, asking for the missing permissions", 2000, 1007);
+const CQ_ERRORS_404 = CQ("errors-404", "After: the standard 404 page, with its illustration and wording", 2000, 1007);
+const CQ_CRUMBS_BEFORE = CQ("breadcrumbs-before", "Before: a cooperative agreement form with its own breadcrumb", 2000, 1018);
+const CQ_CRUMBS = CQ("breadcrumbs", "After: the same form with breadcrumbs built into the Layout component", 2000, 1018);
 const SPICE_COVER: ProjectImage = { src: "/media/spice-org-cover.webp", video: "/media/spice-org-cover.mp4", alt: "Spice.org hero intro: the navigation, headline, buttons and SQL query explorer rise into place over the lined background", width: 1600, height: 1468 };
 const SPICE_M_HERO = img("spice-org-mobile-hero.webp", "Spice.org on mobile: the headline, buttons and query explorer with paging dots", 786, 1704);
 const SPICE_M_MENU = img("spice-org-mobile-menu.webp", "Spice.org on mobile: the navigation menu open over the hero, with the demo video below", 786, 1604);
@@ -769,28 +792,88 @@ export const projects: Project[] = [
     year: 2025,
     employer: ML,
     client: "Cocuy",
-    description: "The B2B component library I started for Mercado Libre's First Party tools.",
+    description: "Cocuy, the B2B design system that gave Mercado Libre's First Party tools one language.",
     teaser: "From launch in June to 62,000+ component insertions and a squad of its own",
     image: COCUY,
     story: [
-      { type: "images", items: [COCUY] },
+      { type: "images", items: [COCUY, CQ_ANALYTICS] },
       {
         type: "p",
-        text: "Cocuy is a B2B sub-library of Andes, Mercado Libre's design system, and the component library behind First Party's vendor and internal tools. I started the initiative and did all of its design execution; other designers began contributing once it gained traction.",
+        text: "First Party, Mercado Libre's own retail business, runs on internal and vendor tools such as Scarlet, Buying Portal, Pandora and the supplier center. Each tool had grown its own frame: its own grid, navbar, side menu, headers, toolbars, rows, cards and error pages. Andes, Mercado Libre's design system, did not cover many of these B2B cases, so every team solved them again.",
       },
+      {
+        type: "p",
+        text: "Cocuy is the answer: a B2B sub-library of Andes for First Party. I co-led it to get it off the ground and gain traction, and did its design execution. Once it had traction, a dedicated squad was created to maintain it and carry its future work.",
+      },
+      { type: "h", text: "Three goals" },
+      {
+        type: "p",
+        text: "Improve how consistently the First Party tools work together as one ecosystem. Make the team faster at execution. Raise the quality of what ships.",
+      },
+      { type: "h", text: "Design, code and Storybook, in step" },
+      {
+        type: "p",
+        text: "The biggest win is that Cocuy never lived only in Figma. We built the sub-library in Figma while staying aligned with front-end the whole way, so the patterns shipped as a Storybook library as well. We also created a skill that makes the design system ready for AI, so components and rules can be used by AI tools and not only by people.",
+      },
+      {
+        type: "p",
+        text: "The hardest part was not a component. It was keeping a large number of delivery and UX ops teams in sync on the same definitions while they kept shipping their own roadmaps, and that is the part we handled best.",
+      },
+      { type: "h", text: "Layout: one frame for every tool" },
+      {
+        type: "p",
+        text: "We reviewed resolutions, grids, spacing and standard container widths, then designed a single Layout component based on Seller Experience screen types. Breadcrumbs, navbar, side menu, headers and toolbars are built into it, with containers, naming, auto layout and responsive behavior already set.",
+      },
+      { type: "images", items: [CQ_UPLOAD_BEFORE, CQ_UPLOAD] },
+      { type: "images", items: [CQ_OFFERS] },
+      { type: "h", text: "Bulk search" },
+      {
+        type: "p",
+        text: "First Party teams search by dozens of IDs at once, a case Andes does not cover. Bulk search complements Andes: paste a list, see every ID as a tag, fix the ones with errors, search once. It works with or without split view, comes with guidelines and wordings, and sits inside the toolbar. It is implemented in Pandora's offer-removal tool.",
+      },
+      { type: "images", items: [CQ_SEARCH_BEFORE, CQ_SEARCH] },
+      { type: "images", items: [CQ_SEARCH_PANDORA] },
+      { type: "h", text: "Rows and cards" },
+      {
+        type: "p",
+        text: "Rows were unified in design and specs between First Party and Sales, with a clearer visual hierarchy, and turned into a component other experiences can reuse. Cards were reviewed together with the Publificado flow to fix their reading levels, then built as one component covering every use case and handed off with the improvements applied to contracts and configurations.",
+      },
+      { type: "images", items: [CQ_ROW_BEFORE, CQ_ROW] },
+      { type: "images", items: [CQ_CARDS_BEFORE, CQ_CARDS] },
+      { type: "h", text: "Navbar and side menu" },
+      {
+        type: "p",
+        text: "Three tools, three menus. We redrew the iconography to comply with Andes, then unified, refactored and published one navigation component with shared rules for behavior, color, size, spacing, the tool label and where each element goes. Navbar became the library's most used component, with 12,920 instances.",
+      },
+      { type: "images", items: [CQ_MENU_BEFORE, CQ_MENU] },
+      { type: "h", text: "Headers and toolbars" },
+      {
+        type: "p",
+        text: "Headers got standard spacing, alignment and hierarchy between their elements. Toolbars became one component, which removed the visual inconsistencies between tools.",
+      },
+      { type: "images", items: [CQ_HEADERS_BEFORE, CQ_HEADERS] },
+      { type: "images", items: [CQ_TOOLBARS_BEFORE, CQ_TOOLBARS] },
+      { type: "h", text: "Technical errors" },
+      {
+        type: "p",
+        text: "403, 404, 500, offline and mobile errors looked different in every tool, from unstyled browser pages to mismatched illustrations. We documented the most frequent errors in First Party, wrote guidance for each type, and aligned with the front-end technical lead so the result shipped as a pattern. First Party teams adopted the standard illustrations and wordings.",
+      },
+      { type: "images", items: [CQ_ERRORS_BEFORE, CQ_ERRORS_404] },
+      { type: "images", items: [CQ_ERRORS_403] },
+      { type: "h", text: "Breadcrumbs" },
+      {
+        type: "p",
+        text: "Breadcrumb guidelines moved into the Layout component, so they are applied the same way every time, with clear content rules across Seller Experience.",
+      },
+      { type: "images", items: [CQ_CRUMBS_BEFORE, CQ_CRUMBS] },
       { type: "h", text: "Results" },
       {
         type: "p",
-        text: "From its launch on June 19, the library logged more than 62,000 component insertions in design files and grew past 20 components, patterns and guidelines. A Cocuy squad was formed to build its technical path. Navbar is its most used component, with 12,920 instances.",
-      },
-      { type: "h", text: "Fixing the frame every tool shares" },
-      {
-        type: "p",
-        text: "The work standardized resolutions, grids, spacing and container widths, and produced a single Layout component with breadcrumbs, navbar, side menu, headers and toolbars built in. The navbar and side menu were unified and published as one component, with Andes-compliant iconography and rules for behavior, color, size, spacing and labels.",
+        text: "Since its launch on June 19, Cocuy logged more than 62,000 component insertions in design files and grew past 20 components, patterns and guidelines, used by 23 teams. Navbar leads with 12,920 instances. A Cocuy squad now owns its maintenance and technical path.",
       },
       {
         type: "p",
-        text: "Next on the roadmap: make Cocuy an official satellite library of Andes, migrate reusable patterns to the Seller Experience library, and build it in code as 1P UI Core.",
+        text: "Next: make Cocuy an official satellite library of Andes, move reusable patterns into the Seller Experience library, and keep building it in code as 1P UI Core.",
       },
     ],
   },
@@ -841,34 +924,6 @@ export const projects: Project[] = [
   },
 
   // ---------- 2024 ----------
-  {
-    slug: "bulk-search",
-    year: 2024,
-    employer: ML,
-    client: "Bulk search",
-    description: "A search field that takes dozens of IDs at once, for First Party's internal tools.",
-    teaser: "Covering a case Andes didn't: paste dozens of IDs, search once",
-    story: [
-      {
-        type: "p",
-        text: "Shown in Pandora's First Party offer-removal tool, the bulk search field takes dozens of IDs at once. It solves a use case Andes did not cover, as a complement to it, works with or without split view, and comes with its own guidelines, wordings and toolbar integration. It was implemented.",
-      },
-    ],
-  },
-  {
-    slug: "technical-errors",
-    year: 2024,
-    employer: ML,
-    client: "Technical errors",
-    description: "One language for 403, 404, 500 and offline errors across First Party tools.",
-    teaser: "From unstyled browser pages to one documented pattern every team adopted",
-    story: [
-      {
-        type: "p",
-        text: "Every First Party tool handled 403, 404, 500, offline and mobile errors differently, from unstyled browser pages to mismatched illustrations. The work documented the most frequent errors, wrote guidance for each type, and got First Party teams to adopt the standard illustrations and wordings, aligned with the front-end technical lead so it could ship as a pattern.",
-      },
-    ],
-  },
   {
     slug: "cool-earth",
     year: 2024,
