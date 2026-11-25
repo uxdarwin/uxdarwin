@@ -3,12 +3,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MotionGrid } from "../../components/MotionGrid";
 import { PageVideo } from "../../components/PageVideo";
-import { ProjectTrio } from "../../components/ProjectTrio";
-import { ImageCluster } from "../../components/ImageCluster";
+import { ImageCluster, type Slot } from "../../components/ImageCluster";
 import { ProjectMeta } from "../../components/ProjectMeta";
 import { Shell } from "../../components/Shell";
 import { getProject, projects } from "../../content/projects";
 import styles from "../../components/feed.module.css";
+
+// Two tilted images with a portrait clip on top between them (Darwin's Parque Caudal mock).
+const TRIO: Slot[] = [
+  { x: 0, y: 42, w: 450, rot: -2 },
+  { x: 540, y: 18, w: 460, rot: 2 },
+  { x: 361, y: 0, w: 277, rot: 0 },
+];
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -46,7 +52,16 @@ export default async function ProjectPage({ params }: Params) {
           {p.story.map((b, i) => {
             if (b.type === "images") return <ImageCluster key={i} images={b.items} variant={cluster++} seed={`${p.slug}-${i}`} />;
             if (b.type === "motion") return p.motion ? <MotionGrid key={i} clips={p.motion} size="page" /> : null;
-            if (b.type === "trio") return <ProjectTrio key={i} {...b} />;
+            if (b.type === "trio")
+              return (
+                <ImageCluster
+                  key={i}
+                  images={[b.left, b.right, { src: b.video.poster, video: b.video.src, alt: b.video.alt, width: b.video.width, height: b.video.height }]}
+                  layout={TRIO}
+                  variant={0}
+                  seed={`${p.slug}-${i}`}
+                />
+              );
             if (b.type === "video") return <PageVideo key={i} {...b} />;
             if (b.type === "h") return <h2 key={i} className={styles.sectionTitle}>{b.text}</h2>;
             return <p key={i} className={styles.paragraph}>{b.text}</p>;

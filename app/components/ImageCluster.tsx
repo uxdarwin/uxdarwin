@@ -7,7 +7,7 @@ import styles from "./feed.module.css";
 
 // Layouts from Figma 43:9981, in px relative to the text column's left edge at 1440 wide.
 // Each cluster overlaps and tilts its images; the whole cluster scales down to fit.
-type Slot = { x: number; y: number; w: number; rot: number };
+export type Slot = { x: number; y: number; w: number; rot: number };
 const LAYOUTS: Record<number, Slot[][]> = {
   1: [[{ x: 0, y: 0, w: 720, rot: -1 }]],
   2: [
@@ -39,13 +39,66 @@ type Handle = (typeof HANDLES)[number];
 
 type State = { dx: number; dy: number; w: number };
 
-export function ImageCluster({ images, variant, seed }: { images: ProjectImage[]; variant: number; seed: string }) {
+/** An image, or a muted clip that plays only on screen and never with reduced motion. */
+function ClusterMedia({ im, style }: { im: ProjectImage; style?: React.CSSProperties }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.25 });
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+  if (im.video)
+    return (
+      <video
+        ref={ref}
+        className={styles.clusterImg}
+        src={im.video}
+        poster={im.src}
+        width={im.width}
+        height={im.height}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={im.alt}
+        style={style}
+      />
+    );
+  return (
+    <img
+      className={styles.clusterImg}
+      src={im.src}
+      alt={im.alt}
+      width={im.width}
+      height={im.height}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+      style={style}
+    />
+  );
+}
+
+export function ImageCluster({
+  images,
+  variant,
+  seed,
+  layout,
+}: {
+  images: ProjectImage[];
+  variant: number;
+  seed: string;
+  /** A custom arrangement instead of the preset for this many images. */
+  layout?: Slot[];
+}) {
   const canDrag = useCanDrag();
   const ref = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [stack, setStack] = useState(false);
   const options = LAYOUTS[Math.min(images.length, 3)];
-  const slots = options[variant % options.length];
+  const slots = layout ?? options[variant % options.length];
   const [state, setState] = useState<State[]>(() => slots.map((s) => ({ dx: 0, dy: 0, w: s.w })));
   const [order, setOrder] = useState<number[]>(() => slots.map((_, i) => i));
   const [selected, setSelected] = useState<number | null>(null);
@@ -125,17 +178,7 @@ export function ImageCluster({ images, variant, seed }: { images: ProjectImage[]
     return (
       <div ref={ref} className={styles.clusterStack}>
         {images.map((im, i) => (
-          <img
-            key={im.src}
-            className={styles.clusterImg}
-            src={im.src}
-            alt={im.alt}
-            width={im.width}
-            height={im.height}
-            loading="lazy"
-            decoding="async"
-            style={{ transform: `rotate(${(seeded(`${seed}-${i}`) * 1).toFixed(2)}deg)` }}
-          />
+          <ClusterMedia key={im.src} im={im} style={{ transform: `rotate(${(seeded(`${seed}-${i}`) * 1).toFixed(2)}deg)` }} />
         ))}
       </div>
     );
@@ -171,16 +214,7 @@ export function ImageCluster({ images, variant, seed }: { images: ProjectImage[]
               track((ev) => update(i, { dx: ox + ev.clientX - sx, dy: oy + ev.clientY - sy }));
             }}
           >
-            <img
-              className={styles.clusterImg}
-              src={im.src}
-              alt={im.alt}
-              width={im.width}
-              height={im.height}
-              loading="lazy"
-              decoding="async"
-              draggable={false}
-            />
+            <ClusterMedia im={im} />
             {canDrag && (
               <>
                 <span className={styles.selection} aria-hidden="true" />
