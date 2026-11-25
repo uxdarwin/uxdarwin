@@ -290,6 +290,7 @@ export const projects: Project[] = [
     description: "A website redesign for a Berlin hotel next to Tierpark, with booking up front.",
     teaser: "Before and after: a home page that leads with the park and a one-line booking bar",
     image: ABACUS,
+    coverVideo: { src: "/media/abacus-cover.mp4", poster: "/media/abacus-cover.webp", width: 1080, height: 1080 },
     story: [
       { type: "images", items: [ABACUS] },
       {
