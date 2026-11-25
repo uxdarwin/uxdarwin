@@ -182,6 +182,7 @@ const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River V
 const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: inspection runs with controls finished, outcomes, compliance score and findings per application", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
 const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
+const CB_CONTRACTS_PORTFOLIO: ProjectImage = { src: "/media/cb-contracts-portfolio.webp", video: "/media/cb-contracts-portfolio.mp4", alt: "The redesigned Contracts portfolio: Key Dates, Pending Tasks, Approvals and Portfolio cards above the table, a single Export button, the Add contracts menu, and a row menu that holds every contract action", width: 1920, height: 880 };
 const RADAR_COVER = img("radar-cover.webp", "Coverbase Radar: the signals list with severity and affected suppliers, and an event page with an AI summary, triage status and the vendors involved", 1600, 1000);
 const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment statuses: custom review steps in settings, and a workflow that moves an assessment into review", 1600, 1000);
 const CB_ZERO_TOUCH = img("cb-zero-touch.webp", "Zero Touch Assessment for 1Password: review results with a low-risk score beside the sections for supplier profile, reputational risk, controls and security posture", 2400, 1372);
@@ -525,24 +526,34 @@ export const projects: Project[] = [
     year: 2026,
     employer: CB,
     client: "Contracts and Contract Guardian",
-    description: "Contract management and AI clause review inside Coverbase, from bulk import to signature.",
-    teaser: "Keeping the whole contract review in one place, from import to e-signature",
+    description: "Contract management and AI clause review inside Coverbase, redesigned around the questions customers bring to it.",
+    teaser: "What expires, and when do I act? Redesigning the contracts portfolio around dates",
     image: CONTRACTS_COVER,
     story: [
       { type: "images", items: [CONTRACTS_COVER] },
       {
         type: "p",
-        text: "Procurement and legal teams track hundreds of vendor contracts, and the dates hidden inside them decide real money: notice periods, auto-renewals, termination windows. The contracts area opens with what needs action, such as portfolio value, notice deadlines in the next 90 days and clauses that still need a decision, above a table of every contract with its key dates.",
+        text: "Procurement and legal teams track hundreds of vendor contracts, and the dates hidden inside them decide real money: notice periods, auto-renewals, termination windows. In 2026 Contract Guardian took the whole contract review into Coverbase: bulk import organized by vendor, engagement, service and key dates; AI clause review; redlines exported to Word with tracked changes; and multi-party e-signatures. That shipped in September.",
       },
-      { type: "h", text: "Contract Guardian" },
+      { type: "h", text: "Start where people actually are" },
       {
         type: "p",
-        text: "Contract Guardian reviews contracts clause by clause and flags the ones that need a decision. I designed the review so the work could stay in Coverbase instead of bouncing between email and Word.",
+        text: "Before redesigning anything, I reviewed Contracts end to end with usage data. The portfolio and the contract detail made up over 99% of views; assembly, signatures, templates and the repository each had fewer than 50. So I started with the portfolio. Support conversations and customer calls pointed the same way: renewals and notices were one of the three largest themes, and customers asked directly for views like \u201cexpiring in six months\u201d and \u201cnotices in the next 60 days\u201d.",
       },
-      { type: "h", text: "Result" },
+      { type: "h", text: "What was broken" },
       {
         type: "p",
-        text: "In the September 2026 release, teams could bulk import large sets of contracts and have them organized by vendor, engagement, service and key dates; run updated and renewal contracts through the same review; generate redlines and export Word documents with tracked changes; and collect multi-party e-signatures with a verifiable signing record, so the whole process stays in one place from ingestion to signature.",
+        text: "The summary cards didn't fully answer the questions people brought to the page, and related information was split between the cards and the toolbar. A strip in the toolbar looked like one control but behaved three ways: one segment filtered, one did nothing and one opened a drawer. The Actions menu mixed portfolio-wide actions, per-contract actions and five different ways to add contracts. Even our own team struggled with it in a demo, and bulk import, the main way customers bring contracts in, was buried in the empty state.",
+      },
+      { type: "images", items: [CB_CONTRACTS_PORTFOLIO] },
+      { type: "h", text: "One card per question, one home per action" },
+      {
+        type: "p",
+        text: "The new portfolio opens with one card per question: Key Dates, Pending Tasks, Approvals (only for organizations that use them) and Portfolio, each opening in place with more detail. The toolbar strip is gone and its figures moved into the cards. Every item from the old Actions menu got a clear home: saved reports in Reports, reminders in Configuration (because reminders are settings, not actions), imports in a new Add contracts menu grouped by use, and Export as the single button left. Each row's menu now holds every contract action, where before some lived only in the bulk bar, and the bulk bar repeats the ones that work on many contracts at once.",
+      },
+      {
+        type: "p",
+        text: "I documented the evidence and a decision log for every change, and built the redesign in code as well as in design. Next is the import flow, from the empty state through bulk import results, because it is the first experience for most customers and the current bottleneck.",
       },
     ],
   },
