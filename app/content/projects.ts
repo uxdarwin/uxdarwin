@@ -127,9 +127,21 @@ const CB_NOTE =
   "Coverbase is an AI procurement and vendor-risk platform from San Francisco. I joined as its first designer in November 2024, part-time at first and full-time from February 2026, and I own product design end to end.";
 const PC_PROJECT = img(
   "parque-caudal-project.webp",
-  "El proyecto section: Un proyecto pensado a otra escala, with the figures 15 apartments, 5 floors and 3 typologies beside a render of planted terraces",
+  "El proyecto section: Un proyecto pensado a otra escala, with 15 apartments, 5 floors and 3 typologies, common areas as tags and a corner render of the building",
   1440,
-  900,
+  1024,
+);
+const PC_TYPES = img(
+  "parque-caudal-types.webp",
+  "Tipologías section: Encuentra tu espacio, three apartment cards with floor plan, area, terrace, parking and a WhatsApp button",
+  1440,
+  1170,
+);
+const PC_CONTACT = img(
+  "parque-caudal-contact.webp",
+  "Contact section: WhatsApp button first, email link second and a callback form third, with the sales team's daily hours",
+  1440,
+  924,
 );
 const PC_GALLERY = img(
   "parque-caudal-gallery-full.webp",
@@ -202,7 +214,7 @@ export const projects: Project[] = [
     year: 2026,
     employer: { label: "Freelance" },
     client: "Parque Caudal",
-    description: "A pre-launch landing page for a 15-apartment building in Villavicencio, Colombia.",
+    description: "A brand and pre-launch landing page for a 15-apartment building in Villavicencio, Colombia.",
     teaser: "WhatsApp first: a one-page launch that lets buyers start the conversation",
     image: PC_GALLERY,
     coverVideo: { src: PC_VIDEO.src, poster: PC_VIDEO.poster, width: PC_VIDEO.width, height: PC_VIDEO.height },
@@ -210,29 +222,29 @@ export const projects: Project[] = [
       { type: "trio", left: PC_GALLERY, video: PC_VIDEO, right: PC_SYSTEM },
       {
         type: "p",
-        text: "Parque Caudal is a five-floor residential building with 15 apartments in three typologies, in Villavicencio, Colombia. The client needed a simple, credible one-page site to launch it and test early interest before investing in more sales tooling. I directed the design in November 2026, with Claude as an AI collaborator connected to Figma. The project is in its design phase and has not launched yet.",
+        text: "Parque Caudal is a five-floor building with 15 apartments in three typologies, in Villavicencio, Colombia. The developer needed a simple, credible one-page site to launch it and test early interest before investing in more sales tooling. I designed the logo and the website, and I’m also building it for launch. The final design is approved.",
       },
       { type: "h", text: "Answering a buyer’s questions in order" },
       {
         type: "p",
-        text: "The page follows the questions a buyer asks: what it is, what the apartments are like, where it is and how to get more information. Location and size surface early, and nothing useful sits behind a form. The client supplied one exterior render and a floor plan, so every image is a crop of that render, and every fact the client has not confirmed carries a visible pending tag instead of invented copy.",
+        text: "The page follows the questions a buyer asks: what it is, what the apartments are like, where it is and how to get in touch. Size, the three typologies and the common areas show up early, and nothing useful sits behind a form. I also improved the quality of the renders and floor plans the client shared, so they hold up at full size.",
       },
-      { type: "images", items: [PC_PROJECT] },
-      { type: "h", text: "WhatsApp first, the form second" },
+      { type: "h", text: "WhatsApp first, then email, then the form" },
       {
         type: "p",
-        text: "I made WhatsApp the primary action across the page, in the hero, on each apartment card, after the FAQs and in the contact section, with the lead form as a second, passive option. People prefer to send a message and stay in control rather than wait for a callback. The FAQs come from a quick benchmark of what Colombian buyers ask about off-plan purchases: delivery date, how their money is protected, payment plans, financing, parking and visiting a sales room.",
+        text: "The client asked for a form, plus a WhatsApp button for people who might prefer it. I flipped the order: WhatsApp is the primary action across the page, email comes second and the form third. People don’t want to wait for a callback, and WhatsApp is how most people in Colombia already talk to businesses. I also suggested showing the sales team’s working hours right in the contact section, so people know when to expect an answer.",
       },
-      { type: "h", text: "A visual system taken from the hero" },
+      { type: "images", items: [PC_PROJECT, PC_TYPES, PC_CONTACT] },
+      { type: "h", text: "A brand built from a single render" },
       {
         type: "p",
-        text: "I designed the hero and the first section, and the rest of the system was derived from them: earth, sand, sky and leaf color primitives, dark and light theme modes that alternate by section, and a Geist type scale for mobile and desktop. I also had the PARQUE wordmark vectorized letter by letter from a raster source, with equal stems and optical kerning.",
+        text: "We started with a render of the building and nothing else: no logo, no colors, no type. So I built the visual system around the architecture: the PARQUE caudal logo, a palette taken from the brick, the sky and the foliage, dark and light sections that alternate down the page, and a Geist type scale. Nature is what sets this project apart, and every apartment faces outward with its own terrace and view, so I made it part of the brand, from the foliage framing the hero to the flowing lines behind each section.",
       },
       { type: "images", items: [PC_PALETTE, PC_TYPE] },
-      { type: "h", text: "Motion from the design layers" },
+      { type: "h", text: "Bringing a flat render to life" },
       {
         type: "p",
-        text: "The hero is built as layers: sky, building, foliage and interface. That made a parallax intro possible straight from the Figma layers, rendered frame by frame. My one rule was that no hard edge could ever show, so every frame was checked along the seams. The clip at the top runs the intro and a scroll into the project section on mobile.",
+        text: "A render is a flat image. I split it into layers (sky, building, foliage and interface) and animated them strategically, with a slow push-in and parallax at different depths, so the hero feels alive instead of static. The clip at the top shows the intro and the scroll into the project section on mobile.",
       },
     ],
   },
