@@ -1033,7 +1033,7 @@ export const projects: Project[] = [
       { type: "h", text: "Taking it to market" },
       {
         type: "p",
-        text: "The September 2026 campaign for Inspect was built on one idea: a certificate says the castle was safe once. These two ads were made for LinkedIn and Meta.",
+        text: "I also designed the September 2026 launch campaign for Inspect, built on one idea: a certificate says the castle was safe once. These two ads ran on LinkedIn and Meta.",
       },
       { type: "images", items: [CB_AD_POINT, CB_AD_VERIFY] },
       { type: "h", text: "Result" },
