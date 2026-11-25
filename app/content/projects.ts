@@ -16,8 +16,9 @@ export type ProjectImage = {
 export type Block =
   | { type: "p"; text: string }
   | { type: "h"; text: string }
-  | { type: "images"; items: ProjectImage[]; layout?: { x: number; y: number; w: number; rot: number }[] }
+  | { type: "images"; items: ProjectImage[]; layout?: { x: number; y: number; w: number; rot: number }[]; center?: boolean }
   | { type: "motion" }
+  | { type: "mosaic" }
   /** A looping, muted screen recording. Portrait clips render as a phone-width column. */
   | { type: "video"; src: string; poster: string; alt: string; width: number; height: number }
   /** Two overlapping, tilted images with a portrait video between them. */
@@ -44,8 +45,12 @@ export type Project = {
   image?: ProjectImage;
   /** Feed cover video: replaces the image in the card, fitted whole (never cropped). */
   coverVideo?: { src: string; poster: string; width: number; height: number };
+  /** A wide card: two thirds of a row, next to a tall photo when one is left. */
+  wide?: boolean;
   /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
   carousel?: string[];
+  /** Four screen animations shown as a mosaic in the card, and by a "mosaic" block. */
+  mosaic?: PageVideoSrc[];
   /** Lottie animations: played in the card instead of an image, and by a "motion" block. */
   motion?: MotionClip[];
   story: Block[];
@@ -64,6 +69,38 @@ const STATEMENTS = img(
   1000,
   504,
 );
+const st = (n: string, alt: string, w: number, h: number) => img(`statements-${n}.webp`, alt, w, h);
+const ST_ONBOARDING = st("onboarding", "Statements onboarding: a welcome modal over Vendor Central, the first of two steps", 1366, 688);
+const ST_EMPTY = st("empty", "Statements empty state: invoices still to upload, with a button to upload them", 1366, 688);
+const ST_FILTERS = st("filters", "Statements filters: payment status, payment date, document status, document type and reception date", 884, 786);
+const ST_STATES = st("states", "Statements list with every invoice state: in review, differences to resolve with a credit-note banner, approved with its credit note, paid and cancelled", 1366, 1480);
+const ST_PARTIAL_DETAIL = st("partial-detail", "Invoice detail during a partial payment: the credit note still to upload, the estimated date and the amount pending", 1366, 696);
+const ST_TWO_PAYMENTS = st("two-payments", "Two payments of one invoice, with a banner that sums up both partial payments", 1366, 796);
+const ST_PAYMENT_DETAIL = st("payment-detail", "Payment detail: status, payment date, total received and the invoices it includes", 1366, 688);
+const ST_BLOCKED = st("blocked", "Blocked payments: a red banner with a path to support, above the payment and documents still to upload", 1366, 851);
+const ST_EMAIL = st("email", "Launch email to vendors: Statements is available, and how to give the billing team access", 720, 1088);
+const ST_DIAGRAM = st("diagram", "Decision map of every invoice and credit-note state, from upload to paid, including partial payments", 2600, 1302);
+const MOTION_MOSAIC: PageVideoSrc[] = [
+  { src: "/media/statements/anim1.mp4", poster: "/media/statements/anim1.webp", alt: "Empty state animation: the bill icon draws itself above “You don’t have invoices yet”", width: 688, height: 688 },
+  { src: "/media/statements/onb1.mp4", poster: "/media/statements/onb1.webp", alt: "Onboarding step 1 in context: the welcome illustration comes alive inside the modal", width: 1366, height: 688 },
+  { src: "/media/statements/onb2.mp4", poster: "/media/statements/onb2.webp", alt: "Onboarding step 2 in context: two teammates animate inside the invite-your-team modal", width: 1366, height: 688 },
+  { src: "/media/statements/anim2.mp4", poster: "/media/statements/anim2.webp", alt: "Empty state animation: the bill draws itself and a warning appears above “You have invoices to upload”", width: 688, height: 688 },
+];
+const MOTION_CLIPS: ProjectImage[] = MOTION_MOSAIC.map((v) => ({ src: v.poster, video: v.src, alt: v.alt, width: v.width, height: v.height }));
+const WED_VIDEO = {
+  src: "/media/wedding/invitation.mp4",
+  poster: "/media/wedding/invitation.webp",
+  alt: "Scroll through the wedding invitation on a phone: the glowing monogram under a starry sky, the invitation over a cherry blossom scene, the RSVP envelope with its wax seal, the story timeline, the venue, the dress code and the questions",
+  width: 800,
+  height: 1720,
+};
+const wed = (n: string, alt: string) => img(`wedding-${n}.webp`, alt, 800, 1732);
+const WED_HERO = wed("hero", "The invitation’s opening: the monogram, “we invite you to our wedding” and a button to answer, over cherry blossoms");
+const WED_RSVP = wed("rsvp", "The RSVP as an envelope with a wax seal: will you join us, with yes, no and not sure yet, and a thank-you once confirmed");
+const WED_STORY = wed("story", "The story timeline: photo cards for each milestone, like where we met, with the place and the year");
+const WED_VENUE = wed("venue", "The venue section: an illustrated estate by the water, with buttons for the map and a guide to get there");
+const WED_DRESS = wed("dress-code", "The dress code: a fabric palette for guests, with white and similar tones reserved for the bride");
+const WED_FAQ = wed("faq", "Other questions, grouped by topic: attendance and guests, schedule, venue and recommendations, and contact");
 const COCUY = img(
   "cocuy.webp",
   "Cover of Cocuy, the 1P Main Library, over a photo of the Púlpito del Diablo in El Cocuy",
@@ -196,33 +233,6 @@ const RV_NOTE =
 export const projects: Project[] = [
   // ---------- 2026 ----------
   {
-    slug: "neon-wood",
-    year: 2026,
-    employer: { label: "Freelance" },
-    client: "Neon Wood",
-    url: "https://neonwood.com/",
-    description: "A website for furnished apartments and community spaces in four German cities.",
-    teaser: "One floating card for location, apartment type and all-inclusive rent, right in the hero",
-    image: NEON,
-    story: [
-      { type: "images", items: [NEON] },
-      {
-        type: "p",
-        text: "Neon Wood rents furnished apartments and community spaces in Berlin, Cologne, Frankfurt and Tübingen. I designed the website through Cresco, a Berlin studio, and led and executed it end to end. It is live at neonwood.com.",
-      },
-      { type: "h", text: "The decision on top of the photo" },
-      {
-        type: "p",
-        text: "The home hero puts the decision on a full-bleed photo. A floating card switches between apartments and community spaces, picks a location and an apartment type with its all-inclusive monthly rent, and offers two actions: book a visit or rent an apartment.",
-      },
-      { type: "h", text: "A whole site, not a home page" },
-      {
-        type: "p",
-        text: "The site maps out location and building pages, a city overview, room categories and types, promotions, pricing, partners, events, sustainable living, an app page, a page for parents, a blog, about, contact and legal pages, with mobile layouts at 430 px for the key pages. Each review got its own dated design round, from March to July 2026, next to a logo, a style guide, illustrations and a sitemap.",
-      },
-    ],
-  },
-  {
     slug: "parque-caudal",
     year: 2026,
     employer: { label: "Freelance" },
@@ -269,6 +279,73 @@ export const projects: Project[] = [
         text: "A render is a flat image. I split it into layers (sky, building, foliage and interface) and animated them strategically, with a slow push-in and parallax at different depths, so the hero feels alive instead of static. The clip at the top shows the intro and the scroll into the project section on mobile. Below, from left to right: the raw render, the same render graded with foliage framing the building, and the layers I split it into for motion.",
       },
       { type: "images", items: [PC_LAYERS] },
+    ],
+  },
+  {
+    slug: "neon-wood",
+    year: 2026,
+    employer: { label: "Freelance" },
+    client: "Neon Wood",
+    url: "https://neonwood.com/",
+    description: "A website for furnished apartments and community spaces in four German cities.",
+    teaser: "One floating card for location, apartment type and all-inclusive rent, right in the hero",
+    image: NEON,
+    coverVideo: { src: "/media/neonwood-cover.mp4", poster: "/media/neonwood-cover.webp", width: 1080, height: 1080 },
+    story: [
+      { type: "images", items: [NEON] },
+      {
+        type: "p",
+        text: "Neon Wood rents furnished apartments and community spaces in Berlin, Cologne, Frankfurt and Tübingen. I designed the website through Cresco, a Berlin studio, and led and executed it end to end. It is live at neonwood.com.",
+      },
+      { type: "h", text: "The decision on top of the photo" },
+      {
+        type: "p",
+        text: "The home hero puts the decision on a full-bleed photo. A floating card switches between apartments and community spaces, picks a location and an apartment type with its all-inclusive monthly rent, and offers two actions: book a visit or rent an apartment.",
+      },
+      { type: "h", text: "A whole site, not a home page" },
+      {
+        type: "p",
+        text: "The site maps out location and building pages, a city overview, room categories and types, promotions, pricing, partners, events, sustainable living, an app page, a page for parents, a blog, about, contact and legal pages, with mobile layouts at 430 px for the key pages. Each review got its own dated design round, from March to July 2026, next to a logo, a style guide, illustrations and a sitemap.",
+      },
+    ],
+  },
+  {
+    slug: "wedding-invitation",
+    year: 2026,
+    employer: { label: "Personal" },
+    client: "Wedding invitation",
+    description: "A wedding invitation built with shader experiments, still in progress.",
+    teaser: "Content first, then shaders: a monogram, a sky of stars and falling petals",
+    image: WED_HERO,
+    coverVideo: { src: WED_VIDEO.src, poster: WED_VIDEO.poster, width: WED_VIDEO.width, height: WED_VIDEO.height },
+    story: [
+      { type: "trio", left: WED_HERO, video: WED_VIDEO, right: WED_RSVP },
+      {
+        type: "p",
+        text: "Our wedding invitation was a personal challenge. The clients were my fiancée and me, so putting myself in the guests’ shoes came easily. I designed everything, from the monogram and the visuals to the animations, and I’m building and shipping it myself. It isn’t the final version yet.",
+      },
+      { type: "h", text: "Content first" },
+      {
+        type: "p",
+        text: "As with every landing page, I started with the content, not the visuals. I set UX goals around the questions guests would have, in what order they’d have them and how much detail each one needs. That shaped the page: the invitation and the RSVP first, then our story, the venue and how to get there, the dress code, and the rest of the questions grouped by topic so nobody has to message us to find an answer.",
+      },
+      { type: "images", items: [WED_STORY, WED_FAQ] },
+      { type: "h", text: "Experimenting with shaders" },
+      {
+        type: "p",
+        text: "The second challenge was the visual direction. I wanted to experiment a lot with shaders from Vercel’s vgpu.sh, and I used them for the glowing monogram, the starry sky, and the particles of cherry blossom petals floating off the tree. The stars are interactive: tap the sky and you trigger a shooting star.",
+      },
+      { type: "h", text: "Rooms with their own mood" },
+      {
+        type: "p",
+        text: "I wanted many references to our relationship, and at the same time a look that holds together. I treated it like interior design: not every room needs the same mood. Each section tells its own story, so the hardest part was the transitions between them, making each change of scene feel smooth rather than abrupt.",
+      },
+      { type: "images", items: [WED_VENUE, WED_DRESS] },
+      { type: "h", text: "What I’d push next" },
+      {
+        type: "p",
+        text: "If I critique my own work, visual consistency is the weakest part of this version, and it’s what I want to work on most in the next iteration. The next big goal is the RSVP system, connected to WhatsApp, which almost all of our guests use, so they get a great experience before and during the wedding.",
+      },
     ],
   },
   {
@@ -402,6 +479,145 @@ export const projects: Project[] = [
   },
 
   // ---------- 2025 ----------
+  {
+    slug: "statements",
+    year: 2025,
+    employer: ML,
+    client: "Statements",
+    description: "One place for vendors selling to Mercado Libre to track every payment and invoice.",
+    teaser: "When do I get paid? Why was I deducted? Designing the answers into every row",
+    image: STATEMENTS,
+    carousel: ["statements", "statements-states", "statements-two-payments", "statements-filters", "statements-blocked", "statements-email", "statements-diagram"].map((n) => `/images/projects/${n}.webp`),
+    story: [
+      { type: "images", items: [STATEMENTS] },
+      {
+        type: "p",
+        text: "Mercado Libre is Latin America’s largest e-commerce and fintech company. In its First Party model, Mercado Libre buys products from vendors in high volume, with deals that benefit both sides, and sells them on the marketplace through its own seller account. Vendors run that relationship from Vendor Central, and Statements (Cuenta Corriente) is the section where they follow the money: every invoice, credit note and payment between them and Mercado Libre.",
+      },
+      { type: "h", text: "The problem" },
+      {
+        type: "p",
+        text: "Vendors tracked their invoices by hand, mostly over email, across several teams and channels: Vendor Central, support tickets, and separate email threads for differences and cancellations. With no single view of their account, they couldn’t tell when they would be paid or why an amount was withheld. Price and quantity differences turned into disputes, vendors held back the credit notes that would settle them, invoices stayed blocked and accounts got locked. On Mercado Libre’s side, finance operations answered the same questions again and again and built custom reports vendor by vendor.",
+      },
+      { type: "h", text: "What research told us" },
+      {
+        type: "p",
+        text: "In May 2025 we interviewed Mercado Libre commercial managers who had worked with Amazon Vendor Central, ran a focus group with the finance operations team, and benchmarked Amazon, Walmart and Falabella. The sample was small, so we treated the findings as hypotheses to validate, but they pointed the same way: vendors’ two most frequent questions were “When do I get paid?” and “Why was this amount withheld or deducted?” That set the priorities: a real-time status and committed payment date for every invoice, a clear explanation of every difference with the documents behind it, and one consolidated balance.",
+      },
+      { type: "h", text: "My role" },
+      {
+        type: "p",
+        text: "As UX Technical Lead for First Party, I led the project and did all of the design execution, from the brief and research through the final screens and the handoff in October 2025, working with the product manager and the engineering lead.",
+      },
+      { type: "h", text: "Integrate, don’t replace" },
+      {
+        type: "p",
+        text: "Each First Party product, from purchase orders and commercial agreements to penalties, Meli Pro and Ads, had its own section and its own level of maturity. Rebuilding them all wasn’t realistic, so Statements doesn’t replace them: it pulls the key financial data from each into one view and links back to the source. The MVP covers purchase-order invoices, credit notes and commercial agreements, on a structure built to take Ads, penalties and Meli Pro later.",
+      },
+      { type: "h", text: "Mapping every state first" },
+      {
+        type: "p",
+        text: "Billing and payments leave no room for surprises, so before drawing a screen I mapped everything that can happen to an invoice from the moment a vendor uploads it: review, differences, credit notes that arrive early, late, for less or for more, cancelled requests, and payments split in two. I built the map in close collaboration with the product specialist and validated it again and again with the team members who handled billing and payments by hand. It ended with close to fifty numbered states, each with the invoice, credit-note and payment status side by side, and it surfaced cases even the product side hadn’t anticipated. Every screen in the flow is one of those states, so engineering and finance could check any case against the same source.",
+      },
+      { type: "images", items: [ST_DIAGRAM] },
+      { type: "h", text: "First visit" },
+      {
+        type: "p",
+        text: "A two-step onboarding introduces the section the first time a vendor opens it: invoices, credit notes and payments, now in one place. Empty states answer the question the vendor came with, even when there’s nothing to list yet. If invoices are still missing, the page says so and points to where to upload them, because those are what start the payment clock.",
+      },
+      { type: "images", items: [ST_ONBOARDING, ST_EMPTY] },
+      { type: "h", text: "A payment, then the documents inside it" },
+      {
+        type: "p",
+        text: "The answer to “when do I get paid?” is a payment, so the page leads with it: ID, date, status, document count and total received. Each invoice row below carries reception date, number, status, payment date and amount. A side panel tracks documents still to upload and offers a payment report, the page can be scoped to one subsidiary, and filters cut the list by late or on-time payment, payment date, document status, document type and reception date.",
+      },
+      { type: "images", items: [ST_FILTERS] },
+      { type: "h", text: "Making payment dates honest" },
+      {
+        type: "p",
+        text: "The answer to “why was I deducted?” has to sit on the row itself. Invoices move through in review, differences to resolve, approved, paid and cancelled. When amounts don’t match, the row strikes the original amount, shows the new one, and a banner right under it says exactly what’s missing: upload a credit note for $40,000 to resolve the differences, with the differences ready to download. An approved credit note sits under the invoice it settles. Tooltips explain how the estimated date is calculated, and a late payment keeps its original date with a “late” label next to it, so the date a vendor was promised never silently moves.",
+      },
+      { type: "images", items: [ST_STATES] },
+      { type: "h", text: "When one invoice is paid twice" },
+      {
+        type: "p",
+        text: "The hardest case to explain was a partial payment. Take a $100,000 invoice with a $40,000 difference: Mercado Libre pays the $60,000 it agrees with, and the rest waits on a credit note. The invoice detail shows that running balance, billed against received, with the credit note still to upload and what’s still pending. Once the second payment lands, the invoice row sums up both payments with their dates, and each payment has its own detail listing the invoices it covered.",
+      },
+      { type: "images", items: [ST_PARTIAL_DETAIL, ST_TWO_PAYMENTS] },
+      { type: "images", items: [ST_PAYMENT_DETAIL] },
+      { type: "h", text: "When payments are blocked" },
+      {
+        type: "p",
+        text: "A blocked account was the outcome everyone wanted fewer of, and vendors used to learn about it late. Now it sits at the top of the page in red, with a direct path to the support form to unblock it and a link explaining why accounts get blocked. Right below, the side panel lists exactly which credit notes and invoices are still missing, so the vendor knows what to send.",
+      },
+      { type: "images", items: [ST_BLOCKED] },
+      { type: "h", text: "Getting the right people in" },
+      {
+        type: "p",
+        text: "The people who need Statements are usually a vendor’s billing team, not whoever owns the Vendor Central account. I designed the launch communications too, including an email for vendors that announces the section and walks the account owner through giving their billing team a finance permission in three steps. The design also covers what someone without that permission sees, one tax ID or many subsidiaries, pagination, the help form, and entry points from purchase orders and shipments. Every screen states its objective before its layout, and the empty-state illustrations were rebuilt into animation-ready layers for After Effects.",
+      },
+      { type: "images", items: [ST_EMAIL] },
+      { type: "h", text: "Outcome" },
+      {
+        type: "p",
+        text: "I left Mercado Libre after the handoff, before implementation, so I have no post-launch metrics. The team has since shipped it in stages on this structure: the invoice and credit-note list for every country first, then payments and disputes for Argentina, Chile, Colombia and Peru, and now commercial-agreement credit notes everywhere and payments in Mexico.",
+      },
+    ],
+  },
+  {
+    slug: "motion",
+    year: 2025,
+    employer: ML,
+    client: "Motion",
+    description: "Bringing motion to Mercado Libre’s B2B products, starting with the illustrations.",
+    teaser: "A quick win around a frontend bottleneck: animating the illustration system in Lottie",
+    wide: true,
+    mosaic: MOTION_MOSAIC,
+    motion: [
+      { src: "/motion/saludo.json", label: "Greeting", width: 320, height: 160 },
+      { src: "/motion/team.json", label: "Team", width: 320, height: 160 },
+      { src: "/motion/bill.json", label: "Bill", width: 100, height: 100 },
+      { src: "/motion/bill-warning.json", label: "Bill warning", width: 100, height: 100 },
+    ],
+    story: [
+      {
+        type: "images",
+        // Darwin's 2x2 layout: square and wide on top, wide and square below, centred.
+        items: MOTION_CLIPS,
+        layout: [
+          { x: 0, y: 0, w: 360, rot: 0 },
+          { x: 372, y: 0, w: 715, rot: 0 },
+          { x: 0, y: 372, w: 715, rot: 0 },
+          { x: 727, y: 372, w: 360, rot: 0 },
+        ],
+        center: true,
+      },
+      {
+        type: "p",
+        text: "Motion was a long-standing debt at Mercado Libre, especially in its B2B products. Interface animation had to go through frontend development, which was already a bottleneck, so it kept losing to everything else on the roadmap.",
+      },
+      { type: "h", text: "Start where the assets already exist" },
+      {
+        type: "p",
+        text: "We already had an illustration system, so I led an initiative to animate those illustrations as Lottie files. Lottie plays from a small JSON file, so an animation ships like an image, with no extra frontend work and without weighing the page down. That made it a quick win: designers own the motion end to end, and engineering only places a file.",
+      },
+      { type: "h", text: "In context" },
+      {
+        type: "p",
+        text: "The first animations went into Statements, the section where vendors follow their payments: the two onboarding steps that welcome a vendor and invite their team, and the empty states for a vendor with no invoices yet or with invoices still to upload. I rebuilt each illustration into separate layers for After Effects so heads, hands and icons could move on their own.",
+      },
+      { type: "motion" },
+      {
+        type: "p",
+        text: "Four Lottie files came out of it: two spot illustrations, a greeting and a team, and two icons, a bill and a bill with a warning. Each one loops and loads like an image: the icons are 8 and 14 KB, the illustrations 109 and 123 KB.",
+      },
+      { type: "h", text: "Why it mattered" },
+      {
+        type: "p",
+        text: "It was a small change, but it made the interface feel alive, and it was the first push that got the team adding functional motion to our B2B interfaces.",
+      },
+    ],
+  },
   {
     slug: "spice-org",
     year: 2025,
@@ -539,59 +755,6 @@ export const projects: Project[] = [
   },
 
   // ---------- 2024 ----------
-  {
-    // Employer and year are a guess from the files (yellow palette, bills, Spanish names): confirm with Darwin.
-    slug: "motion",
-    year: 2024,
-    employer: ML,
-    client: "Motion",
-    description: "Lottie animations for product moments: a greeting, a team, a bill and a bill with a warning.",
-    teaser: "Four looping animations, the largest under 125 KB",
-    motion: [
-      { src: "/motion/saludo.json", label: "Greeting", width: 320, height: 160 },
-      { src: "/motion/team.json", label: "Team", width: 320, height: 160 },
-      { src: "/motion/bill.json", label: "Bill", width: 100, height: 100 },
-      { src: "/motion/bill-warning.json", label: "Bill warning", width: 100, height: 100 },
-    ],
-    story: [
-      { type: "motion" },
-      {
-        type: "p",
-        text: "Four Lottie animations: two spot illustrations, a greeting and a team, and two icons, a bill and a bill with a warning. Each one loops and is light enough to load like an image: the icons are 8 and 14 KB, the illustrations 109 and 123 KB.",
-      },
-    ],
-  },
-  {
-    slug: "statements",
-    year: 2024,
-    employer: ML,
-    client: "Statements",
-    description: "One place for vendors selling to Mercado Libre to track every payment and invoice.",
-    teaser: "Making payment dates honest: states, differences and late payments a vendor can trust",
-    image: STATEMENTS,
-    story: [
-      { type: "images", items: [STATEMENTS] },
-      {
-        type: "p",
-        text: "Vendors who sell to Mercado Libre had their financial documents spread across several systems, handled manually, and internal teams fielded a steady stream of questions about document status, payment dates and amounts. The goal: let vendors see and manage every financial movement from a single section, and cut those questions. As UX Technical Lead for First Party, I led the project and designed it myself.",
-      },
-      { type: "h", text: "A payment, then the documents inside it" },
-      {
-        type: "p",
-        text: "The page leads with the payment itself: ID, date, status, document count and total received. Each invoice row below carries reception date, number, status, payment date and amount. A side panel tracks documents still to upload and offers a payment report, and the page can be scoped to one subsidiary.",
-      },
-      { type: "h", text: "Making payment dates honest" },
-      {
-        type: "p",
-        text: "Rows move through in review, differences to resolve, approved, paid and cancelled. When amounts don't match, the row strikes the original amount, shows the new one, and prompts to upload a credit note or download the differences. Tooltips explain the estimated date and the late-payment rule.",
-      },
-      { type: "h", text: "Everything around the happy path" },
-      {
-        type: "p",
-        text: "The file covers onboarding, empty states, a blocked account, single and multiple subsidiaries, pagination, access without permissions, the help form and entry points from purchase orders and shipments. Every screen starts with a stated screen objective, and the empty-state illustrations were rebuilt into animation-ready layers for After Effects.",
-      },
-    ],
-  },
   {
     slug: "bulk-search",
     year: 2024,
