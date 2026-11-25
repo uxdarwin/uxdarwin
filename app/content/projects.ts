@@ -179,7 +179,7 @@ const ABACUS = img(
   556,
 );
 
-const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: portfolio value, notice deadlines and clauses that need a decision above the contracts table, with the Actions menu open on Import contracts", 1600, 1000);
+const CONTRACTS_COVER: ProjectImage = { src: "/media/cb-contracts-cover.webp", video: "/media/cb-contracts-cover.mp4", alt: "The redesigned Contracts portfolio in use, adding contracts and opening a row menu, in front of the timeline view that runs each contract from its notice due date to the end of its term", width: 1600, height: 1000 };
 const CB_VR_VIDEO: ProjectImage = { src: "/media/cb-vendor-registry.webp", video: "/media/cb-vendor-registry.mp4", alt: "Vendor Registry Portal walkthrough: sign in with a work email, open the magic link, describe a need, and get approved, conditional and in-review options", width: 1920, height: 1064 };
 const CB_VR_SIGNIN = img("cb-vr-signin.webp", "Vendor Registry sign-in under the customer's own brand: work email only, with a magic link instead of a password", 2400, 1330);
 const CB_VR_EMAIL = img("cb-vr-email.webp", "The sign-in email: one button to open the Vendor Registry, branded for the customer and powered by Coverbase", 2400, 1330);
