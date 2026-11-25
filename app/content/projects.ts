@@ -177,12 +177,23 @@ const ABACUS = img(
   556,
 );
 
-const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: a renewal timeline of contracts with notice deadlines, framed by a contract detail and a reviews view", 1600, 1000);
+const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: portfolio value, notice deadlines and clauses that need a decision above the contracts table, with the Actions menu open on Import contracts", 1600, 1000);
 const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River Vendor Registry Portal: a search for a meeting-transcription tool with approved, conditional and in-review results", 1600, 1000);
-const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: discovered SaaS apps, posture score and a list of inspections with their status", 1600, 1000);
+const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: inspection runs with controls finished, outcomes, compliance score and findings per application", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
 const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
-const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment results: score, controls evaluated and an analysis summary with strengths, weaknesses and actions", 1600, 1000);
+const RADAR_COVER = img("radar-cover.webp", "Coverbase Radar: the signals list with severity and affected suppliers, and an event page with an AI summary, triage status and the vendors involved", 1600, 1000);
+const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment statuses: custom review steps in settings, and a workflow that moves an assessment into review", 1600, 1000);
+const CB_ZERO_TOUCH = img("cb-zero-touch.webp", "Zero Touch Assessment for 1Password: review results with a low-risk score beside the sections for supplier profile, reputational risk, controls and security posture", 2400, 1372);
+const CB_RADAR_BACKTEST = img("cb-radar-backtest.webp", "Radar's New Detector form: sources, categories, severity threshold and guidance for what Radar should watch", 2400, 1372);
+const CB_RADAR_MAP = img("cb-radar-map.webp", "A Radar event for a critical file-transfer vulnerability, with the Exposure map showing which vendors are hit directly and which through a shared provider", 2400, 1502);
+const CB_RADAR_DETECTORS = img("cb-radar-detectors.webp", "The same Radar event on its Detectors tab: each detector that fired, with severity, confidence and the sources behind it", 2400, 1579);
+const CB_RADAR_EMPTY = img("cb-radar-empty.webp", "Radar's empty state while it monitors the recommended detectors, with a banner to review them", 2400, 1500);
+const CB_OKTA_CONNECT = img("cb-okta-connect.webp", "Connect Okta to Inspect: app details are found, then step-by-step setup of the public key, scopes and roles Inspect needs", 2400, 1747);
+const CB_OKTA_DONE = img("cb-okta-done.webp", "Okta connection completed: three applications ready for inspection, with New inspection and View applications", 2400, 1500);
+const CB_INSPECT_APPS = img("cb-inspect-apps.webp", "Inspect's Applications tab: counts of added, unavailable, inspected and not-inspected apps, the Okta sync status, and each app with its source and last inspection", 2400, 1500);
+const CB_AD_POINT = img("cb-inspect-ad-point.webp", "Inspect campaign ad: a castle certificate reads Security status while the real castle behind it crumbles. Your vendor passed the test. Is it still true today?", 1620, 1620);
+const CB_AD_VERIFY = img("cb-inspect-ad-verify.webp", "Inspect campaign ad: a small robot with an Inspector badge scans a castle into a wireframe. Test your third parties continuously", 1620, 1620);
 const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
 const BFF_COVER = img("bff-cover.webp", "BFF: two phones with the fan home page and the request menu (comment, like, follow, greeting, serenade) beside a person holding a BFF sign", 1920, 1320);
 const BFF_MOCKUPS = img("bff-mockups.webp", "BFF fan app screens laid out on pink: talent search, featured talent, services, request details and a celebrity video", 1345, 896);
@@ -516,16 +527,26 @@ export const projects: Project[] = [
     slug: "contracts",
     year: 2026,
     employer: CB,
-    client: "Contracts",
-    description: "Contract management inside Coverbase's vendor-risk platform.",
-    teaser: "From a contracts area to clause-by-clause review with Contract Guardian",
+    client: "Contracts and Contract Guardian",
+    description: "Contract management and AI clause review inside Coverbase, from bulk import to signature.",
+    teaser: "Keeping the whole contract review in one place, from import to e-signature",
     image: CONTRACTS_COVER,
     story: [
       { type: "images", items: [CONTRACTS_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
-        text: "Two finished files cover contract work: Contracts, with a cover dated September 2026, and Clause Review, Contract Guardian v1, which reviews contracts clause by clause.",
+        text: "Procurement and legal teams track hundreds of vendor contracts, and the dates hidden inside them decide real money: notice periods, auto-renewals, termination windows. The contracts area opens with what needs action, such as portfolio value, notice deadlines in the next 90 days and clauses that still need a decision, above a table of every contract with its key dates.",
+      },
+      { type: "h", text: "Contract Guardian" },
+      {
+        type: "p",
+        text: "Contract Guardian reviews contracts clause by clause and flags the ones that need a decision. I designed the review so the work could stay in Coverbase instead of bouncing between email and Word.",
+      },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "In the September 2026 release, teams could bulk import large sets of contracts and have them organized by vendor, engagement, service and key dates; run updated and renewal contracts through the same review; generate redlines and export Word documents with tracked changes; and collect multi-party e-signatures with a verifiable signing record, so the whole process stays in one place from ingestion to signature.",
       },
     ],
   },
@@ -534,13 +555,38 @@ export const projects: Project[] = [
     year: 2026,
     employer: CB,
     client: "Radar",
-    description: "Radar, a Coverbase product surface redesigned through three versions.",
-    teaser: "Why Radar needed a v2 and then a v3 within a year",
+    description: "Continuous monitoring of vendor risk: security events, outages and news, matched to the vendors a company depends on.",
+    teaser: "From a feed of alerts to an investigation: who is exposed, and what we did about it",
+    image: RADAR_COVER,
     story: [
+      { type: "images", items: [RADAR_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
-        text: "Radar went through v2 and v3, both marked finished, with the v3 cover dated October 2026. The version numbers show the surface was redesigned more than once as the product grew.",
+        text: "Radar watches the outside world for events that touch a customer's vendors: vulnerabilities, breaches, outages, financial and legal news. When something happens, a team needs more than an alert: who is affected, how badly, and what has already been done about it.",
+      },
+      { type: "h", text: "Every event is an investigation" },
+      {
+        type: "p",
+        text: "I redesigned Radar around the event page. Each event opens with a short summary, its timeline from disclosure to our alert, and a status the team owns. Below it, tabs answer the next questions in order: which detectors fired and why, who is exposed, which sources back it up, and what happened when. The separate Alerts table went away; alert details now live on the event they belong to.",
+      },
+      { type: "images", items: [CB_RADAR_DETECTORS] },
+      { type: "h", text: "Exposure, direct and indirect" },
+      {
+        type: "p",
+        text: "The hardest question in an incident is reach. A vulnerability in one file-transfer product can hit a vendor directly, or reach three more through a provider they share. The Exposure view groups affected vendors by tier and shows both paths, so a team can start with the vendors that matter most instead of the longest list.",
+      },
+      { type: "images", items: [CB_RADAR_MAP] },
+      { type: "h", text: "Tuning what Radar watches" },
+      {
+        type: "p",
+        text: "Detectors define what Radar looks for. Teams can start from a recommended set, write their own with sources, categories and a severity threshold, and backtest a detector against past events before trusting it in production, so false positives get tuned out before anyone is paged.",
+      },
+      { type: "images", items: [CB_RADAR_BACKTEST, CB_RADAR_EMPTY] },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "Detector backtesting shipped in January 2026. The redesigned Radar went live for every Coverbase organization in September 2026, with Ask Coverbase AI on each event, the Exposure view, vendor status-page monitoring with snapshots of what changed, and custom statuses with inline actions for tracking the response.",
       },
     ],
   },
@@ -931,30 +977,80 @@ export const projects: Project[] = [
   },
   {
     slug: "assessments",
-    year: 2025, // estimate
+    year: 2026,
     employer: CB,
     client: "Assessments",
-    description: "Vendor assessments in Coverbase, designed through dated iterations.",
-    teaser: "Dated iterations from April and May, through to a finished design",
+    description: "Vendor assessments in Coverbase: how risk is scored, reviewed and tracked to a decision.",
+    teaser: "Making risk scores readable and reviews trackable",
     image: ASSESSMENTS_COVER,
     story: [
       { type: "images", items: [ASSESSMENTS_COVER] },
       { type: "p", text: CB_NOTE },
-      { type: "p", text: "Assessments is marked finished, with dated iteration files from April and May." },
+      {
+        type: "p",
+        text: "Assessments are the core of vendor risk work: collect evidence, evaluate controls, score the risk, record findings and decide. In 2026 I worked on how that flow reads and moves, without changing the scoring model underneath.",
+      },
+      { type: "h", text: "Scores people can read" },
+      {
+        type: "p",
+        text: "I redesigned how risk scores are displayed across assessments and vendors, and introduced Risk Domains, so a score can be broken down into the areas it comes from and traced back from an assessment to the vendor's overall risk.",
+      },
+      { type: "h", text: "Reviews that live in the product" },
+      {
+        type: "p",
+        text: "Internal review steps often lived in email and spreadsheets. Custom statuses and review workflows bring those steps into Coverbase: teams add their own stages, workflows move assessments through them and create reviews, and an assessment only moves forward when the required reviews are done.",
+      },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "Risk Domains and the refreshed score display shipped in May 2026, SLA tracking per assessment stage in June, and custom statuses with review workflows in July.",
+      },
     ],
   },
   {
     slug: "inspect-zero-touch",
-    year: 2025, // estimate
+    year: 2026,
     employer: CB,
     client: "Inspect and Zero Touch",
-    description: "Two Coverbase product areas, each redesigned into a v2.",
-    teaser: "Inspect v2 and Zero Touch v2, both finished",
+    description: "Two ways to check a vendor without waiting on a questionnaire: test their live service, or assess them from evidence that already exists.",
+    teaser: "Test the service, not the certificate",
     image: INSPECT_ZERO_TOUCH_COVER,
     story: [
       { type: "images", items: [INSPECT_ZERO_TOUCH_COVER] },
       { type: "p", text: CB_NOTE },
-      { type: "p", text: "Inspect v2 and Zero Touch v2 are both marked finished design work." },
+      {
+        type: "p",
+        text: "A vendor review usually rests on documents: a SOC 2 report, a questionnaire, a certificate. They describe what was true at one point in time. Inspect checks what is true now. Read-only agents sign in to the third-party apps a company uses and test the controls that matter, such as MFA, single sign-on and admin access, and keep time-stamped evidence of what they saw.",
+      },
+      { type: "h", text: "A guided connection to Okta" },
+      {
+        type: "p",
+        text: "Inspect needs access to the company's identity provider before it can test anything. I designed the connection as a guided, three-step flow inside the product: find the Okta app, grant exactly the scopes Inspect needs, then choose the applications to inspect. Each step validates as you go and explains what the access allows, and why, before anything is provisioned.",
+      },
+      { type: "images", items: [CB_OKTA_CONNECT, CB_OKTA_DONE] },
+      { type: "h", text: "From one inspection to continuous checks" },
+      {
+        type: "p",
+        text: "Once apps are connected, the Applications view shows what is inspected, what isn't, and what can't be reached. Inspections run on a schedule, and each run is compared with the last, separating material changes from noise, so a reviewer sees what changed rather than rereading everything.",
+      },
+      { type: "images", items: [CB_INSPECT_APPS] },
+      { type: "h", text: "Zero Touch Assessments" },
+      {
+        type: "p",
+        text: "Zero Touch is the lightweight sibling: an assessment built from public data and the intelligence Coverbase already holds, with no questionnaire and no outreach to the vendor. I redesigned the results as one summary across supplier profile, controls, security posture and financial health, with a clear risk score and a way to correct the data and reassess.",
+      },
+      { type: "images", items: [CB_ZERO_TOUCH] },
+      { type: "h", text: "Taking it to market" },
+      {
+        type: "p",
+        text: "The September 2026 campaign for Inspect was built on one idea: a certificate says the castle was safe once. These two ads were made for LinkedIn and Meta.",
+      },
+      { type: "images", items: [CB_AD_POINT, CB_AD_VERIFY] },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "Both shipped in the September 2026 release. Inspect gained scheduled inspections, notifications for outcomes that need attention, change comparisons, evidence from browser activity and API responses, an Accounts view and repeatable probes. Zero Touch gained the new summary, six pre-built templates, and a way to build it into intake and other workflows.",
+      },
     ],
   },
 
