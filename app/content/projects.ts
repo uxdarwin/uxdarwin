@@ -222,7 +222,7 @@ const AUGMEND_WAITLIST = img("augmend-waitlist.webp", "Waitlist modal: Welcome o
 const AUGMEND_EMAIL_BETA = img("augmend-email-beta.webp", "Private beta confirmation email: You're on the list and we're so excited", 778, 1269);
 const AUGMEND_EMAIL_ARTICLE = img("augmend-email-article.webp", "Newsletter email announcing a new article, with the Augmend app icon between mail and calendar icons", 778, 1232);
 const AUGMEND_EMAIL_INVITE = img("augmend-email-invite.webp", "Team invitation email with two people fitting puzzle pieces together", 712, 1212);
-const COOL_EARTH_COVER = img("cool-earth-cover.webp", "ECool Club home: the club sidebar with Take action, Rewards, Leaderboards and Learn, an invitation to earn 100 seeds, and badge tiers up to gold", 1600, 1600);
+const COOL_EARTH_COVER = img("cool-earth-cover.webp", "ECool Club home: the club sidebar with Take action, Rewards, Leaderboards and Learn, an invitation to earn 100 seeds, and badge tiers up to gold", 1600, 1053);
 const COOL_EARTH_HOME = img("cool-earth-home.webp", "ECool Club home: connect, contribute and get rewarded, with seeds and a daily streak in the top bar", 1536, 864);
 const COOL_EARTH_REWARDS = img("cool-earth-rewards.webp", "Rewards: badges for streaks, seeds, oxygen saved, sharing and the forum, beside course certificates", 1536, 864);
 const COOL_EARTH_LEADERBOARD = img("cool-earth-leaderboard.webp", "Leaderboards: badge tiers and a weekly ranking of businesses and supporters by points", 1536, 864);
@@ -958,7 +958,7 @@ export const projects: Project[] = [
     description: "AI tools that take game creators from an idea to an animated 3D asset.",
     teaser: "Texture, animate and build 3D game assets with AI",
     image: CHARMED_COVER,
-    coverVideo: { src: "/media/charmed-cover.mp4", poster: "/media/charmed-cover.webp", width: 1600, height: 976, fill: true },
+    coverVideo: { src: "/media/charmed-cover-square.mp4", poster: "/media/charmed-cover-square.webp", width: 1600, height: 1600, fill: true },
     story: [
       { type: "images", items: [CHARMED_COVER, CHARMED_WEB_HERO] },
       { type: "p", text: TT_NOTE },
