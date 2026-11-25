@@ -111,12 +111,7 @@ const COCUY = img(
   1000,
   562,
 );
-const SPICE = img(
-  "spice-org.webp",
-  "Spice.org home page: the headline, install and docs buttons, and a SQL query explorer",
-  1000,
-  694,
-);
+const SPICE_COVER: ProjectImage = { src: "/media/spice-org-cover.webp", video: "/media/spice-org-cover.mp4", alt: "Spice.org hero intro: the navigation, headline, buttons and SQL query explorer rise into place over the lined background", width: 1600, height: 1468 };
 const SPICE_CAPS = img(
   "spice-org-capabilities.webp",
   "Spice.org capability cards: federated data access, data acceleration, self-hostable and open source, secure AI/ML gateway",
@@ -745,9 +740,10 @@ export const projects: Project[] = [
     client: "Spice.org",
     description: "A developer site for Spice, an open-source SQL runtime for data and AI apps.",
     teaser: "A live query explorer in the hero, so developers see the product before they install it",
-    image: SPICE,
+    image: SPICE_COVER,
+    coverVideo: { src: "/media/spice-org-cover.mp4", poster: "/media/spice-org-cover.webp", width: 1600, height: 1468, fill: true },
     story: [
-      { type: "images", items: [SPICE, SPICE_CAPS, SPICE_INSTALL] },
+      { type: "images", items: [SPICE_COVER, SPICE_CAPS, SPICE_INSTALL] },
       {
         type: "p",
         text: "Spice AI builds an open-source runtime with a unified SQL interface for querying and accelerating data from databases, warehouses and lakes. Spice.org is its developer-facing site. I started working with Spice AI through Toptal and continued with them as a part-time client.",
