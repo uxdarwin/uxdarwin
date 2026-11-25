@@ -177,12 +177,31 @@ const ABACUS = img(
   556,
 );
 
-const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: a renewal timeline of contracts with notice deadlines, framed by a contract detail and a reviews view", 1600, 1000);
+const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: portfolio value, notice deadlines and clauses that need a decision above the contracts table, with the Actions menu open on Import contracts", 1600, 1000);
 const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River Vendor Registry Portal: a search for a meeting-transcription tool with approved, conditional and in-review results", 1600, 1000);
-const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: discovered SaaS apps, posture score and a list of inspections with their status", 1600, 1000);
+const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: inspection runs with controls finished, outcomes, compliance score and findings per application", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
 const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
-const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment results: score, controls evaluated and an analysis summary with strengths, weaknesses and actions", 1600, 1000);
+const CB_CONTRACTS_TRIAGE = img("cb-contracts-table.webp", "Contracts triage table: four work cards (notice deadlines, renewal decisions, missing renewal details, reviews needed) above one row per contract, ordered by notice due date", 2400, 1515);
+const CB_CONTRACTS_TIMELINE = img("cb-contracts-timeline.webp", "Timeline view of the same contracts: each row runs from its notice due date to the end of the current term, with a dashed line where the notice date is missing", 2400, 1544);
+const CB_CONTRACTS_PORTFOLIO: ProjectImage = { src: "/media/cb-contracts-portfolio.webp", video: "/media/cb-contracts-portfolio.mp4", alt: "The redesigned Contracts portfolio: Key Dates, Pending Tasks, Approvals and Portfolio cards above the table, a single Export button, the Add contracts menu, and a row menu that holds every contract action", width: 1920, height: 880 };
+const RADAR_COVER = img("radar-cover.webp", "Coverbase Radar: the signals list with severity and affected suppliers, and an event page with an AI summary, triage status and the vendors involved", 1600, 1000);
+const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment statuses: custom review steps in settings, and a workflow that moves an assessment into review", 1600, 1000);
+const CB_ZERO_TOUCH = img("cb-zero-touch.webp", "Zero Touch Assessment for 1Password: review results with a low-risk score beside the sections for supplier profile, reputational risk, controls and security posture", 2400, 1372);
+const CB_RADAR_BACKTEST = img("cb-radar-backtest.webp", "Radar's New Detector form: sources, categories, severity threshold and guidance for what Radar should watch", 2400, 1372);
+const CB_RADAR_MAP = img("cb-radar-map.webp", "A Radar event for a critical file-transfer vulnerability, with the Exposure map showing which vendors are hit directly and which through a shared provider", 2400, 1502);
+const CB_RADAR_DETECTORS = img("cb-radar-detectors.webp", "The same Radar event on its Detectors tab: each detector that fired, with severity, confidence and the sources behind it", 2400, 1579);
+const CB_RADAR_EMPTY = img("cb-radar-empty.webp", "Radar's empty state while it monitors the recommended detectors, with a banner to review them", 2400, 1500);
+const CB_INSPECT_START = img("cb-inspect-start.webp", "Inspect's first-run page: what Inspect can do, then two ways to start, connecting an identity provider (Okta or Microsoft Entra) or browsing the application library", 2400, 1500);
+const CB_OKTA_SELECT = img("cb-okta-select.webp", "Connect Okta to Inspect, step 3: app details and connection verified, three synced applications to choose from, and an explicit approval before Inspect provisions anything", 2400, 1500);
+const CB_INSPECT_CONFIG = img("cb-inspect-config.webp", "Configuration, Inspect: one card each for Okta, Microsoft Entra and Google OAuth, with connection status, last sync and how many applications are added", 2400, 405);
+const CB_ZT_RUNNING = img("cb-zt-running.webp", "Zero Touch assessment while it runs: a progress banner, a persistent section index on the left, and each section reporting what Coverbase is checking right now", 2400, 1500);
+const CB_ZT_COMPLETED = img("cb-zt-completed.webp", "Completed Zero Touch assessment: risk level and score up front, the vendor profile and inherent risk grouped together, and the reviewer decision kept in view on the right", 2400, 1450);
+const CB_OKTA_CONNECT = img("cb-okta-connect.webp", "Connect Okta to Inspect: app details are found, then step-by-step setup of the public key, scopes and roles Inspect needs", 2400, 1747);
+const CB_OKTA_DONE = img("cb-okta-done.webp", "Okta connection completed: three applications ready for inspection, with New inspection and View applications", 2400, 1500);
+const CB_INSPECT_APPS = img("cb-inspect-apps.webp", "Inspect's Applications tab: counts of added, unavailable, inspected and not-inspected apps, the Okta sync status, and each app with its source and last inspection", 2400, 1500);
+const CB_AD_POINT = img("cb-inspect-ad-point.webp", "Inspect campaign ad: a castle certificate reads Security status while the real castle behind it crumbles. Your vendor passed the test. Is it still true today?", 1620, 1620);
+const CB_AD_VERIFY = img("cb-inspect-ad-verify.webp", "Inspect campaign ad: a small robot with an Inspector badge scans a castle into a wireframe. Test your third parties continuously", 1620, 1620);
 const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
 const BFF_COVER = img("bff-cover.webp", "BFF: two phones with the fan home page and the request menu (comment, like, follow, greeting, serenade) beside a person holding a BFF sign", 1920, 1320);
 const BFF_MOCKUPS = img("bff-mockups.webp", "BFF fan app screens laid out on pink: talent search, featured talent, services, request details and a celebrity video", 1345, 896);
@@ -277,8 +296,6 @@ const CB = { label: "Coverbase", brand: "coverbase" } as const;
 const TT = { label: "Toptal", brand: "toptal" } as const;
 const RV = { label: "Red Valley", brand: "redvalley" } as const;
 
-const CB_NOTE =
-  "Coverbase is an AI procurement and vendor-risk platform from San Francisco. I joined as its first designer in November 2024, part-time at first and full-time from February 2026, and I own product design end to end.";
 const PC_PROJECT = img(
   "parque-caudal-project.webp",
   "El proyecto section: Un proyecto pensado a otra escala, with 15 apartments, 5 floors and 3 typologies, common areas as tags and a corner render of the building",
@@ -505,7 +522,6 @@ export const projects: Project[] = [
     image: VENDOR_REGISTRY_COVER,
     story: [
       { type: "images", items: [VENDOR_REGISTRY_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "The Vendor Registry Portal is one of the product areas I marked as finished design, with a cover dated September 2026.",
@@ -516,16 +532,49 @@ export const projects: Project[] = [
     slug: "contracts",
     year: 2026,
     employer: CB,
-    client: "Contracts",
-    description: "Contract management inside Coverbase's vendor-risk platform.",
-    teaser: "From a contracts area to clause-by-clause review with Contract Guardian",
+    client: "Contracts and Contract Guardian",
+    description: "Contract management and AI clause review inside Coverbase, redesigned around the questions customers bring to it.",
+    teaser: "What expires, and when do I act? Redesigning the contracts portfolio around dates",
     image: CONTRACTS_COVER,
     story: [
       { type: "images", items: [CONTRACTS_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
-        text: "Two finished files cover contract work: Contracts, with a cover dated September 2026, and Clause Review, Contract Guardian v1, which reviews contracts clause by clause.",
+        text: "Procurement and legal teams track hundreds of vendor contracts, and the dates hidden inside them decide real money: notice periods, auto-renewals, termination windows. In 2026 Contract Guardian took the whole contract review into Coverbase: bulk import organized by vendor, engagement, service and key dates; AI clause review; redlines exported to Word with tracked changes; and multi-party e-signatures. That shipped in September.",
+      },
+      { type: "h", text: "First pass: triage before detail" },
+      {
+        type: "p",
+        text: "I started in September with a brief built around one scenario: an analyst opens Contracts to find what needs attention, then reviews several contracts in a row. The evidence pointed at the list itself. Rows were grouped by vendor, so one customer couldn't tell why they saw 24 rows when they had 764 contracts. The summary cards competed with equal weight, and product analytics showed a list, contract, list loop in 27.5% of journeys.",
+      },
+      {
+        type: "p",
+        text: "So the first pass treated the portfolio as triage. One row is one contract. The cards became work questions with an explicit count and the reason behind it: notice deadlines, renewal decisions needed, missing renewal details, reviews needed. The table sorts by the most actionable date, notice due, and its columns follow the triage story: contract, vendor, status, notice due, renewal decision, renewal, renewal term, current term end. Instead of a separate renewal runway screen, a timeline view reuses the same dataset and controls, and Start clause review moved from the global toolbar into each row so nobody has to pick the contract twice.",
+      },
+      { type: "images", items: [CB_CONTRACTS_TRIAGE, CB_CONTRACTS_TIMELINE] },
+      {
+        type: "p",
+        text: "To break the loop, I added a lightweight preview: a side panel that opens from a row, keeps the row highlighted and the table usable underneath, shows the vendor before the contract, steps to the previous or next contract in the current filtered order, and opens the full record when it's time to commit. Engineering had it implemented by early October, with a toggle to turn previews on or off, and I proposed it as a shared pattern for Vendors, Assessments, Radar, Findings and Cases.",
+      },
+      { type: "h", text: "Second pass: start where people actually are" },
+      {
+        type: "p",
+        text: "In November I went back to Contracts end to end with usage data. The portfolio and the contract detail made up over 99% of views; assembly, signatures, templates and the repository each had fewer than 50, so the portfolio stayed the focus. Support conversations and customer calls pointed the same way: renewals and notices were one of the three largest themes, and customers asked directly for views like \u201cexpiring in six months\u201d and \u201cnotices in the next 60 days\u201d.",
+      },
+      { type: "h", text: "What was broken" },
+      {
+        type: "p",
+        text: "The summary cards didn't fully answer the questions people brought to the page, and related information was split between the cards and the toolbar. A strip in the toolbar looked like one control but behaved three ways: one segment filtered, one did nothing and one opened a drawer. The Actions menu mixed portfolio-wide actions, per-contract actions and five different ways to add contracts. Even our own team struggled with it in a demo, and bulk import, the main way customers bring contracts in, was buried in the empty state.",
+      },
+      { type: "images", items: [CB_CONTRACTS_PORTFOLIO] },
+      { type: "h", text: "One card per question, one home per action" },
+      {
+        type: "p",
+        text: "The new portfolio opens with one card per question: Key Dates, Pending Tasks, Approvals (only for organizations that use them) and Portfolio, each opening in place with more detail. The toolbar strip is gone and its figures moved into the cards. Every item from the old Actions menu got a clear home: saved reports in Reports, reminders in Configuration (because reminders are settings, not actions), imports in a new Add contracts menu grouped by use, and Export as the single button left. Each row's menu now holds every contract action, where before some lived only in the bulk bar, and the bulk bar repeats the ones that work on many contracts at once.",
+      },
+      {
+        type: "p",
+        text: "I documented the evidence and a decision log for every change, and built the redesign in code as well as in design. Both passes, the triage table with its timeline view and preview, and the question cards with the new Add contracts menu, shipped to customers.",
       },
     ],
   },
@@ -534,13 +583,37 @@ export const projects: Project[] = [
     year: 2026,
     employer: CB,
     client: "Radar",
-    description: "Radar, a Coverbase product surface redesigned through three versions.",
-    teaser: "Why Radar needed a v2 and then a v3 within a year",
+    description: "Continuous monitoring of vendor risk: security events, outages and news, matched to the vendors a company depends on.",
+    teaser: "From a feed of alerts to an investigation: who is exposed, and what we did about it",
+    image: RADAR_COVER,
     story: [
-      { type: "p", text: CB_NOTE },
+      { type: "images", items: [RADAR_COVER] },
       {
         type: "p",
-        text: "Radar went through v2 and v3, both marked finished, with the v3 cover dated October 2026. The version numbers show the surface was redesigned more than once as the product grew.",
+        text: "Radar watches the outside world for events that touch a customer's vendors: vulnerabilities, breaches, outages, financial and legal news. When something happens, a team needs more than an alert: who is affected, how badly, and what has already been done about it.",
+      },
+      { type: "h", text: "Every event is an investigation" },
+      {
+        type: "p",
+        text: "I redesigned Radar around the event page. Each event opens with a short summary, its timeline from disclosure to our alert, and a status the team owns. Below it, tabs answer the next questions in order: which detectors fired and why, who is exposed, which sources back it up, and what happened when. The separate Alerts table went away; alert details now live on the event they belong to.",
+      },
+      { type: "images", items: [CB_RADAR_DETECTORS] },
+      { type: "h", text: "Exposure, direct and indirect" },
+      {
+        type: "p",
+        text: "The hardest question in an incident is reach. A vulnerability in one file-transfer product can hit a vendor directly, or reach three more through a provider they share. The Exposure view groups affected vendors by tier and shows both paths, so a team can start with the vendors that matter most instead of the longest list.",
+      },
+      { type: "images", items: [CB_RADAR_MAP] },
+      { type: "h", text: "Tuning what Radar watches" },
+      {
+        type: "p",
+        text: "Detectors define what Radar looks for. Teams can start from a recommended set, write their own with sources, categories and a severity threshold, and backtest a detector against past events before trusting it in production, so false positives get tuned out before anyone is paged.",
+      },
+      { type: "images", items: [CB_RADAR_BACKTEST, CB_RADAR_EMPTY] },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "Detector backtesting shipped in January 2026. The redesigned Radar went live for every Coverbase organization in September 2026, with Ask Coverbase AI on each event, the Exposure view, vendor status-page monitoring with snapshots of what changed, and custom statuses with inline actions for tracking the response.",
       },
     ],
   },
@@ -556,7 +629,6 @@ export const projects: Project[] = [
     pairNext: true,
     story: [
       { type: "images", items: [COVERBASE_WEBSITE_COVER, CAB_SITE_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "I designed Coverbase's brand and marketing updates on top of the Coverbase V2 Brand library: Marketing Website v3, a case-study template and its redesign, a changelog, and marketing assets for social posts, email templates, a one-pager, a sales deck, print material and a lead-magnet report on third-party risk management in the age of AI.",
@@ -690,7 +762,6 @@ export const projects: Project[] = [
     image: CENCORA_AUDIT_COVER,
     story: [
       { type: "images", items: [CENCORA_AUDIT_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "The Cencora Workflow design audit sits in the Design Audit folder next to a dashboard architecture study and a configuration architecture board. The cover is dated June 2026.",
@@ -922,7 +993,6 @@ export const projects: Project[] = [
     image: APPRAISER_COVER,
     story: [
       { type: "images", items: [APPRAISER_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "The Appraiser V2 file runs from low-fidelity rounds to high-fidelity rounds, each saved as a dated version, which makes it the clearest record of one Coverbase surface evolving over time.",
@@ -931,30 +1001,99 @@ export const projects: Project[] = [
   },
   {
     slug: "assessments",
-    year: 2025, // estimate
+    year: 2026,
     employer: CB,
     client: "Assessments",
-    description: "Vendor assessments in Coverbase, designed through dated iterations.",
-    teaser: "Dated iterations from April and May, through to a finished design",
+    description: "Vendor assessments in Coverbase: how risk is scored, reviewed and tracked to a decision.",
+    teaser: "Making risk scores readable and reviews trackable",
     image: ASSESSMENTS_COVER,
     story: [
       { type: "images", items: [ASSESSMENTS_COVER] },
-      { type: "p", text: CB_NOTE },
-      { type: "p", text: "Assessments is marked finished, with dated iteration files from April and May." },
+      {
+        type: "p",
+        text: "Assessments are the core of vendor risk work: collect evidence, evaluate controls, score the risk, record findings and decide. In 2026 I worked on how that flow reads and moves, without changing the scoring model underneath.",
+      },
+      { type: "h", text: "Scores people can read" },
+      {
+        type: "p",
+        text: "I redesigned how risk scores are displayed across assessments and vendors, and introduced Risk Domains, so a score can be broken down into the areas it comes from and traced back from an assessment to the vendor's overall risk.",
+      },
+      { type: "h", text: "Reviews that live in the product" },
+      {
+        type: "p",
+        text: "Internal review steps often lived in email and spreadsheets. Custom statuses and review workflows bring those steps into Coverbase: teams add their own stages, workflows move assessments through them and create reviews, and an assessment only moves forward when the required reviews are done.",
+      },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "Risk Domains and the refreshed score display shipped in May 2026, SLA tracking per assessment stage in June, and custom statuses with review workflows in July.",
+      },
     ],
   },
   {
     slug: "inspect-zero-touch",
-    year: 2025, // estimate
+    year: 2026,
     employer: CB,
     client: "Inspect and Zero Touch",
-    description: "Two Coverbase product areas, each redesigned into a v2.",
-    teaser: "Inspect v2 and Zero Touch v2, both finished",
+    description: "Two ways to check a vendor without waiting on a questionnaire: test their live service, or assess them from evidence that already exists.",
+    teaser: "Test the service, not the certificate",
     image: INSPECT_ZERO_TOUCH_COVER,
     story: [
       { type: "images", items: [INSPECT_ZERO_TOUCH_COVER] },
-      { type: "p", text: CB_NOTE },
-      { type: "p", text: "Inspect v2 and Zero Touch v2 are both marked finished design work." },
+      {
+        type: "p",
+        text: "A vendor review usually rests on documents: a SOC 2 report, a questionnaire, a certificate. They describe what was true at one point in time. Inspect checks what is true now. Read-only agents sign in to the third-party apps a company uses and test the controls that matter, such as MFA, single sign-on and admin access, and keep time-stamped evidence of what they saw.",
+      },
+      { type: "h", text: "A guided connection to Okta" },
+      {
+        type: "p",
+        text: "Inspect needs access to the company's identity provider before it can test anything. I started with the first screen: say plainly what Inspect does, then offer two ways in, connect Okta or Microsoft Entra to discover managed apps, or browse an application library for a quick test or an app outside the identity provider. The word library mattered: it tells people there are ready-made settings to start from.",
+      },
+      { type: "images", items: [CB_INSPECT_START] },
+      {
+        type: "p",
+        text: "The connection itself became four guided steps: app details, configuring the connection, syncing and selecting applications, and preparing them for inspection. Each step separates what the person does in Okta from what Coverbase checks automatically, and asks for access only when it becomes relevant: the scopes for creating an inspection identity are explained up front but used only after apps are chosen, behind an explicit approval. I designed the loading and error states of every step, plus an empty inventory, so a wrong client ID or a missing role can be fixed in place without starting over.",
+      },
+      { type: "images", items: [CB_OKTA_CONNECT, CB_OKTA_SELECT] },
+      { type: "images", items: [CB_OKTA_DONE] },
+      {
+        type: "p",
+        text: "Connections then got one home under Configuration: a card for each of Okta, Microsoft Entra and Google OAuth, with status, last sync, the inventory available and the apps already added to Inspect.",
+      },
+      { type: "images", items: [CB_INSPECT_CONFIG] },
+      { type: "h", text: "From one inspection to continuous checks" },
+      {
+        type: "p",
+        text: "Once apps are connected, the Applications view shows what is inspected, what isn't, and what can't be reached. Inspections run on a schedule, and each run is compared with the last, separating material changes from noise, so a reviewer sees what changed rather than rereading everything.",
+      },
+      { type: "images", items: [CB_INSPECT_APPS] },
+      { type: "h", text: "Zero Touch Assessments" },
+      {
+        type: "p",
+        text: "Zero Touch is the lightweight sibling: an assessment built from public data and the intelligence Coverbase already holds, with no questionnaire and no outreach to the vendor. The first version treated it like a smaller traditional assessment, so reviewers expected to go through it issue by issue. I reframed it as screening: one assessment-level conclusion with grouped observations and the evidence behind them, and a default path of launch, review the summary, then close, or only when it's warranted, raise a finding or start a full assessment.",
+      },
+      { type: "images", items: [CB_ZERO_TOUCH] },
+      {
+        type: "p",
+        text: "I designed the completed results first and worked backward into launch and processing. While a run is in progress, the old page offered Approve, Escalate and Archive before there was anything to act on, and filled the screen with empty scores, findings and sources. The new running state shows what Coverbase is doing right now, section by section, with a persistent index for jumping around a long report.",
+      },
+      { type: "images", items: [CB_ZT_RUNNING] },
+      {
+        type: "p",
+        text: "On the completed page, the risk level and score come first, risk information is grouped in one place, and the reviewer decision stays in view on the right. Sections carry a confidence label, because evidence quality varies and \u201cnothing found\u201d must never read as \u201cstrong evidence of low risk\u201d.",
+      },
+      { type: "images", items: [CB_ZT_COMPLETED] },
+      { type: "h", text: "Taking it to market" },
+      {
+        type: "p",
+        text: "I also designed the September 2026 launch campaign for Inspect, built on one idea: a certificate says the castle was safe once. These two ads ran on LinkedIn and Meta.",
+      },
+      { type: "images", items: [CB_AD_POINT, CB_AD_VERIFY] },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "Both shipped in the September 2026 release. Inspect gained scheduled inspections, notifications for outcomes that need attention, change comparisons, evidence from browser activity and API responses, an Accounts view and repeatable probes. Zero Touch gained the new summary, six pre-built templates, and a way to build it into intake and other workflows. The first-run page, the guided Okta connection, the Configuration cards and the redesigned running and completed Zero Touch pages all shipped.",
+      },
     ],
   },
 
