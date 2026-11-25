@@ -41,22 +41,4 @@ export const media: MediaTile[] = [
     kind: "wide",
     focus: "50% 55%",
   },
-  {
-    key: "coverbase-team",
-    src: "/images/companies/coverbase.webp",
-    alt: "The Coverbase team at their 2026 on-site in Mexico City",
-    width: 960,
-    height: 540,
-    kind: "wide",
-    brand: "coverbase",
-  },
-  {
-    key: "redvalley-team",
-    src: "/images/companies/redvalley.webp",
-    alt: "The Red Valley team at an on-site in Medellín",
-    width: 960,
-    height: 794,
-    kind: "narrow",
-    brand: "redvalley",
-  },
 ];

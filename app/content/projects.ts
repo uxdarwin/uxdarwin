@@ -162,7 +162,6 @@ const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landi
 const RAINFOREST_KIDS_COVER = img("rainforest-kids-cover.webp", "Rainforest Foundation kids course: a sloth guide asks a fill-in-the-blank question about greenhouse gases", 1600, 1000);
 const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment results: score, controls evaluated and an analysis summary with strengths, weaknesses and actions", 1600, 1000);
 const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
-const ALLTHENTICATE_COVER = img("allthenticate-cover.webp", "Allthenticate app: Touch ID sign-in and a list of doors and devices to unlock, with brand iconography and patterns", 1600, 1000);
 const BFF_COVER = img("bff-cover.webp", "BFF: two phones with the fan home page and the request menu (comment, like, follow, greeting, serenade) beside a person holding a BFF sign", 1920, 1320);
 const CHECK_MIG_COVER = img("check-mig-cover.webp", "Check Mig: migration registration flow screens, a travel record and the design system", 1600, 1000);
 const COVERBASE_WEBSITE_COVER = img("coverbase-website-cover.webp", "Coverbase website: a customer video hero with the headline Agentic third-party risk and security", 1600, 1000);
@@ -170,7 +169,6 @@ const SPICE_AI_WEBSITE_COVER = img("spice-ai-website-cover.webp", "Spice AI webs
 const SWIPPR_COVER = img("swippr-cover.webp", "Swippr website: Find your next job for free, with the free plan's features", 1600, 1000);
 const NOMICOL_COVER = img("nomicol-cover.webp", "Nomicol payroll web app: period summary with payroll status and the employee list, plus the mobile sign-up", 1600, 1000);
 const DOCUCOL_COVER = img("docucol-cover.webp", "Docucol: the assigned documents list beside an illustration of a person signing", 1600, 1000);
-const SWEAT_440_COVER = img("sweat-440-cover.webp", "Sweat 440: station screens for group classes and the trainer video console", 1600, 1000);
 const CHARMED_COVER = img("charmed-cover.webp", "Charmed HUB: the texture generator on a 3D potion bottle, between the folder and geometry views", 1600, 1000);
 const ATLAS_COVER = img("atlas-cover.webp", "Atlas leads capture: Explore our 3D navigator tools, with a 3D capture of a garage", 1600, 1000);
 const AUGMEND_COVER = img("augmend-cover.webp", "Augmend workspace: an incident summary with its hypothesis beside shared windows and a CloudWatch log", 1600, 1000);
@@ -810,20 +808,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "screen-objectives",
-    year: 2024,
-    employer: ML,
-    client: "Screen objectives",
-    description: "A working method that ties every screen to a business and communication objective.",
-    teaser: "Templates, guidelines and an AI prompt that checks whether an objective is well written",
-    story: [
-      {
-        type: "p",
-        text: "A method for the team rather than a screen: guidelines with do's and don'ts, a template that breaks business objectives down into experience, communication and screen objectives, and an AI prompt that checks whether an experience objective is well written. Figma components attach the objectives to every screen; Statements uses them throughout.",
-      },
-    ],
-  },
-  {
     slug: "cool-earth",
     year: 2024,
     employer: TT,
@@ -934,16 +918,17 @@ export const projects: Project[] = [
 
   // ---------- 2022 ----------
   {
-    slug: "nomicol",
+    slug: "nomicol-docucol",
     year: 2022,
     employer: RV,
-    client: "Nomicol",
-    description: "A payroll platform that moves small businesses off spreadsheets.",
-    teaser: "14 interviews, two sprints, and a payroll summary managers can read at a glance",
+    client: "Nomicol and Docucol",
+    description: "Two products for small businesses: Nomicol for payroll, Docucol for contracts.",
+    teaser: "Payroll off spreadsheets, and contracts from template to signature",
     image: NOMICOL_COVER,
     story: [
-      { type: "images", items: [NOMICOL_COVER] },
+      { type: "images", items: [NOMICOL_COVER, DOCUCOL_COVER] },
       { type: "p", text: RV_NOTE },
+      { type: "h", text: "Nomicol: payroll without spreadsheets" },
       {
         type: "p",
         text: "Nomicol helps small businesses move payroll off spreadsheets. Businesses register employees and keep a history of payment periods; managers update each period with overtime, deductions and other payments, and employees see the status of their next payment in real time.",
@@ -952,56 +937,10 @@ export const projects: Project[] = [
         type: "p",
         text: "As UX lead I ran the process from start to finish: research over two sprints with 14 interviews, a benchmark and desk research, information architecture, interaction design, prototypes, the first release of the platform and the employee mobile app, and usability testing.",
       },
-    ],
-  },
-  {
-    slug: "docucol",
-    year: 2022,
-    employer: RV,
-    client: "Docucol",
-    description: "Contract lifecycle management: templates, digital signatures and reminders.",
-    teaser: "From template to signed contract, with reviewers, reminders and expiration dates",
-    image: DOCUCOL_COVER,
-    story: [
-      { type: "images", items: [DOCUCOL_COVER] },
-      { type: "p", text: RV_NOTE },
+      { type: "h", text: "Docucol: from template to signed contract" },
       {
         type: "p",
         text: "Docucol lets people and companies create contracts from templates, invite others to review or sign digitally, add reminders and expiration dates, and organize documents in folders. I led the process from research and information architecture to user flows, wireframes and high-fidelity prototypes.",
-      },
-    ],
-  },
-  {
-    slug: "sweat-440",
-    year: 2022,
-    employer: RV,
-    client: "Sweat 440",
-    description: "A TV interface redesign and admin portal for a HIIT gym chain.",
-    teaser: "Four stations, 40 minutes: redesigning the screens that guide every class",
-    image: SWEAT_440_COVER,
-    story: [
-      { type: "images", items: [SWEAT_440_COVER] },
-      { type: "p", text: RV_NOTE },
-      {
-        type: "p",
-        text: "Sweat 440 runs 40-minute sessions split into four 10-minute stations, each guided by TV screens. I redesigned the TV interface, with the exercise video, station count and countdown, and designed an admin portal to create and edit training sessions.",
-      },
-    ],
-  },
-  {
-    slug: "allthenticate",
-    year: 2022,
-    employer: RV,
-    client: "Allthenticate",
-    description: "Dashboard, groups and permissions for an authentication startup.",
-    teaser: "Dashboard, groups and permissions, on web and mobile",
-    image: ALLTHENTICATE_COVER,
-    story: [
-      { type: "images", items: [ALLTHENTICATE_COVER] },
-      { type: "p", text: RV_NOTE },
-      {
-        type: "p",
-        text: "An authentication startup's dashboard, groups and permissions management, and mobile screens.",
       },
     ],
   },
