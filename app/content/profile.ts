@@ -18,6 +18,8 @@ export type HighlightItem = {
   subtitle: string;
   date: string;
   brand: Brand;
+  /** Clicking the row opens this site in a new tab. */
+  url?: string;
   preview: {
     src: string;
     alt: string;
@@ -100,6 +102,7 @@ export const highlights: HighlightItem[] = [
     subtitle: "Rainforest Foundation US",
     date: "2022-2024",
     brand: "rainforest",
+    url: "https://rainforestfoundation.org",
     preview: {
       src: "/images/highlights/volunteer.webp",
       alt: "Rainforest Foundation US website home page",

@@ -97,7 +97,7 @@ export function HighlightsCard() {
                 onPointerEnter={(e) => e.pointerType === "mouse" && floating && setActive(i)}
                 onFocus={() => floating && setActive(i)}
                 onBlur={() => floating && setActive(null)}
-                onClick={() => !floating && setActive(isActive ? null : i)}
+                onClick={() => (h.url ? window.open(h.url, "_blank", "noopener,noreferrer") : !floating && setActive(isActive ? null : i))}
               >
                 <BrandMark brand={h.brand} id={`hl-${i}`} />
                 <span className={styles.rowText}>

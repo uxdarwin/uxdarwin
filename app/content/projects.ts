@@ -159,7 +159,6 @@ const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River V
 const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: discovered SaaS apps, posture score and a list of inspections with their status", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
 const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
-const RAINFOREST_KIDS_COVER = img("rainforest-kids-cover.webp", "Rainforest Foundation kids course: a sloth guide asks a fill-in-the-blank question about greenhouse gases", 1600, 1000);
 const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment results: score, controls evaluated and an analysis summary with strengths, weaknesses and actions", 1600, 1000);
 const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
 const BFF_COVER = img("bff-cover.webp", "BFF: two phones with the fan home page and the request menu (comment, like, follow, greeting, serenade) beside a person holding a BFF sign", 1920, 1320);
@@ -864,22 +863,6 @@ export const projects: Project[] = [
       {
         type: "p",
         text: "I led design for Cool Earth's gamified donor experience in Toptal's global hackathon in Q1 2024, which our team won. The work runs from a design sprint board through explorations to a published Cool Earth UI library.",
-      },
-    ],
-  },
-  {
-    slug: "rainforest-kids",
-    year: 2024,
-    employer: { label: "Volunteer", brand: "rainforest" },
-    client: "Rainforest Foundation US",
-    description: "A section of the Rainforest Foundation US website made for kids.",
-    teaser: "From a sitemap and tree testing to a kids' section of the website",
-    image: RAINFOREST_KIDS_COVER,
-    story: [
-      { type: "images", items: [RAINFOREST_KIDS_COVER] },
-      {
-        type: "p",
-        text: "As a volunteer from 2022 to 2024, I designed the kids' section of the Rainforest Foundation US website, with wireframes, mockups and assets. Related work covers the main website library, a sitemap, tree-testing conclusions and insights, and the 2024 annual report.",
       },
     ],
   },
