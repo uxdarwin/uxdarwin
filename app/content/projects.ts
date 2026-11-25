@@ -11,6 +11,8 @@ export type ProjectImage = {
   height: number;
   /** A muted looping clip shown instead of the image; src is then its poster. */
   video?: string;
+  /** A cut-out with a transparent background: no frame, the shadow follows its shape. */
+  transparent?: boolean;
 };
 
 export type Block =
@@ -106,15 +108,36 @@ const WED_FAQ = wed("faq", "Other questions, grouped by topic: attendance and gu
 const COCUY = img(
   "cocuy.webp",
   "Cover of Cocuy, the 1P Main Library, over a photo of the Púlpito del Diablo in El Cocuy",
-  1000,
-  562,
+  2400,
+  1350,
 );
-const SPICE = img(
-  "spice-org.webp",
-  "Spice.org home page: the headline, install and docs buttons, and a SQL query explorer",
-  1000,
-  694,
-);
+const CQ = (f: string, alt: string, w: number, h: number) => img(`cocuy-${f}.webp`, alt, w, h);
+const CQ_ANALYTICS = CQ("analytics", "Figma library analytics for Cocuy: component insertions over the year, top teams and component statistics, with Navbar at 12,920 instances", 1374, 1420);
+const CQ_UPLOAD_BEFORE = CQ("layout-upload-before", "Before: the offer upload page in the supplier center, with its own spacing and container widths", 2000, 1007);
+const CQ_UPLOAD = CQ("layout-upload", "After: the same upload page rebuilt on the shared Layout component", 2000, 1007);
+const CQ_OFFERS = CQ("layout-offers", "After: the offer status table in Scarlet on the shared Layout, navbar and side menu", 2000, 1007);
+const CQ_SEARCH_BEFORE = CQ("layout-offers-before", "Before: offer status search that took one SAP SKU at a time", 2000, 1008);
+const CQ_SEARCH = CQ("bulk-search", "After: the bulk search field open in Scarlet, holding dozens of IDs as tags", 2000, 1007);
+const CQ_SEARCH_PANDORA = CQ("bulk-search-pandora", "After: bulk search implemented in Pandora's First Party offer-removal tool", 2000, 1007);
+const CQ_ROW_BEFORE = CQ("row-before", "Before: purchase order rows in the supplier center", 2000, 1839);
+const CQ_ROW = CQ("row", "After: purchase order rows with a clearer hierarchy, shared with the Sales team's rows", 1775, 1632);
+const CQ_CARDS_BEFORE = CQ("cards-before", "Before: contract cards in Scarlet", 1366, 1500);
+const CQ_CARDS = CQ("cards", "After: contract cards with clearer reading levels and hierarchy", 2000, 2196);
+const CQ_MENU_BEFORE = CQ("sidemenu-before", "Before: three different side menus in Buying Portal, the supplier center and Scarlet", 2000, 1544);
+const CQ_MENU = CQ("sidemenu", "After: one side menu component across Buying Portal, the supplier center and Scarlet", 2000, 1468);
+const CQ_HEADERS_BEFORE = CQ("headers-before", "Before: the size guide manager header", 2000, 1007);
+const CQ_HEADERS = CQ("headers", "After: the size guide manager with standardized header spacing, alignment and hierarchy", 2000, 1070);
+const CQ_TOOLBARS_BEFORE = CQ("toolbars-before", "Before: the commercial agreements toolbar in Buying Portal, with the inconsistencies marked", 2000, 1007);
+const CQ_TOOLBARS = CQ("toolbars", "After: the commercial agreements page on the shared toolbar component", 2000, 1007);
+const CQ_ERRORS_BEFORE = CQ("errors-before", "Before: a generic error page in the supplier center", 1613, 829);
+const CQ_ERRORS_403 = CQ("errors-403", "After: the standard 403 page, asking for the missing permissions", 2000, 1007);
+const CQ_ERRORS_404 = CQ("errors-404", "After: the standard 404 page, with its illustration and wording", 2000, 1007);
+const CQ_CRUMBS_BEFORE = CQ("breadcrumbs-before", "Before: a cooperative agreement form with its own breadcrumb", 2000, 1018);
+const CQ_CRUMBS = CQ("breadcrumbs", "After: the same form with breadcrumbs built into the Layout component", 2000, 1018);
+const SPICE_COVER: ProjectImage = { src: "/media/spice-org-cover.webp", video: "/media/spice-org-cover.mp4", alt: "Spice.org hero intro: the navigation, headline, buttons and SQL query explorer rise into place over the lined background", width: 1600, height: 1468 };
+const SPICE_M_HERO = img("spice-org-mobile-hero.webp", "Spice.org on mobile: the headline, buttons and query explorer with paging dots", 786, 1704);
+const SPICE_M_MENU = img("spice-org-mobile-menu.webp", "Spice.org on mobile: the navigation menu open over the hero, with the demo video below", 786, 1604);
+const SPICE_M_CTA = img("spice-org-mobile-cta.webp", "Spice.org on mobile: the closing call to action and a customer quote", 474, 1116);
 const SPICE_CAPS = img(
   "spice-org-capabilities.webp",
   "Spice.org capability cards: federated data access, data acceleration, self-hostable and open source, secure AI/ML gateway",
@@ -159,7 +182,6 @@ const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River V
 const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: discovered SaaS apps, posture score and a list of inspections with their status", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
 const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
-const RAINFOREST_KIDS_COVER = img("rainforest-kids-cover.webp", "Rainforest Foundation kids course: a sloth guide asks a fill-in-the-blank question about greenhouse gases", 1600, 1000);
 const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment results: score, controls evaluated and an analysis summary with strengths, weaknesses and actions", 1600, 1000);
 const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
 const BFF_COVER = img("bff-cover.webp", "BFF: two phones with the fan home page and the request menu (comment, like, follow, greeting, serenade) beside a person holding a BFF sign", 1920, 1320);
@@ -175,6 +197,20 @@ const CHECK_MIG_FLOW = img("check-mig-flow.webp", "Check Mig screens: trip direc
 const CHECK_MIG_DS = img("check-mig-design-system.webp", "Check Mig design system: colours, type scale, 12-column grid, spacing, buttons, inputs, icons and cards", 1568, 537);
 const COVERBASE_WEBSITE_COVER = img("coverbase-website-cover.webp", "Coverbase website: a customer video hero with the headline Agentic third-party risk and security", 1600, 1000);
 const SPICE_AI_WEBSITE_COVER = img("spice-ai-website-cover.webp", "Spice AI website: the hero, The Data and AI Stack in One Engine, beside a SQL playground", 1600, 1000);
+const SA = (f: string, alt: string, w: number, h: number) => img(`spice-ai-${f}.webp`, alt, w, h);
+const SA_HOME_HERO = SA("home-hero", "Spice AI homepage on desktop: The Data and AI Stack in One Engine, beside a SQL playground with hybrid search, LLM inference and federation callouts, over the customer logos", 2000, 1378);
+const SA_HOME_GROUND = SA("home-ground", "Spice AI homepage: Ground apps and AI agents in enterprise data, with tabs for SQL federation, hybrid search and embedded AI inference", 2000, 1242);
+const SA_HOME_AI_ERA = SA("home-ai-era", "Spice AI homepage: Do more with your data in three charted numbers, then Built for the AI era with deploy, sandboxing and observability cards", 2000, 1806);
+const SA_HOME_PRODUCTION = SA("home-production", "Spice AI homepage: a customer quote, Get started with Spice resource cards and the See spice in action call to action", 2000, 2357);
+const SA_FEDERATION = SA("diagram-federation", "Spice engine diagram, SQL Federation and Acceleration highlighted: accelerated data and catalogs", 2000, 1352);
+const SA_HYBRID = SA("diagram-hybrid", "Spice engine diagram, Hybrid SQL Search highlighted: full-text, vector, keyword and re-ranking", 2000, 1352);
+const SA_INFERENCE = SA("diagram-inference", "Spice engine diagram, LLM Inference highlighted: serving and grounding AI in data", 2000, 1352);
+const SA_STACK = SA("stack", "The Data and AI Stack in One Engine: the Spice playground with a hybrid search query, its results and the three capability callouts", 2000, 1274);
+const SA_APPS = SA("diagram-apps", "Architecture diagram: AI apps on top of Spice AI, which connects S3 buckets and tables with AI models such as NVIDIA NIM, OpenAI and Hugging Face", 1388, 760);
+const SA_22 = SA("2-2", "Spice 2.2 announcement: Spice Cloud Connect for BYOC, MySQL change data capture, Debezium CDC without Kafka and faster search", 2000, 1047);
+const SA_ICON = SA("icon", "The Spice AI app icon over a grid of the data sources and AI providers it connects", 1360, 1034);
+const SA_SIGNIN = SA("signin", "Spice Cloud Platform sign-in: continue with GitHub, beside what the platform does and the companies that run it in production", 2000, 1111);
+const SA_CTA = SA("cta", "See spice in action: a dark call to action for a live demo", 2000, 640);
 const SWIPPR_COVER = img("swippr-cover.webp", "Swippr website: Find your next job for free, with the free plan's features", 1600, 1000);
 const NOMICOL_DOCUCOL_COVER = img("nomicol-docucol-devices.webp", "Nomicol and Docucol on a laptop, a tablet and two phones, with the matching nc and dc marks", 1452, 833);
 const NOMICOL_LANDING = img("nomicol-landing.webp", "Nomicol landing page: Nómina en minutos, no días, with the sign-up on a phone and a customer quote", 1510, 803);
@@ -185,7 +221,20 @@ const DOCUCOL_LOGIN = img("docucol-login.webp", "Docucol sign-in: Únete a la re
 const DOCUCOL_TEMPLATES = img("docucol-templates.webp", "Docucol onboarding: templates explained before the first document", 1497, 807);
 const DOCUCOL_SIGNATURE = img("docucol-signature.webp", "Docucol onboarding: create your digital signature by drawing it or uploading a file", 1498, 809);
 const DOCUCOL_WATERMARK = img("docucol-watermark.webp", "Docucol organization settings: add a watermark to your documents", 1497, 812);
-const CHARMED_COVER = img("charmed-cover.webp", "Charmed HUB: the texture generator on a 3D potion bottle, between the folder and geometry views", 1600, 1000);
+const CHARMED_COVER: ProjectImage = { src: "/media/charmed-cover.webp", video: "/media/charmed-cover.mp4", alt: "Charmed sign-in prototype: an astronaut and a robot facing an alien landscape as the Charmed star rises over a wireframe terrain", width: 1600, height: 976 };
+const CHARMED_ONBOARDING: ProjectImage = { src: "/media/charmed-onboarding.webp", video: "/media/charmed-onboarding.mp4", alt: "Onboarding prototype: a completed quest opens a chest worth 1,000 credits", width: 1400, height: 862 };
+const CHARMED_WEBSITE: ProjectImage = { src: "/media/charmed-website.webp", video: "/media/charmed-website.mp4", alt: "Website prototype: the AI Texture Generator page scrolling through generated materials, refinement and art-direction controls", width: 1600, height: 982 };
+const CHARMED_WEB_HERO = img("charmed-website-hero.webp", "Charmed website: AI Texture Generator hero with a robot carrying two generated materials", 1336, 896);
+const CHARMED_WEB_MATERIALS = img("charmed-website-materials.webp", "Charmed website: bring your vision to life in 3D, with textures being added to the robot", 1336, 896);
+const CHARMED_WEB_REFINE = img("charmed-website-refine.webp", "Charmed website: enhance and refine textured objects, adjusting color saturation on a patch", 1336, 896);
+const CHARMED_RENDERS = img("charmed-texture-renders.webp", "Texture Generator renders: seeds in progress and completed marble and metal textures on cubes", 1400, 856);
+const CHARMED_PATCH = img("charmed-texture-patch.webp", "Texture Generator patch tool on a mug with a painted flower, with an onboarding tip", 1400, 856);
+const CHARMED_HELICOPTER = img("charmed-texture-helicopter.webp", "Texture Generator brush patching a new texture onto a helicopter", 1400, 856);
+const CHARMED_ANIMATOR = img("charmed-animator.webp", "3D Animator empty state: a rigged mannequin ready to animate", 1400, 856);
+const CHARMED_ANIMATOR_MOBILE = img("charmed-animator-mobile.webp", "3D Animator on mobile: a character preview with animation thumbnails and share", 732, 1537);
+const CHARMED_DESIGNER: ProjectImage = { ...img("charmed-3d-designer.webp", "3D Designer: a couch and lamp scene with object, environment and reference image panels and a generated preview", 1429, 788), transparent: true };
+const CHARMED_EMAIL_WAITLIST = img("charmed-email-waitlist.webp", "Waitlist email: you're on the first group to try Charmed's texture app, with a megaphone illustration", 761, 1287);
+const CHARMED_EMAIL_NOTIFY = img("charmed-email-notifications.webp", "Product update email introducing notifications for finished textures", 930, 993);
 const ATLAS_3D_SCAN = img("atlas-3d-scan.webp", "Atlas: a 3D scan of a home, built from a client's phone capture, with the photos it came from", 1271, 952);
 const ATLAS_ONBOARDING = img("atlas-onboarding.webp", "Atlas client app onboarding: let's get capturing, then steps on moving through the room, looping around it and keeping walls in frame", 2000, 1085);
 const ATLAS_CAPTURE = img("atlas-capture.webp", "Atlas client app: capturing a garage by scan or photo, then a confirmation that the 3D model is on its way", 2000, 1418);
@@ -193,7 +242,7 @@ const ATLAS_DASHBOARD = img("atlas-dashboard.webp", "Atlas contractor dashboard:
 const ATLAS_PROJECT = img("atlas-project-detail.webp", "Atlas project detail: the client, call history, and the property's climate trends, history, utility info and 3D scan", 1456, 819);
 const ATLAS_LOGIN = img("atlas-login.webp", "Atlas sign-in over a line illustration of a city and its landscape", 1456, 818);
 const ATLAS_CALLS_EMPTY = img("atlas-calls-empty.webp", "Atlas calls page empty state, with an illustration of a person on a call", 1456, 818);
-const ATLAS_COVER: ProjectImage = { src: "/media/atlas-cover.webp", video: "/media/atlas-cover.mp4", alt: "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video, with me showing how to keep the right distance", width: 1600, height: 1600 };
+const ATLAS_COVER: ProjectImage = { src: "/media/atlas-cover.webp", video: "/media/atlas-cover.mp4", alt: "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video, with me showing how to keep the right distance", width: 1600, height: 1056 };
 const AUGMEND_COVER = img("augmend-cover.webp", "Augmend landing hero: Collective intelligence for developers, over a shared workspace with teammates' cursors", 1600, 1000);
 const AUGMEND_LANDING = img("augmend-landing.webp", "Augmend landing: Accelerate software development team speed with AI-augmented collaboration tools, with a waitlist field above the workspace", 2000, 1130);
 const AUGMEND_LOGO = img("augmend-logo.webp", "Augmend logo on lime, dark, light and white backgrounds", 888, 1366);
@@ -208,7 +257,11 @@ const AUGMEND_WAITLIST = img("augmend-waitlist.webp", "Waitlist modal: Welcome o
 const AUGMEND_EMAIL_BETA = img("augmend-email-beta.webp", "Private beta confirmation email: You're on the list and we're so excited", 778, 1269);
 const AUGMEND_EMAIL_ARTICLE = img("augmend-email-article.webp", "Newsletter email announcing a new article, with the Augmend app icon between mail and calendar icons", 778, 1232);
 const AUGMEND_EMAIL_INVITE = img("augmend-email-invite.webp", "Team invitation email with two people fitting puzzle pieces together", 712, 1212);
-const COOL_EARTH_COVER = img("cool-earth-cover.webp", "Cool Club by Cool Earth: badges and certificates on the home, beside the Learn section and the leaderboard", 1600, 1000);
+const COOL_EARTH_COVER = img("cool-earth-cover.webp", "ECool Club home: the club sidebar with Take action, Rewards, Leaderboards and Learn, an invitation to earn 100 seeds, and badge tiers up to gold", 1600, 1053);
+const COOL_EARTH_HOME = img("cool-earth-home.webp", "ECool Club home: connect, contribute and get rewarded, with seeds and a daily streak in the top bar", 1536, 864);
+const COOL_EARTH_REWARDS = img("cool-earth-rewards.webp", "Rewards: badges for streaks, seeds, oxygen saved, sharing and the forum, beside course certificates", 1536, 864);
+const COOL_EARTH_LEADERBOARD = img("cool-earth-leaderboard.webp", "Leaderboards: badge tiers and a weekly ranking of businesses and supporters by points", 1536, 864);
+const COOL_EARTH_LEARN = img("cool-earth-learn.webp", "Learn: free courses about wildlife and rainforest protection, each worth 50 seeds", 1536, 864);
 const SWIPPR_SWIPE_CARD = img("swippr-swipe-card.webp", "Swippr job card: location, salary and benefits in sight, a compatibility score, and swipe left, right or Super Swipp", 1512, 1048);
 const SWIPPR_PITCH = img("swippr-pitch.webp", "Swippr pitch: talents read a job in under 30 seconds, match, book an interview and chat; companies see candidate profiles, set a budget and review matches", 1000, 1795);
 const SWIPPR_SOCIAL = img("swippr-social.webp", "Swippr candidate app on two phones: a job card with its compatibility score, and Start applying to jobs, for free", 1000, 1000);
@@ -662,6 +715,27 @@ export const projects: Project[] = [
         type: "p",
         text: "The Spice AI folder holds the website design from February 2026, the Spice AI design system and a media kit, with the old website kept for comparison.",
       },
+      { type: "h", text: "A homepage that runs the engine" },
+      {
+        type: "p",
+        text: "The homepage opens on the product itself: a SQL playground with callouts for hybrid search, LLM inference and federation, next to the line The Data and AI Stack in One Engine. From there it walks through what teams can ground in their data, three numbers worth remembering, what makes it ready for the AI era, proof from production, and where to start.",
+      },
+      { type: "images", items: [SA_HOME_HERO, SA_HOME_GROUND] },
+      { type: "images", items: [SA_HOME_AI_ERA, SA_HOME_PRODUCTION] },
+      { type: "h", text: "Diagrams that explain the architecture" },
+      {
+        type: "p",
+        text: "Spice does three jobs in one engine, which is hard to say in a sentence. One diagram carries it, with a state for each capability: SQL federation and acceleration, hybrid search, and LLM inference. A second diagram shows where Spice sits, between AI apps and the storage and models they depend on.",
+      },
+      { type: "images", items: [SA_FEDERATION, SA_HYBRID, SA_INFERENCE] },
+      { type: "images", items: [SA_STACK, SA_APPS] },
+      { type: "h", text: "Marketing design" },
+      {
+        type: "p",
+        text: "The same system carries the marketing work: release announcements such as Spice 2.2, the app icon, the Spice Cloud Platform sign-in and the closing call to action.",
+      },
+      { type: "images", items: [SA_22, SA_ICON] },
+      { type: "images", items: [SA_SIGNIN, SA_CTA] },
     ],
   },
 
@@ -727,9 +801,10 @@ export const projects: Project[] = [
     client: "Spice.org",
     description: "A developer site for Spice, an open-source SQL runtime for data and AI apps.",
     teaser: "A live query explorer in the hero, so developers see the product before they install it",
-    image: SPICE,
+    image: SPICE_COVER,
+    coverVideo: { src: "/media/spice-org-cover.mp4", poster: "/media/spice-org-cover.webp", width: 1600, height: 1468, fill: true },
     story: [
-      { type: "images", items: [SPICE, SPICE_CAPS, SPICE_INSTALL] },
+      { type: "images", items: [SPICE_COVER, SPICE_CAPS, SPICE_INSTALL] },
       {
         type: "p",
         text: "Spice AI builds an open-source runtime with a unified SQL interface for querying and accelerating data from databases, warehouses and lakes. Spice.org is its developer-facing site. I started working with Spice AI through Toptal and continued with them as a part-time client.",
@@ -744,6 +819,7 @@ export const projects: Project[] = [
         type: "p",
         text: "The page continues through customer logos, four capability cards, example use cases, a before-and-after architecture diagram, an install section with CLI commands for macOS, Linux and Windows, a code-editor demo and a closing call to action. The file holds three dated high-fidelity rounds, wireframes, a responsive set at 393 px, components, an icon library, and color, spacing and border tokens.",
       },
+      { type: "images", items: [SPICE_M_HERO, SPICE_M_MENU, SPICE_M_CTA] },
     ],
   },
   {
@@ -751,28 +827,88 @@ export const projects: Project[] = [
     year: 2025,
     employer: ML,
     client: "Cocuy",
-    description: "The B2B component library I started for Mercado Libre's First Party tools.",
+    description: "Cocuy, the B2B design system that gave Mercado Libre's First Party tools one language.",
     teaser: "From launch in June to 62,000+ component insertions and a squad of its own",
     image: COCUY,
     story: [
-      { type: "images", items: [COCUY] },
+      { type: "images", items: [COCUY, CQ_ANALYTICS] },
       {
         type: "p",
-        text: "Cocuy is a B2B sub-library of Andes, Mercado Libre's design system, and the component library behind First Party's vendor and internal tools. I started the initiative and did all of its design execution; other designers began contributing once it gained traction.",
+        text: "First Party, Mercado Libre's own retail business, runs on internal and vendor tools such as Scarlet, Buying Portal, Pandora and the supplier center. Each tool had grown its own frame: its own grid, navbar, side menu, headers, toolbars, rows, cards and error pages. Andes, Mercado Libre's design system, did not cover many of these B2B cases, so every team solved them again.",
       },
+      {
+        type: "p",
+        text: "Cocuy is the answer: a B2B sub-library of Andes for First Party. I co-led it to get it off the ground and gain traction, and did its design execution. Once it had traction, a dedicated squad was created to maintain it and carry its future work.",
+      },
+      { type: "h", text: "Three goals" },
+      {
+        type: "p",
+        text: "Improve how consistently the First Party tools work together as one ecosystem. Make the team faster at execution. Raise the quality of what ships.",
+      },
+      { type: "h", text: "Design, code and Storybook, in step" },
+      {
+        type: "p",
+        text: "The biggest win is that Cocuy never lived only in Figma. We built the sub-library in Figma while staying aligned with front-end the whole way, so the patterns shipped as a Storybook library as well. We also created a skill that makes the design system ready for AI, so components and rules can be used by AI tools and not only by people.",
+      },
+      {
+        type: "p",
+        text: "The hardest part was not a component. It was keeping a large number of delivery and UX ops teams in sync on the same definitions while they kept shipping their own roadmaps, and that is the part we handled best.",
+      },
+      { type: "h", text: "Layout: one frame for every tool" },
+      {
+        type: "p",
+        text: "We reviewed resolutions, grids, spacing and standard container widths, then designed a single Layout component based on Seller Experience screen types. Breadcrumbs, navbar, side menu, headers and toolbars are built into it, with containers, naming, auto layout and responsive behavior already set.",
+      },
+      { type: "images", items: [CQ_UPLOAD_BEFORE, CQ_UPLOAD] },
+      { type: "images", items: [CQ_OFFERS] },
+      { type: "h", text: "Bulk search" },
+      {
+        type: "p",
+        text: "First Party teams search by dozens of IDs at once, a case Andes does not cover. Bulk search complements Andes: paste a list, see every ID as a tag, fix the ones with errors, search once. It works with or without split view, comes with guidelines and wordings, and sits inside the toolbar. It is implemented in Pandora's offer-removal tool.",
+      },
+      { type: "images", items: [CQ_SEARCH_BEFORE, CQ_SEARCH] },
+      { type: "images", items: [CQ_SEARCH_PANDORA] },
+      { type: "h", text: "Rows and cards" },
+      {
+        type: "p",
+        text: "Rows were unified in design and specs between First Party and Sales, with a clearer visual hierarchy, and turned into a component other experiences can reuse. Cards were reviewed together with the Publificado flow to fix their reading levels, then built as one component covering every use case and handed off with the improvements applied to contracts and configurations.",
+      },
+      { type: "images", items: [CQ_ROW_BEFORE, CQ_ROW] },
+      { type: "images", items: [CQ_CARDS_BEFORE, CQ_CARDS] },
+      { type: "h", text: "Navbar and side menu" },
+      {
+        type: "p",
+        text: "Three tools, three menus. We redrew the iconography to comply with Andes, then unified, refactored and published one navigation component with shared rules for behavior, color, size, spacing, the tool label and where each element goes. Navbar became the library's most used component, with 12,920 instances.",
+      },
+      { type: "images", items: [CQ_MENU_BEFORE, CQ_MENU] },
+      { type: "h", text: "Headers and toolbars" },
+      {
+        type: "p",
+        text: "Headers got standard spacing, alignment and hierarchy between their elements. Toolbars became one component, which removed the visual inconsistencies between tools.",
+      },
+      { type: "images", items: [CQ_HEADERS_BEFORE, CQ_HEADERS] },
+      { type: "images", items: [CQ_TOOLBARS_BEFORE, CQ_TOOLBARS] },
+      { type: "h", text: "Technical errors" },
+      {
+        type: "p",
+        text: "403, 404, 500, offline and mobile errors looked different in every tool, from unstyled browser pages to mismatched illustrations. We documented the most frequent errors in First Party, wrote guidance for each type, and aligned with the front-end technical lead so the result shipped as a pattern. First Party teams adopted the standard illustrations and wordings.",
+      },
+      { type: "images", items: [CQ_ERRORS_BEFORE, CQ_ERRORS_404] },
+      { type: "images", items: [CQ_ERRORS_403] },
+      { type: "h", text: "Breadcrumbs" },
+      {
+        type: "p",
+        text: "Breadcrumb guidelines moved into the Layout component, so they are applied the same way every time, with clear content rules across Seller Experience.",
+      },
+      { type: "images", items: [CQ_CRUMBS_BEFORE, CQ_CRUMBS] },
       { type: "h", text: "Results" },
       {
         type: "p",
-        text: "From its launch on June 19, the library logged more than 62,000 component insertions in design files and grew past 20 components, patterns and guidelines. A Cocuy squad was formed to build its technical path. Navbar is its most used component, with 12,920 instances.",
-      },
-      { type: "h", text: "Fixing the frame every tool shares" },
-      {
-        type: "p",
-        text: "The work standardized resolutions, grids, spacing and container widths, and produced a single Layout component with breadcrumbs, navbar, side menu, headers and toolbars built in. The navbar and side menu were unified and published as one component, with Andes-compliant iconography and rules for behavior, color, size, spacing and labels.",
+        text: "Since its launch on June 19, Cocuy logged more than 62,000 component insertions in design files and grew past 20 components, patterns and guidelines, used by 23 teams. Navbar leads with 12,920 instances. A Cocuy squad now owns its maintenance and technical path.",
       },
       {
         type: "p",
-        text: "Next on the roadmap: make Cocuy an official satellite library of Andes, migrate reusable patterns to the Seller Experience library, and build it in code as 1P UI Core.",
+        text: "Next: make Cocuy an official satellite library of Andes, move reusable patterns into the Seller Experience library, and keep building it in code as 1P UI Core.",
       },
     ],
   },
@@ -824,62 +960,35 @@ export const projects: Project[] = [
 
   // ---------- 2024 ----------
   {
-    slug: "bulk-search",
-    year: 2024,
-    employer: ML,
-    client: "Bulk search",
-    description: "A search field that takes dozens of IDs at once, for First Party's internal tools.",
-    teaser: "Covering a case Andes didn't: paste dozens of IDs, search once",
-    story: [
-      {
-        type: "p",
-        text: "Shown in Pandora's First Party offer-removal tool, the bulk search field takes dozens of IDs at once. It solves a use case Andes did not cover, as a complement to it, works with or without split view, and comes with its own guidelines, wordings and toolbar integration. It was implemented.",
-      },
-    ],
-  },
-  {
-    slug: "technical-errors",
-    year: 2024,
-    employer: ML,
-    client: "Technical errors",
-    description: "One language for 403, 404, 500 and offline errors across First Party tools.",
-    teaser: "From unstyled browser pages to one documented pattern every team adopted",
-    story: [
-      {
-        type: "p",
-        text: "Every First Party tool handled 403, 404, 500, offline and mobile errors differently, from unstyled browser pages to mismatched illustrations. The work documented the most frequent errors, wrote guidance for each type, and got First Party teams to adopt the standard illustrations and wordings, aligned with the front-end technical lead so it could ship as a pattern.",
-      },
-    ],
-  },
-  {
     slug: "cool-earth",
     year: 2024,
     employer: TT,
     client: "Cool Earth",
     description: "A gamified donor experience that won Toptal's global hackathon.",
-    teaser: "Leading design for the winning team, from design sprint to UI library",
+    teaser: "Turning donors into members with a gamified ECool Club",
     image: COOL_EARTH_COVER,
     story: [
-      { type: "images", items: [COOL_EARTH_COVER] },
+      { type: "images", items: [COOL_EARTH_COVER, COOL_EARTH_HOME] },
       {
         type: "p",
-        text: "I led design for Cool Earth's gamified donor experience in Toptal's global hackathon in Q1 2024, which our team won. The work runs from a design sprint board through explorations to a published Cool Earth UI library.",
+        text: "Cool Earth is a charity that fights carbon emissions by keeping rainforests standing, and it works through the Indigenous and forest communities who have looked after those forests for generations. In Toptal's global hackathon in Q1 2024, Cool Earth asked teams for an immersive, educational and interactive way to turn businesses into long-term charity partners. I led design for our team, and we won.",
       },
-    ],
-  },
-  {
-    slug: "rainforest-kids",
-    year: 2024,
-    employer: { label: "Volunteer", brand: "rainforest" },
-    client: "Rainforest Foundation US",
-    description: "A section of the Rainforest Foundation US website made for kids.",
-    teaser: "From a sitemap and tree testing to a kids' section of the website",
-    image: RAINFOREST_KIDS_COVER,
-    story: [
-      { type: "images", items: [RAINFOREST_KIDS_COVER] },
+      { type: "h", text: "The challenge" },
       {
         type: "p",
-        text: "As a volunteer from 2022 to 2024, I designed the kids' section of the Rainforest Foundation US website, with wireframes, mockups and assets. Related work covers the main website library, a sitemap, tree-testing conclusions and insights, and the 2024 annual report.",
+        text: "The brief asked for more than a campaign. The solution had to highlight the charity's impact, hook people's attention and convert them into donors, while serving outreach, fundraising and education alike. It also had to be low budget and low maintenance, easy for teams with basic technical skills to run with little training, true to Cool Earth's brand, and able to win new donors while strengthening existing partners. Judges scored the clarity of the idea, the clarity of how it reaches its audience, the approach, how widely Cool Earth's teams could use it, and the brand fit.",
+      },
+      { type: "h", text: "Giving as a game" },
+      {
+        type: "p",
+        text: "Our idea was ECool Club: a membership where a business's support becomes progress it can see and share. Members take action for the forest and earn seeds, keep a daily streak, take free courses that end in certificates, unlock badges and tiers, and climb a weekly leaderboard. The game mechanics give a company a reason to come back and progress it can show, which is what turns a one-off gift into a lasting partnership, and the same content works for outreach, fundraising and education.",
+      },
+      { type: "images", items: [COOL_EARTH_REWARDS] },
+      { type: "images", items: [COOL_EARTH_LEADERBOARD, COOL_EARTH_LEARN] },
+      { type: "h", text: "High fidelity to sell the idea" },
+      {
+        type: "p",
+        text: "A hackathon is won in a few minutes of demo, and judges and donors respond to what feels real. So I prioritized high-fidelity mockups in Cool Earth's own look over wireframes or diagrams: the audience could picture the product live on day one, feel the emotional pull of the mission, and see that the brand criterion was met. I also built a Cool Earth UI library, so every screen stayed consistent and on brand.",
       },
     ],
   },
@@ -892,7 +1001,7 @@ export const projects: Project[] = [
     description: "Scope and quote home service jobs remotely, from a phone scan.",
     teaser: "Scope a job from a phone scan, not a site visit",
     image: ATLAS_COVER,
-    coverVideo: { src: "/media/atlas-cover.mp4", poster: "/media/atlas-cover.webp", width: 1600, height: 1600, fill: true },
+    coverVideo: { src: "/media/atlas-cover.mp4", poster: "/media/atlas-cover.webp", width: 1600, height: 1056, fill: true },
     story: [
       { type: "images", items: [ATLAS_COVER, ATLAS_3D_SCAN] },
       { type: "p", text: TT_NOTE },
@@ -933,18 +1042,52 @@ export const projects: Project[] = [
   // ---------- 2023 (estimates) ----------
   {
     slug: "charmed",
-    year: 2023, // estimate
+    year: 2023, // estimate: the files date from 2023 to 2024
     employer: TT,
     client: "Charmed",
-    description: "A suite of AI-assisted creation tools for game creators.",
-    teaser: "Hub, texture generator, 3D designer and animator under one design system",
+    description: "AI tools that take game creators from an idea to an animated 3D asset.",
+    teaser: "Texture, animate and build 3D game assets with AI",
     image: CHARMED_COVER,
+    coverVideo: { src: "/media/charmed-cover-square.mp4", poster: "/media/charmed-cover-square.webp", width: 1600, height: 1600, fill: true },
     story: [
-      { type: "images", items: [CHARMED_COVER] },
+      { type: "images", items: [CHARMED_COVER, CHARMED_WEB_HERO] },
       { type: "p", text: TT_NOTE },
       {
         type: "p",
-        text: "Charmed's suite covers HUB 2.0, Texture generator 2.0, 3D Designer, 3D Animator MVP, Geometry generator MVP and a Unity plugin, plus a design system, branding, onboarding, marketing emails and the website.",
+        text: "Building a game has always meant big teams, deep pockets or a lot of time. Charmed set out to change that with AI tools for the whole 3D art process: generate a mesh, texture it with UV-unwrapped materials, then rig and animate it, all in apps designed to work together, on desktop and on a phone.",
+      },
+      { type: "h", text: "A texture generator artists can steer" },
+      {
+        type: "p",
+        text: "The first tool was the AI Texture Generator, launched as a free beta. You describe a texture in a prompt, like Midjourney but in 3D, and artists keep control: a background image guides palette and style, guidance textures like line drawings and normal maps lock in details, and a patch tool regenerates small areas to explore variations.",
+      },
+      { type: "images", items: [CHARMED_RENDERS] },
+      { type: "images", items: [CHARMED_PATCH, CHARMED_HELICOPTER] },
+      { type: "h", text: "One suite, from mesh to motion" },
+      {
+        type: "p",
+        text: "The same system then carried the rest of the suite: a 3D Animator that auto-rigs human-like meshes and adds animations, on desktop and mobile, and a 3D Designer that composes scenes from objects, environments and reference images.",
+      },
+      { type: "images", items: [CHARMED_ANIMATOR, CHARMED_ANIMATOR_MOBILE] },
+      { type: "images", items: [CHARMED_DESIGNER] },
+      { type: "h", text: "Onboarding as a game" },
+      {
+        type: "p",
+        text: "For an audience of game makers, onboarding became a game too: quests to generate a geometry, texture an object, animate a character or share in the showcase, each one unlocking a chest of credits to spend in the tools.",
+      },
+      { type: "images", items: [CHARMED_ONBOARDING] },
+      { type: "h", text: "Website and emails" },
+      {
+        type: "p",
+        text: "The website shows the product at work, with materials, textures and refinements animating on a single robot, and the emails welcomed the first beta users and announced new features.",
+      },
+      { type: "images", items: [CHARMED_WEBSITE] },
+      { type: "images", items: [CHARMED_WEB_MATERIALS, CHARMED_WEB_REFINE] },
+      { type: "images", items: [CHARMED_EMAIL_WAITLIST, CHARMED_EMAIL_NOTIFY] },
+      { type: "h", text: "My role" },
+      {
+        type: "p",
+        text: "I designed the Hub and the tools' MVPs, the Texture Generator, the 3D Animator and the 3D Designer, the gamified onboarding, the website and the marketing emails.",
       },
     ],
   },

@@ -104,6 +104,13 @@
   -webkit-user-drag: none;
 }
 
+.clusterImg[data-transparent] {
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  filter: drop-shadow(4px 4px 8px rgb(0 0 0 / 0.4));
+}
+
 /* Hover caption on photo and video tiles (Figma 79:13740): the bottom half fades to black
    under a soft blur, with one centered line in the display face. The scrim is the figure's
    own layer so the backdrop blur sees the photo or video. */
@@ -502,6 +509,7 @@
 .rows .thumb:has(> .coverVideo) {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .rows .thumb > .coverVideo {
