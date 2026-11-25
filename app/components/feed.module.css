@@ -509,6 +509,7 @@
 .rows .thumb:has(> .coverVideo) {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .rows .thumb > .coverVideo {
