@@ -267,7 +267,7 @@ const ATLAS_PROJECT = img("atlas-project-detail.webp", "Atlas project detail: th
 const ATLAS_LOGIN = img("atlas-login.webp", "Atlas sign-in over a line illustration of a city and its landscape", 1456, 818);
 const ATLAS_CALLS_EMPTY = img("atlas-calls-empty.webp", "Atlas calls page empty state, with an illustration of a person on a call", 1456, 818);
 const ATLAS_COVER: ProjectImage = { src: "/media/atlas-cover.webp", video: "/media/atlas-cover.mp4", alt: "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video, with me showing how to keep the right distance", width: 1600, height: 1056 };
-const AUGMEND_COVER = img("augmend-cover.webp", "Augmend landing hero: Collective intelligence for developers, over a shared workspace with teammates' cursors", 1600, 1000);
+const AUGMEND_COVER_SQ = img("augmend-cover-square.webp", "Augmend landing hero: Collective intelligence for developers, over a shared workspace with teammates' cursors", 1600, 1600);
 const AUGMEND_LANDING = img("augmend-landing.webp", "Augmend landing: Accelerate software development team speed with AI-augmented collaboration tools, with a waitlist field above the workspace", 2000, 1130);
 const AUGMEND_LOGO = img("augmend-logo.webp", "Augmend logo on lime, dark, light and white backgrounds", 888, 1366);
 const AUGMEND_COLORS = img("augmend-colors.webp", "Augmend color system: neutral, lime primary, violet complementary, error and warning scales", 1124, 1061);
@@ -1236,9 +1236,9 @@ export const projects: Project[] = [
     client: "Augmend",
     description: "A real-time incident workspace for dev teams, with an AI assistant.",
     teaser: "Fix incidents together, with AI that remembers",
-    image: AUGMEND_COVER,
+    image: AUGMEND_COVER_SQ,
     story: [
-      { type: "images", items: [AUGMEND_COVER, AUGMEND_LANDING] },
+      { type: "images", items: [AUGMEND_COVER_SQ, AUGMEND_LANDING] },
       { type: "p", text: TT_NOTE },
       {
         type: "p",
