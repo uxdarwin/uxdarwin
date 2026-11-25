@@ -194,7 +194,20 @@ const ATLAS_PROJECT = img("atlas-project-detail.webp", "Atlas project detail: th
 const ATLAS_LOGIN = img("atlas-login.webp", "Atlas sign-in over a line illustration of a city and its landscape", 1456, 818);
 const ATLAS_CALLS_EMPTY = img("atlas-calls-empty.webp", "Atlas calls page empty state, with an illustration of a person on a call", 1456, 818);
 const ATLAS_COVER: ProjectImage = { src: "/media/atlas-cover.webp", video: "/media/atlas-cover.mp4", alt: "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video, with me showing how to keep the right distance", width: 1600, height: 1000 };
-const AUGMEND_COVER = img("augmend-cover.webp", "Augmend workspace: an incident summary with its hypothesis beside shared windows and a CloudWatch log", 1600, 1000);
+const AUGMEND_COVER = img("augmend-cover.webp", "Augmend landing hero: Collective intelligence for developers, over a shared workspace with teammates' cursors", 1600, 1000);
+const AUGMEND_LANDING = img("augmend-landing.webp", "Augmend landing: Accelerate software development team speed with AI-augmented collaboration tools, with a waitlist field above the workspace", 2000, 1130);
+const AUGMEND_LOGO = img("augmend-logo.webp", "Augmend logo on lime, dark, light and white backgrounds", 888, 1366);
+const AUGMEND_COLORS = img("augmend-colors.webp", "Augmend color system: neutral, lime primary, violet complementary, error and warning scales", 1124, 1061);
+const AUGMEND_PITCH_PURPOSE = img("augmend-pitch-purpose.webp", "Pitch deck purpose slide: accelerate how teams build and operate software by reducing collaboration tax and augmenting team knowledge with AI", 1341, 892);
+const AUGMEND_PITCH_SOLUTION = img("augmend-pitch-solution.webp", "Pitch deck solution slide: a multiplayer workspace, Figma meets Copilot, rebuilt for devops", 1332, 890);
+const AUGMEND_SIGNUP = img("augmend-signup.webp", "Augmend sign-up: create an account beside the illustration Your team's shared brain", 1444, 830);
+const AUGMEND_EMPTY = img("augmend-empty-state.webp", "Augmend workspaces empty state with a binoculars illustration and a Create a multi-player workspace prompt", 1444, 722);
+const AUGMEND_WORKSPACE = img("augmend-workspace.webp", "Augmend shared workspace: a dashboard, terminals and CloudWatch logs side by side, with teammates' cursors and an events panel", 1400, 857);
+const AUGMEND_CLIENT = img("augmend-client-app.webp", "Onboarding step: download the client app to record and share activity with your colleagues", 918, 1309);
+const AUGMEND_WAITLIST = img("augmend-waitlist.webp", "Waitlist modal: Welcome on board, with an illustration of shared windows and cursors", 1030, 1122);
+const AUGMEND_EMAIL_BETA = img("augmend-email-beta.webp", "Private beta confirmation email: You're on the list and we're so excited", 778, 1269);
+const AUGMEND_EMAIL_ARTICLE = img("augmend-email-article.webp", "Newsletter email announcing a new article, with the Augmend app icon between mail and calendar icons", 778, 1232);
+const AUGMEND_EMAIL_INVITE = img("augmend-email-invite.webp", "Team invitation email with two people fitting puzzle pieces together", 712, 1212);
 const COOL_EARTH_COVER = img("cool-earth-cover.webp", "Cool Club by Cool Earth: badges and certificates on the home, beside the Learn section and the leaderboard", 1600, 1000);
 const SWIPPR_SWIPE_CARD = img("swippr-swipe-card.webp", "Swippr job card: location, salary and benefits in sight, a compatibility score, and swipe left, right or Super Swipp", 1512, 1048);
 const SWIPPR_PITCH = img("swippr-pitch.webp", "Swippr pitch: talents read a job in under 30 seconds, match, book an interview and chat; companies see candidate profiles, set a budget and review matches", 1000, 1795);
@@ -937,18 +950,49 @@ export const projects: Project[] = [
   },
   {
     slug: "augmend",
-    year: 2023, // estimate
+    year: 2023, // estimate: the files date from 2022 to 2023
     employer: TT,
     client: "Augmend",
-    description: "Product, design system and landing page for Augmend.",
-    teaser: "From a demo prototype to brand, pitch and landing page",
+    description: "A real-time incident workspace for dev teams, with an AI assistant.",
+    teaser: "Fix incidents together, with AI that remembers",
     image: AUGMEND_COVER,
     story: [
-      { type: "images", items: [AUGMEND_COVER] },
+      { type: "images", items: [AUGMEND_COVER, AUGMEND_LANDING] },
       { type: "p", text: TT_NOTE },
       {
         type: "p",
-        text: "Seven files: the product with a demo prototype, the Augmend design system, a landing page with desktop mockups, plus brand, pitch, emails and flows.",
+        text: "Augmend was a Seattle-based dev tools startup building a new way to manage incidents: a shared space where engineers track and mitigate a problem in real time. It was built to be transparent, so clients and stakeholders could follow the progress, with AI support to guide the team and prevent bad outcomes. I joined as the Product Designer and helped shape the product vision from scratch.",
+      },
+      { type: "h", text: "A pitch built on one idea" },
+      {
+        type: "p",
+        text: "The founding idea fit in a sentence: reduce the collaboration tax and augment what the team knows with AI. I designed the pitch deck the founders used to raise capital, and it framed the product as a multiplayer workspace, Figma meets Copilot, rebuilt for devops.",
+      },
+      { type: "images", items: [AUGMEND_PITCH_PURPOSE, AUGMEND_PITCH_SOLUTION] },
+      { type: "h", text: "Prototypes first, then the MVP" },
+      {
+        type: "p",
+        text: "Before committing to a build, the founder and CEO and I co-created prototypes and took them into customer conversations to validate the experience. Then I designed the MVP: a canvas where everyone brings their own tools, dashboards, terminals and logs, and works side by side, with every step recorded so the team keeps the context.",
+      },
+      { type: "images", items: [AUGMEND_WORKSPACE] },
+      { type: "images", items: [AUGMEND_SIGNUP, AUGMEND_EMPTY] },
+      { type: "images", items: [AUGMEND_CLIENT, AUGMEND_WAITLIST] },
+      { type: "h", text: "A brand for developers" },
+      {
+        type: "p",
+        text: "I designed the brand too: the A mark and wordmark, a dark interface with a lime accent, and a playful illustration style with teammates' cursors that runs from the product to the landing page.",
+      },
+      { type: "images", items: [AUGMEND_LOGO, AUGMEND_COLORS] },
+      { type: "h", text: "Landing page and emails" },
+      {
+        type: "p",
+        text: "The landing page invited teams to join the waitlist for the private beta, and a few emails carried the same voice: the beta confirmation, a newsletter for new articles and the team invitation.",
+      },
+      { type: "images", items: [AUGMEND_EMAIL_BETA, AUGMEND_EMAIL_ARTICLE, AUGMEND_EMAIL_INVITE] },
+      { type: "h", text: "My role" },
+      {
+        type: "p",
+        text: "I was the Product Designer (UX/UI) from the start. I designed the MVP, the brand, the landing page, the emails and the pitch deck, and co-created the prototypes we used to validate the experience with customers.",
       },
     ],
   },
