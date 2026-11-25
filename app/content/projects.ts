@@ -186,6 +186,13 @@ const DOCUCOL_TEMPLATES = img("docucol-templates.webp", "Docucol onboarding: tem
 const DOCUCOL_SIGNATURE = img("docucol-signature.webp", "Docucol onboarding: create your digital signature by drawing it or uploading a file", 1498, 809);
 const DOCUCOL_WATERMARK = img("docucol-watermark.webp", "Docucol organization settings: add a watermark to your documents", 1497, 812);
 const CHARMED_COVER = img("charmed-cover.webp", "Charmed HUB: the texture generator on a 3D potion bottle, between the folder and geometry views", 1600, 1000);
+const ATLAS_3D_SCAN = img("atlas-3d-scan.webp", "Atlas: a 3D scan of a home, built from a client's phone capture, with the photos it came from", 1271, 952);
+const ATLAS_ONBOARDING = img("atlas-onboarding.webp", "Atlas client app onboarding: let's get capturing, then steps on moving through the room, looping around it and keeping walls in frame", 2000, 1085);
+const ATLAS_CAPTURE = img("atlas-capture.webp", "Atlas client app: capturing a garage by scan or photo, then a confirmation that the 3D model is on its way", 2000, 1418);
+const ATLAS_DASHBOARD = img("atlas-dashboard.webp", "Atlas contractor dashboard: projects in progress, recent calls, completed projects, conversion by funnel stage and completed scans", 1456, 818);
+const ATLAS_PROJECT = img("atlas-project-detail.webp", "Atlas project detail: the client, call history, and the property's climate trends, history, utility info and 3D scan", 1456, 819);
+const ATLAS_LOGIN = img("atlas-login.webp", "Atlas sign-in over a line illustration of a city and its landscape", 1456, 818);
+const ATLAS_CALLS_EMPTY = img("atlas-calls-empty.webp", "Atlas calls page empty state, with an illustration of a person on a call", 1456, 818);
 const ATLAS_COVER = img("atlas-cover.webp", "Atlas leads capture: Explore our 3D navigator tools, with a 3D capture of a garage", 1600, 1000);
 const AUGMEND_COVER = img("augmend-cover.webp", "Augmend workspace: an incident summary with its hypothesis beside shared windows and a CloudWatch log", 1600, 1000);
 const COOL_EARTH_COVER = img("cool-earth-cover.webp", "Cool Club by Cool Earth: badges and certificates on the home, beside the Learn section and the leaderboard", 1600, 1000);
@@ -193,6 +200,10 @@ const SWIPPR_SWIPE_CARD = img("swippr-swipe-card.webp", "Swippr job card: locati
 const SWIPPR_PITCH = img("swippr-pitch.webp", "Swippr pitch: talents read a job in under 30 seconds, match, book an interview and chat; companies see candidate profiles, set a budget and review matches", 1000, 1795);
 const SWIPPR_SOCIAL = img("swippr-social.webp", "Swippr candidate app on two phones: a job card with its compatibility score, and Start applying to jobs, for free", 1000, 1000);
 const SWIPPR_PRICING = img("swippr-pricing.webp", "Swippr pricing page: Find your next job for free, with the free plan for talent", 1000, 802);
+const SWIPPR_POST_JOB = img("swippr-post-job.webp", "Swippr: post a job by role, seniority, English level, countries, work mode, skills and monthly salary range", 952, 1240);
+const SWIPPR_B2B_HERO = img("swippr-b2b-hero.webp", "Swippr nearshoring landing page: Supercharge your growth with world-class tech talent", 1400, 856);
+const SWIPPR_B2B_PROCESS = img("swippr-b2b-process.webp", "Swippr landing page: our proven process, from tailored recruitment to skills validation, interview guidance and candidate reports", 1339, 896);
+const SWIPPR_ONE_PAGER = img("swippr-one-pager.webp", "Swippr sales one-pager: organize your candidate data to hire faster, with the platform's import, pipeline and match suggestions", 1003, 1204);
 const SWIPPR_TALENT = img("swippr-talent-profile.webp", "Swippr B2B admin: a talent profile with bio, skills, contact, location, resume, English level and recruiter notes", 1400, 656);
 const SWIPPR_B2B_LOGIN = img("swippr-b2b-login.webp", "Swippr B2B admin sign-in: Welcome to Swippr, with Continue with Google", 1600, 978);
 const ML = { label: "Mercado Libre", brand: "mercadolibre" } as const;
@@ -860,6 +871,51 @@ export const projects: Project[] = [
     ],
   },
 
+  {
+    slug: "atlas",
+    year: 2024,
+    employer: TT,
+    client: "Atlas",
+    description: "Tools for home service businesses to scope and quote jobs remotely, from a phone scan to a 3D model.",
+    teaser: "Scope a job from a phone scan, not a site visit",
+    image: ATLAS_COVER,
+    story: [
+      { type: "images", items: [ATLAS_COVER, ATLAS_3D_SCAN] },
+      { type: "p", text: TT_NOTE },
+      {
+        type: "p",
+        text: "Atlas built tools for home service businesses to scope and quote projects remotely. Instead of driving out to measure a room, a contractor asks the client to scan it with their phone, and Atlas turns the scan into a 3D model the team can quote from. I was its founding designer: I designed the first and second versions, the design system behind them, the prototypes and the product's visual assets.",
+      },
+      { type: "h", text: "A scan anyone can get right" },
+      {
+        type: "p",
+        text: "The whole product depends on a good capture from someone who has never done one. So the client app teaches before it asks: a short, playful tutorial covers how to move through the room, loop around it and keep the walls in frame, then the camera takes over. Clients can send a full scan or single photos, and they hear back when the 3D model is ready. I also helped film the onboarding videos, and appear in them.",
+      },
+      { type: "images", items: [ATLAS_ONBOARDING] },
+      { type: "images", items: [ATLAS_CAPTURE] },
+      { type: "h", text: "One workspace for the contractor" },
+      {
+        type: "p",
+        text: "On the other side, contractors work from a dashboard of projects in progress, recent calls, completed scans and conversion through each stage of the funnel. Each project brings the client, the call history and everything known about the property into one place: climate trends, property history, utility info and the 3D scan.",
+      },
+      { type: "images", items: [ATLAS_DASHBOARD, ATLAS_PROJECT] },
+      {
+        type: "p",
+        text: "A line-illustration style carries the brand through the product, from sign-in to empty states.",
+      },
+      { type: "images", items: [ATLAS_LOGIN, ATLAS_CALLS_EMPTY] },
+      { type: "h", text: "A system the frontend could read" },
+      {
+        type: "p",
+        text: "I built the design system in the same language as our frontend developer's components, so a handoff mapped straight to code. That kept implementation fast and simple through both versions.",
+      },
+      { type: "h", text: "Where it ended" },
+      {
+        type: "p",
+        text: "Atlas was later wound down. It remains one of the most fun projects I've worked on: computer vision, construction and a product that had to work for people holding a phone in their garage.",
+      },
+    ],
+  },
   // ---------- 2023 (estimates) ----------
   {
     slug: "charmed",
@@ -875,23 +931,6 @@ export const projects: Project[] = [
       {
         type: "p",
         text: "Charmed's suite covers HUB 2.0, Texture generator 2.0, 3D Designer, 3D Animator MVP, Geometry generator MVP and a Unity plugin, plus a design system, branding, onboarding, marketing emails and the website.",
-      },
-    ],
-  },
-  {
-    slug: "atlas",
-    year: 2023, // estimate
-    employer: TT,
-    client: "Atlas",
-    description: "One product organized around three roles: contractors, clients and admins.",
-    teaser: "Designing one product for three kinds of users",
-    image: ATLAS_COVER,
-    story: [
-      { type: "images", items: [ATLAS_COVER] },
-      { type: "p", text: TT_NOTE },
-      {
-        type: "p",
-        text: "The pilot handoff has passwordless and password sign-in, capture, profile and subscription, a contractor area for projects and clients, a client area for captures, and an admin area for projects, clients, team, lead capture and measurement requests, followed by an MVP handoff and a Scenarios AI file.",
       },
     ],
   },
@@ -920,7 +959,7 @@ export const projects: Project[] = [
     description: "A hiring startup I co-founded, with AI matching and a swipe-to-apply app before either was common.",
     teaser: "Swipe right on a job, with AI doing the matching",
     image: SWIPPR_COVER,
-    carousel: ["swipe-card", "pricing", "pitch", "social", "talent-profile", "b2b-login"].map((n) => `/images/carousel/swippr/${n}.webp`),
+    carousel: ["swipe-card", "pricing", "pitch", "social", "post-job", "talent-profile", "b2b-hero", "one-pager", "b2b-login"].map((n) => `/images/carousel/swippr/${n}.webp`),
     story: [
       { type: "images", items: [SWIPPR_COVER, SWIPPR_SWIPE_CARD] },
       {
@@ -939,7 +978,17 @@ export const projects: Project[] = [
         type: "p",
         text: "We built the app and got early validation from users and customers. A marketplace needs both sides at once, so to gain traction we moved to a B2B model: we helped three companies find talent, ran those searches through our own admin, and used each one to learn and improve the product.",
       },
-      { type: "images", items: [SWIPPR_TALENT, SWIPPR_B2B_LOGIN] },
+      {
+        type: "p",
+        text: "A company could post a role in one screen: who they need, seniority, English level, the countries to search, the work mode, skills and a salary range. On our side, every talent had a profile we could match and assign to a position.",
+      },
+      { type: "images", items: [SWIPPR_POST_JOB, SWIPPR_TALENT] },
+      {
+        type: "p",
+        text: "The B2B offer needed its own voice, so I designed a nearshoring landing page and a sales one-pager that explained the service and the platform behind it.",
+      },
+      { type: "images", items: [SWIPPR_B2B_HERO, SWIPPR_B2B_PROCESS] },
+      { type: "images", items: [SWIPPR_ONE_PAGER, SWIPPR_B2B_LOGIN] },
       { type: "h", text: "My role" },
       {
         type: "p",
