@@ -288,8 +288,6 @@ const CB = { label: "Coverbase", brand: "coverbase" } as const;
 const TT = { label: "Toptal", brand: "toptal" } as const;
 const RV = { label: "Red Valley", brand: "redvalley" } as const;
 
-const CB_NOTE =
-  "Coverbase is an AI procurement and vendor-risk platform from San Francisco. I joined as its first designer in November 2024, part-time at first and full-time from February 2026, and I own product design end to end.";
 const PC_PROJECT = img(
   "parque-caudal-project.webp",
   "El proyecto section: Un proyecto pensado a otra escala, with 15 apartments, 5 floors and 3 typologies, common areas as tags and a corner render of the building",
@@ -516,7 +514,6 @@ export const projects: Project[] = [
     image: VENDOR_REGISTRY_COVER,
     story: [
       { type: "images", items: [VENDOR_REGISTRY_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "The Vendor Registry Portal is one of the product areas I marked as finished design, with a cover dated September 2026.",
@@ -533,7 +530,6 @@ export const projects: Project[] = [
     image: CONTRACTS_COVER,
     story: [
       { type: "images", items: [CONTRACTS_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "Procurement and legal teams track hundreds of vendor contracts, and the dates hidden inside them decide real money: notice periods, auto-renewals, termination windows. The contracts area opens with what needs action, such as portfolio value, notice deadlines in the next 90 days and clauses that still need a decision, above a table of every contract with its key dates.",
@@ -560,7 +556,6 @@ export const projects: Project[] = [
     image: RADAR_COVER,
     story: [
       { type: "images", items: [RADAR_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "Radar watches the outside world for events that touch a customer's vendors: vulnerabilities, breaches, outages, financial and legal news. When something happens, a team needs more than an alert: who is affected, how badly, and what has already been done about it.",
@@ -602,7 +597,6 @@ export const projects: Project[] = [
     pairNext: true,
     story: [
       { type: "images", items: [COVERBASE_WEBSITE_COVER, CAB_SITE_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "I designed Coverbase's brand and marketing updates on top of the Coverbase V2 Brand library: Marketing Website v3, a case-study template and its redesign, a changelog, and marketing assets for social posts, email templates, a one-pager, a sales deck, print material and a lead-magnet report on third-party risk management in the age of AI.",
@@ -736,7 +730,6 @@ export const projects: Project[] = [
     image: CENCORA_AUDIT_COVER,
     story: [
       { type: "images", items: [CENCORA_AUDIT_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "The Cencora Workflow design audit sits in the Design Audit folder next to a dashboard architecture study and a configuration architecture board. The cover is dated June 2026.",
@@ -968,7 +961,6 @@ export const projects: Project[] = [
     image: APPRAISER_COVER,
     story: [
       { type: "images", items: [APPRAISER_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "The Appraiser V2 file runs from low-fidelity rounds to high-fidelity rounds, each saved as a dated version, which makes it the clearest record of one Coverbase surface evolving over time.",
@@ -985,7 +977,6 @@ export const projects: Project[] = [
     image: ASSESSMENTS_COVER,
     story: [
       { type: "images", items: [ASSESSMENTS_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "Assessments are the core of vendor risk work: collect evidence, evaluate controls, score the risk, record findings and decide. In 2026 I worked on how that flow reads and moves, without changing the scoring model underneath.",
@@ -1017,7 +1008,6 @@ export const projects: Project[] = [
     image: INSPECT_ZERO_TOUCH_COVER,
     story: [
       { type: "images", items: [INSPECT_ZERO_TOUCH_COVER] },
-      { type: "p", text: CB_NOTE },
       {
         type: "p",
         text: "A vendor review usually rests on documents: a SOC 2 report, a questionnaire, a certificate. They describe what was true at one point in time. Inspect checks what is true now. Read-only agents sign in to the third-party apps a company uses and test the controls that matter, such as MFA, single sign-on and admin access, and keep time-stamped evidence of what they saw.",
