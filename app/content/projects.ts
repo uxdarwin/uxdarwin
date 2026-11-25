@@ -11,6 +11,8 @@ export type ProjectImage = {
   height: number;
   /** A muted looping clip shown instead of the image; src is then its poster. */
   video?: string;
+  /** A cut-out with a transparent background: no frame, the shadow follows its shape. */
+  transparent?: boolean;
 };
 
 export type Block =
@@ -184,7 +186,19 @@ const DOCUCOL_LOGIN = img("docucol-login.webp", "Docucol sign-in: Únete a la re
 const DOCUCOL_TEMPLATES = img("docucol-templates.webp", "Docucol onboarding: templates explained before the first document", 1497, 807);
 const DOCUCOL_SIGNATURE = img("docucol-signature.webp", "Docucol onboarding: create your digital signature by drawing it or uploading a file", 1498, 809);
 const DOCUCOL_WATERMARK = img("docucol-watermark.webp", "Docucol organization settings: add a watermark to your documents", 1497, 812);
-const CHARMED_COVER = img("charmed-cover.webp", "Charmed HUB: the texture generator on a 3D potion bottle, between the folder and geometry views", 1600, 1000);
+const CHARMED_COVER = img("charmed-cover.webp", "Charmed sign-in: an astronaut and a robot facing an alien landscape, with the Charmed star rising over a wireframe terrain", 1370, 896);
+const CHARMED_WEB_HERO = img("charmed-website-hero.webp", "Charmed website: AI Texture Generator hero with a robot carrying two generated materials", 1336, 896);
+const CHARMED_WEB_MATERIALS = img("charmed-website-materials.webp", "Charmed website: bring your vision to life in 3D, with textures being added to the robot", 1336, 896);
+const CHARMED_WEB_REFINE = img("charmed-website-refine.webp", "Charmed website: enhance and refine textured objects, adjusting color saturation on a patch", 1336, 896);
+const CHARMED_RENDERS = img("charmed-texture-renders.webp", "Texture Generator renders: seeds in progress and completed marble and metal textures on cubes", 1400, 856);
+const CHARMED_PATCH = img("charmed-texture-patch.webp", "Texture Generator patch tool on a mug with a painted flower, with an onboarding tip", 1400, 856);
+const CHARMED_HELICOPTER = img("charmed-texture-helicopter.webp", "Texture Generator brush patching a new texture onto a helicopter", 1400, 856);
+const CHARMED_ANIMATOR = img("charmed-animator.webp", "3D Animator empty state: a rigged mannequin ready to animate", 1400, 856);
+const CHARMED_ANIMATOR_MOBILE = img("charmed-animator-mobile.webp", "3D Animator on mobile: a character preview with animation thumbnails and share", 732, 1537);
+const CHARMED_DESIGNER: ProjectImage = { ...img("charmed-3d-designer.webp", "3D Designer: a couch and lamp scene with object, environment and reference image panels and a generated preview", 1429, 788), transparent: true };
+const CHARMED_QUESTS = img("charmed-quests.webp", "Onboarding quests: a completed quest unlocks a chest and 1,000 credits", 1070, 660);
+const CHARMED_EMAIL_WAITLIST = img("charmed-email-waitlist.webp", "Waitlist email: you're on the first group to try Charmed's texture app, with a megaphone illustration", 761, 1287);
+const CHARMED_EMAIL_NOTIFY = img("charmed-email-notifications.webp", "Product update email introducing notifications for finished textures", 930, 993);
 const ATLAS_3D_SCAN = img("atlas-3d-scan.webp", "Atlas: a 3D scan of a home, built from a client's phone capture, with the photos it came from", 1271, 952);
 const ATLAS_ONBOARDING = img("atlas-onboarding.webp", "Atlas client app onboarding: let's get capturing, then steps on moving through the room, looping around it and keeping walls in frame", 2000, 1085);
 const ATLAS_CAPTURE = img("atlas-capture.webp", "Atlas client app: capturing a garage by scan or photo, then a confirmation that the 3D model is on its way", 2000, 1418);
@@ -916,18 +930,50 @@ export const projects: Project[] = [
   // ---------- 2023 (estimates) ----------
   {
     slug: "charmed",
-    year: 2023, // estimate
+    year: 2023, // estimate: the files date from 2023 to 2024
     employer: TT,
     client: "Charmed",
-    description: "A suite of AI-assisted creation tools for game creators.",
-    teaser: "Hub, texture generator, 3D designer and animator under one design system",
+    description: "AI tools that take game creators from an idea to an animated 3D asset.",
+    teaser: "Texture, animate and build 3D game assets with AI",
     image: CHARMED_COVER,
     story: [
-      { type: "images", items: [CHARMED_COVER] },
+      { type: "images", items: [CHARMED_COVER, CHARMED_WEB_HERO] },
       { type: "p", text: TT_NOTE },
       {
         type: "p",
-        text: "Charmed's suite covers HUB 2.0, Texture generator 2.0, 3D Designer, 3D Animator MVP, Geometry generator MVP and a Unity plugin, plus a design system, branding, onboarding, marketing emails and the website.",
+        text: "Building a game has always meant big teams, deep pockets or a lot of time. Charmed set out to change that with AI tools for the whole 3D art process: generate a mesh, texture it with UV-unwrapped materials, then rig and animate it, all in apps designed to work together, on desktop and on a phone.",
+      },
+      { type: "h", text: "A texture generator artists can steer" },
+      {
+        type: "p",
+        text: "The first tool was the AI Texture Generator, launched as a free beta. You describe a texture in a prompt, like Midjourney but in 3D, and artists keep control: a background image guides palette and style, guidance textures like line drawings and normal maps lock in details, and a patch tool regenerates small areas to explore variations.",
+      },
+      { type: "images", items: [CHARMED_RENDERS] },
+      { type: "images", items: [CHARMED_PATCH, CHARMED_HELICOPTER] },
+      { type: "h", text: "One suite, from mesh to motion" },
+      {
+        type: "p",
+        text: "The same system then carried the rest of the suite: a 3D Animator that auto-rigs human-like meshes and adds animations, on desktop and mobile, and a 3D Designer that composes scenes from objects, environments and reference images.",
+      },
+      { type: "images", items: [CHARMED_ANIMATOR, CHARMED_ANIMATOR_MOBILE] },
+      { type: "images", items: [CHARMED_DESIGNER] },
+      { type: "h", text: "Onboarding as a game" },
+      {
+        type: "p",
+        text: "For an audience of game makers, onboarding became a game too: quests to generate a geometry, texture an object, animate a character or share in the showcase, each one unlocking a chest of credits to spend in the tools.",
+      },
+      { type: "images", items: [CHARMED_QUESTS] },
+      { type: "h", text: "Website and emails" },
+      {
+        type: "p",
+        text: "The website shows the product at work, with materials, textures and refinements animating on a single robot, and the emails welcomed the first beta users and announced new features.",
+      },
+      { type: "images", items: [CHARMED_WEB_MATERIALS, CHARMED_WEB_REFINE] },
+      { type: "images", items: [CHARMED_EMAIL_WAITLIST, CHARMED_EMAIL_NOTIFY] },
+      { type: "h", text: "My role" },
+      {
+        type: "p",
+        text: "I designed the Hub and the tools' MVPs, the Texture Generator, the 3D Animator and the 3D Designer, the gamified onboarding, the website and the marketing emails.",
       },
     ],
   },

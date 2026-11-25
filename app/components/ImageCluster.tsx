@@ -76,6 +76,7 @@ function ClusterMedia({ im, style }: { im: ProjectImage; style?: React.CSSProper
       loading="lazy"
       decoding="async"
       draggable={false}
+      data-transparent={im.transparent || undefined}
       style={style}
     />
   );
