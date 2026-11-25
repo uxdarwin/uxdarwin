@@ -574,7 +574,7 @@ export const projects: Project[] = [
       },
       {
         type: "p",
-        text: "I documented the evidence and a decision log for every change, and built the redesign in code as well as in design. Next is the import flow, from the empty state through bulk import results, because it is the first experience for most customers and the current bottleneck.",
+        text: "I documented the evidence and a decision log for every change, and built the redesign in code as well as in design. Both passes, the triage table with its timeline view and preview, and the question cards with the new Add contracts menu, shipped to customers.",
       },
     ],
   },
@@ -1092,7 +1092,7 @@ export const projects: Project[] = [
       { type: "h", text: "Result" },
       {
         type: "p",
-        text: "Both shipped in the September 2026 release. Inspect gained scheduled inspections, notifications for outcomes that need attention, change comparisons, evidence from browser activity and API responses, an Accounts view and repeatable probes. Zero Touch gained the new summary, six pre-built templates, and a way to build it into intake and other workflows. The guided Okta connection and the Applications view are live in the product today.",
+        text: "Both shipped in the September 2026 release. Inspect gained scheduled inspections, notifications for outcomes that need attention, change comparisons, evidence from browser activity and API responses, an Accounts view and repeatable probes. Zero Touch gained the new summary, six pre-built templates, and a way to build it into intake and other workflows. The first-run page, the guided Okta connection, the Configuration cards and the redesigned running and completed Zero Touch pages all shipped.",
       },
     ],
   },
