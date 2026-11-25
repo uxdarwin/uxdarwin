@@ -188,7 +188,13 @@ const CB_VR_EMAIL = img("cb-vr-email.webp", "The sign-in email: one button to op
 const CB_VR_RESULTS = img("cb-vr-results.webp", "Search results for a described need: counts of approved, conditional and in-review options above a table with approval, vendor, tier and next review", 2400, 1330);
 const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River Vendor Registry Portal: a search for a meeting-transcription tool with approved, conditional and in-review results", 1600, 1000);
 const INSPECT_ZERO_TOUCH_COVER = img("inspect-cover-square.webp", "Inspect's first-run page, what Inspect can do and two ways to get started, in front of a completed Zero Touch assessment", 1600, 1600);
-const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
+const AUDIT_COVER: ProjectImage = img("audit-cover.webp", "The redesigned vendor profile, with the Coverbase Agent summarizing a new vendor and recommending next steps, in front of the search-first New vendor step", 1600, 1000);
+const AUDIT_AGENT = img("audit-agent.webp", "Vendor profile right after creation: the Coverbase Agent explains what was filled in, lists recommended next steps as a checklist, and a vertical lifecycle sits beside it", 2400, 1665);
+const AUDIT_STEP1 = img("audit-step1.webp", "New vendor, step 1: search-first, with Select and continue on a matched profile and Continue from scratch always visible", 2400, 1500);
+const AUDIT_STEP2 = img("audit-step2.webp", "New vendor, step 2: vendor details with AI autofill, and the fields that drive workflows marked Used by workflow", 2400, 1500);
+const AUDIT_ABOUT = img("audit-about.webp", "The About tab: extracted company profile, location, custom fields, registration and products as collapsible cards", 2400, 2253);
+const AUDIT_PROPERTIES = img("audit-properties.webp", "The Properties tab: tags, contacts, owners and watchers, plus shortcuts to services, findings, commitments and questionnaire submissions", 2400, 1500);
+const AUDIT_OVERVIEW = img("audit-overview.webp", "The redesigned home page: actionable at-a-glance cards, a calmer work queue empty state and recent completed assessments", 2400, 1500);
 const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
 const CB_CONTRACTS_TRIAGE = img("cb-contracts-table.webp", "Contracts triage table: four work cards (notice deadlines, renewal decisions, missing renewal details, reviews needed) above one row per contract, ordered by notice due date", 2400, 1515);
 const CB_CONTRACTS_TIMELINE = img("cb-contracts-timeline.webp", "Timeline view of the same contracts: each row runs from its notice due date to the end of the current term, with a dashed line where the notice date is missing", 2400, 1544);
@@ -783,18 +789,50 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "cencora-audit",
+    slug: "vendor-onboarding-audit",
     year: 2026,
     employer: CB,
-    client: "Cencora workflow audit",
-    description: "A design audit of a customer's workflow, with dashboard and configuration studies.",
-    teaser: "A customer workflow audit, with dashboard and configuration architecture studies",
-    image: CENCORA_AUDIT_COVER,
+    client: "Vendor onboarding audit",
+    description: "A usability audit for a Fortune 500 prospect, turned into a clearer path from first login to a new vendor's next step.",
+    teaser: "From \"I created the vendor, now what?\" to an agent that answers it",
+    image: AUDIT_COVER,
     story: [
-      { type: "images", items: [CENCORA_AUDIT_COVER] },
+      { type: "images", items: [AUDIT_COVER] },
       {
         type: "p",
-        text: "The Cencora Workflow design audit sits in the Design Audit folder next to a dashboard architecture study and a configuration architecture board. The cover is dated June 2026.",
+        text: "A Fortune 500 company evaluating Coverbase in a proof of concept kept running into the same wall: the product felt hard to use and non-obvious, most of all in vendor onboarding, the workflow almost every customer depends on. If less technical users struggled there, it meant friction, confusion and support load from day one.",
+      },
+      {
+        type: "p",
+        text: "I reviewed the prospect's call recordings, mapped their path from demo to first product touch, and logged usability issues for every step, from login to the vendor profile. I checked them against product analytics and support feedback, ranked them by how often they came up and what they put at stake for the deal, and turned each one into a design ticket with a proposed solution in Figma and a short thread for the team.",
+      },
+      { type: "h", text: "Search first, then create" },
+      {
+        type: "p",
+        text: "Adding a vendor was the highest-priority fix. The modal opened on a noisy list of existing vendors before anyone typed, and when nothing matched, the way to create one from scratch was easy to miss. The new first step starts with a single name field: matching profiles appear as you type, each with Select and continue, and Continue from scratch is always there. The second step marks the fields that drive automatic workflow routing, so people know which details are worth filling in now.",
+      },
+      { type: "images", items: [AUDIT_STEP1, AUDIT_STEP2] },
+      { type: "h", text: "I created the vendor, now what?" },
+      {
+        type: "p",
+        text: "That was the question users asked right after creating a vendor. The vendor page now opens with the Coverbase Agent: it says what was just filled in and where it came from, recommends the next steps as an interactive checklist, and takes questions about the vendor. Its actions reuse the floating surfaces the product already has, and a vertical lifecycle sits beside it, because a horizontal stepper would not scale to more statuses.",
+      },
+      { type: "images", items: [AUDIT_AGENT] },
+      { type: "h", text: "One job per tab" },
+      {
+        type: "p",
+        text: "The old profile spread general information across three columns and several cards. I moved to navigation plus two columns with vertical tabs, and gave each tab one job: Overview for what changes or needs attention, About for the facts Coverbase extracts about the vendor in collapsible cards, and Properties for how the organization works with the vendor, with shortcuts to findings, commitments and questionnaire submissions. Tabs with nothing to act on stay hidden until they do, such as Bill of Materials after a BOM upload.",
+      },
+      { type: "images", items: [AUDIT_ABOUT, AUDIT_PROPERTIES] },
+      { type: "h", text: "Lighter from the first screen" },
+      {
+        type: "p",
+        text: "The same pass covered the shell around these flows. The top bar dropped repeated page icons, treats Work queue and Notifications as equal actions and only shows system status when something needs attention. The home page lost a redundant search field and gained at-a-glance cards that each lead to an action. On the vendors table, a heatmap showed clicks gathering on search, filters and New vendor, so the redesign keeps those prominent, makes New vendor the primary action and uses tabs for the related lists.",
+      },
+      { type: "images", items: [AUDIT_OVERVIEW] },
+      {
+        type: "p",
+        text: "The prospect responded well to the redesigned vendor experience in a follow-up call, and the findings became the first set of design tickets for the onboarding work.",
       },
     ],
   },
