@@ -64,6 +64,17 @@ const STATEMENTS = img(
   1000,
   504,
 );
+const st = (n: string, alt: string, w: number, h: number) => img(`statements-${n}.webp`, alt, w, h);
+const ST_ONBOARDING = st("onboarding", "Statements onboarding: a welcome modal over Vendor Central, the first of two steps", 1366, 688);
+const ST_EMPTY = st("empty", "Statements empty state: invoices still to upload, with a button to upload them", 1366, 688);
+const ST_FILTERS = st("filters", "Statements filters: payment status, payment date, document status, document type and reception date", 884, 786);
+const ST_STATES = st("states", "Statements list with every invoice state: in review, differences to resolve with a credit-note banner, approved with its credit note, paid and cancelled", 1366, 1480);
+const ST_PARTIAL_DETAIL = st("partial-detail", "Invoice detail during a partial payment: the credit note still to upload, the estimated date and the amount pending", 1366, 696);
+const ST_TWO_PAYMENTS = st("two-payments", "Two payments of one invoice, with a banner that sums up both partial payments", 1366, 796);
+const ST_PAYMENT_DETAIL = st("payment-detail", "Payment detail: status, payment date, total received and the invoices it includes", 1366, 688);
+const ST_BLOCKED = st("blocked", "Blocked payments: a red banner with a path to support, above the payment and documents still to upload", 1366, 851);
+const ST_EMAIL = st("email", "Launch email to vendors: Statements is available, and how to give the billing team access", 720, 1088);
+const ST_DIAGRAM = st("diagram", "Decision map of every invoice and credit-note state, from upload to paid, including partial payments", 2600, 1302);
 const COCUY = img(
   "cocuy.webp",
   "Cover of Cocuy, the 1P Main Library, over a photo of the Púlpito del Diablo in El Cocuy",
@@ -403,6 +414,91 @@ export const projects: Project[] = [
 
   // ---------- 2025 ----------
   {
+    slug: "statements",
+    year: 2025,
+    employer: ML,
+    client: "Statements",
+    description: "One place for vendors selling to Mercado Libre to track every payment and invoice.",
+    teaser: "When do I get paid? Why was I deducted? Designing the answers into every row",
+    image: STATEMENTS,
+    carousel: ["1-states", "2-blocked", "3-partial", "4-filters", "5-email", "6-diagram"].map((n) => `/images/carousel/statements/${n}.webp`),
+    story: [
+      { type: "images", items: [STATEMENTS] },
+      {
+        type: "p",
+        text: "Mercado Libre is Latin America’s largest e-commerce and fintech company. In its First Party model, Mercado Libre buys products from vendors in high volume, with deals that benefit both sides, and sells them on the marketplace through its own seller account. Vendors run that relationship from Vendor Central, and Statements (Cuenta Corriente) is the section where they follow the money: every invoice, credit note and payment between them and Mercado Libre.",
+      },
+      { type: "h", text: "The problem" },
+      {
+        type: "p",
+        text: "Vendors tracked their invoices by hand, mostly over email, across several teams and channels: Vendor Central, support tickets, and separate email threads for differences and cancellations. With no single view of their account, they couldn’t tell when they would be paid or why an amount was withheld. Price and quantity differences turned into disputes, vendors held back the credit notes that would settle them, invoices stayed blocked and accounts got locked. On Mercado Libre’s side, finance operations answered the same questions again and again and built custom reports vendor by vendor.",
+      },
+      { type: "h", text: "What research told us" },
+      {
+        type: "p",
+        text: "In May 2025 we interviewed Mercado Libre commercial managers who had worked with Amazon Vendor Central, ran a focus group with the finance operations team, and benchmarked Amazon, Walmart and Falabella. The sample was small, so we treated the findings as hypotheses to validate, but they pointed the same way: vendors’ two most frequent questions were “When do I get paid?” and “Why was this amount withheld or deducted?” That set the priorities: a real-time status and committed payment date for every invoice, a clear explanation of every difference with the documents behind it, and one consolidated balance.",
+      },
+      { type: "h", text: "My role" },
+      {
+        type: "p",
+        text: "As UX Technical Lead for First Party, I led the project and did all of the design execution, from the brief and research through the final screens and the handoff in October 2025, working with the product manager and the engineering lead.",
+      },
+      { type: "h", text: "Integrate, don’t replace" },
+      {
+        type: "p",
+        text: "Each First Party product, from purchase orders and commercial agreements to penalties, Meli Pro and Ads, had its own section and its own level of maturity. Rebuilding them all wasn’t realistic, so Statements doesn’t replace them: it pulls the key financial data from each into one view and links back to the source. The MVP covers purchase-order invoices, credit notes and commercial agreements, on a structure built to take Ads, penalties and Meli Pro later.",
+      },
+      { type: "h", text: "Mapping every state first" },
+      {
+        type: "p",
+        text: "Before drawing a screen, I mapped what can happen to an invoice from the moment a vendor uploads it: review, differences, credit notes that arrive early, late, for less or for more, cancelled requests, and payments split in two. The map ended with close to fifty numbered states, each with the invoice status, the credit-note status and the payment status side by side. Every screen in the flow is one of those states, so engineering and finance could check any case against the same source.",
+      },
+      { type: "images", items: [ST_DIAGRAM] },
+      { type: "h", text: "First visit" },
+      {
+        type: "p",
+        text: "A two-step onboarding introduces the section the first time a vendor opens it: invoices, credit notes and payments, now in one place. Empty states answer the question the vendor came with, even when there’s nothing to list yet. If invoices are still missing, the page says so and points to where to upload them, because those are what start the payment clock.",
+      },
+      { type: "images", items: [ST_ONBOARDING, ST_EMPTY] },
+      { type: "h", text: "A payment, then the documents inside it" },
+      {
+        type: "p",
+        text: "The answer to “when do I get paid?” is a payment, so the page leads with it: ID, date, status, document count and total received. Each invoice row below carries reception date, number, status, payment date and amount. A side panel tracks documents still to upload and offers a payment report, the page can be scoped to one subsidiary, and filters cut the list by late or on-time payment, payment date, document status, document type and reception date.",
+      },
+      { type: "images", items: [ST_FILTERS] },
+      { type: "h", text: "Making payment dates honest" },
+      {
+        type: "p",
+        text: "The answer to “why was I deducted?” has to sit on the row itself. Invoices move through in review, differences to resolve, approved, paid and cancelled. When amounts don’t match, the row strikes the original amount, shows the new one, and a banner right under it says exactly what’s missing: upload a credit note for $40,000 to resolve the differences, with the differences ready to download. An approved credit note sits under the invoice it settles. Tooltips explain how the estimated date is calculated, and a late payment keeps its original date with a “late” label next to it, so the date a vendor was promised never silently moves.",
+      },
+      { type: "images", items: [ST_STATES] },
+      { type: "h", text: "When one invoice is paid twice" },
+      {
+        type: "p",
+        text: "The hardest case to explain was a partial payment. Take a $100,000 invoice with a $40,000 difference: Mercado Libre pays the $60,000 it agrees with, and the rest waits on a credit note. The invoice detail shows that running balance, billed against received, with the credit note still to upload and what’s still pending. Once the second payment lands, the invoice row sums up both payments with their dates, and each payment has its own detail listing the invoices it covered.",
+      },
+      { type: "images", items: [ST_PARTIAL_DETAIL, ST_TWO_PAYMENTS] },
+      { type: "images", items: [ST_PAYMENT_DETAIL] },
+      { type: "h", text: "When payments are blocked" },
+      {
+        type: "p",
+        text: "A blocked account was the outcome everyone wanted fewer of, and vendors used to learn about it late. Now it sits at the top of the page in red, with a direct path to the support form to unblock it and a link explaining why accounts get blocked. Right below, the side panel lists exactly which credit notes and invoices are still missing, so the vendor knows what to send.",
+      },
+      { type: "images", items: [ST_BLOCKED] },
+      { type: "h", text: "Getting the right people in" },
+      {
+        type: "p",
+        text: "The people who need Statements are usually a vendor’s billing team, not whoever owns the Vendor Central account. So the launch includes an email for vendors that announces the section and walks the account owner through giving their billing team a finance permission in three steps. The design also covers what someone without that permission sees, one tax ID or many subsidiaries, pagination, the help form, and entry points from purchase orders and shipments. Every screen states its objective before its layout, and the empty-state illustrations were rebuilt into animation-ready layers for After Effects.",
+      },
+      { type: "images", items: [ST_EMAIL] },
+      { type: "h", text: "Outcome" },
+      {
+        type: "p",
+        text: "I left Mercado Libre after the handoff, before implementation, so I have no post-launch metrics. The team has since shipped it in stages on this structure: the invoice and credit-note list for every country first, then payments and disputes for Argentina, Chile, Colombia and Peru, and now commercial-agreement credit notes everywhere and payments in Mexico.",
+      },
+    ],
+  },
+  {
     slug: "spice-org",
     year: 2025,
     employer: { label: "Spice AI" },
@@ -455,62 +551,6 @@ export const projects: Project[] = [
       {
         type: "p",
         text: "Next on the roadmap: make Cocuy an official satellite library of Andes, migrate reusable patterns to the Seller Experience library, and build it in code as 1P UI Core.",
-      },
-    ],
-  },
-  {
-    slug: "statements",
-    year: 2025,
-    employer: ML,
-    client: "Statements",
-    description: "One place for vendors selling to Mercado Libre to track every payment and invoice.",
-    teaser: "When do I get paid? Why was I deducted? Designing the answers into every row",
-    image: STATEMENTS,
-    story: [
-      { type: "images", items: [STATEMENTS] },
-      {
-        type: "p",
-        text: "Mercado Libre is Latin America’s largest e-commerce and fintech company. In its First Party model, Mercado Libre buys products from vendors in high volume, with deals that benefit both sides, and sells them on the marketplace through its own seller account. Vendors run that relationship from Vendor Central, and Statements (Cuenta Corriente) is the section where they follow the money: every invoice, credit note and payment between them and Mercado Libre.",
-      },
-      { type: "h", text: "The problem" },
-      {
-        type: "p",
-        text: "Vendors tracked their invoices by hand, mostly over email, across several teams and channels: Vendor Central, support tickets, and separate email threads for differences and cancellations. With no single view of their account, they couldn’t tell when they would be paid or why an amount was withheld. Price and quantity differences turned into disputes, vendors held back the credit notes that would settle them, invoices stayed blocked and accounts got locked. On Mercado Libre’s side, finance operations answered the same questions again and again and built custom reports vendor by vendor.",
-      },
-      { type: "h", text: "What research told us" },
-      {
-        type: "p",
-        text: "In May 2025 we interviewed Mercado Libre commercial managers who had worked with Amazon Vendor Central, ran a focus group with the finance operations team, and benchmarked Amazon, Walmart and Falabella. The sample was small, so we treated the findings as hypotheses to validate, but they pointed the same way: vendors’ two most frequent questions were “When do I get paid?” and “Why was this amount withheld or deducted?” That set the priorities: a real-time status and committed payment date for every invoice, a clear explanation of every difference with the documents behind it, and one consolidated balance.",
-      },
-      { type: "h", text: "My role" },
-      {
-        type: "p",
-        text: "As UX Technical Lead for First Party, I led the project and did all of the design execution, from the brief and research through the final screens and the handoff in October 2025, working with the product manager and the engineering lead.",
-      },
-      { type: "h", text: "Integrate, don’t replace" },
-      {
-        type: "p",
-        text: "Each First Party product, from purchase orders and commercial agreements to penalties, Meli Pro and Ads, had its own section and its own level of maturity. Rebuilding them all wasn’t realistic, so Statements doesn’t replace them: it pulls the key financial data from each into one view and links back to the source. The MVP covers purchase-order invoices, credit notes and commercial agreements, on a structure built to take Ads, penalties and Meli Pro later.",
-      },
-      { type: "h", text: "A payment, then the documents inside it" },
-      {
-        type: "p",
-        text: "The answer to “when do I get paid?” is a payment, so the page leads with it: ID, date, status, document count and total received. Each invoice row below carries reception date, number, status, payment date and amount, and opens to a detail with a running balance of invoice against payments and what’s still to be received. A side panel tracks documents still to upload and offers a payment report, and the page can be scoped to one subsidiary.",
-      },
-      { type: "h", text: "Making payment dates honest" },
-      {
-        type: "p",
-        text: "The answer to “why was I deducted?” has to sit on the row itself. Invoices move through five states: in review, differences to resolve, approved, paid and cancelled. When amounts don’t match, the row strikes the original amount, shows the new one, and asks for a credit note or offers the differences to download. Tooltips explain how the estimated date is calculated and when a payment counts as late, so a vendor knows the date holds unless there’s a difference.",
-      },
-      { type: "h", text: "Everything around the happy path" },
-      {
-        type: "p",
-        text: "The design covers onboarding, empty states, a blocked account, one tax ID or many subsidiaries, pagination, access without permissions, the help form, and entry points from purchase orders and shipments. Every screen states its objective before its layout, and the empty-state illustrations were rebuilt into animation-ready layers for After Effects.",
-      },
-      { type: "h", text: "Outcome" },
-      {
-        type: "p",
-        text: "I left Mercado Libre after the handoff, before implementation, so I have no post-launch metrics. The team has since shipped it in stages on this structure: the invoice and credit-note list for every country first, then payments and disputes for Argentina, Chile, Colombia and Peru, and now commercial-agreement credit notes everywhere and payments in Mexico.",
       },
     ],
   },
