@@ -178,6 +178,10 @@ const ABACUS = img(
 );
 
 const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: portfolio value, notice deadlines and clauses that need a decision above the contracts table, with the Actions menu open on Import contracts", 1600, 1000);
+const CB_VR_VIDEO: ProjectImage = { src: "/media/cb-vendor-registry.webp", video: "/media/cb-vendor-registry.mp4", alt: "Vendor Registry Portal walkthrough: sign in with a work email, open the magic link, describe a need, and get approved, conditional and in-review options", width: 1920, height: 1064 };
+const CB_VR_SIGNIN = img("cb-vr-signin.webp", "Vendor Registry sign-in under the customer's own brand: work email only, with a magic link instead of a password", 2400, 1330);
+const CB_VR_EMAIL = img("cb-vr-email.webp", "The sign-in email: one button to open the Vendor Registry, branded for the customer and powered by Coverbase", 2400, 1330);
+const CB_VR_RESULTS = img("cb-vr-results.webp", "Search results for a described need: counts of approved, conditional and in-review options above a table with approval, vendor, tier and next review", 2400, 1330);
 const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River Vendor Registry Portal: a search for a meeting-transcription tool with approved, conditional and in-review results", 1600, 1000);
 const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: inspection runs with controls finished, outcomes, compliance score and findings per application", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
@@ -517,14 +521,37 @@ export const projects: Project[] = [
     year: 2026,
     employer: CB,
     client: "Vendor Registry Portal",
-    description: "The Vendor Registry Portal, one of Coverbase's finished product areas.",
-    teaser: "A finished portal design, dated September 2026",
+    description: "A read-only portal where any employee can check whether their company already has an approved vendor or service before requesting a new one.",
+    teaser: "Before you request a new vendor, check if you already have one",
     image: VENDOR_REGISTRY_COVER,
     story: [
       { type: "images", items: [VENDOR_REGISTRY_COVER] },
       {
         type: "p",
-        text: "The Vendor Registry Portal is one of the product areas I marked as finished design, with a cover dated September 2026.",
+        text: "Vendor reviews usually start when someone needs a tool. Most of those people aren't on the third-party risk team and never open the Coverbase dashboard, so they file a new intake even when the company already has an approved option. I redesigned the Vendor Registry Portal for them: a read-only place to check first, replacing the previous portal.",
+      },
+      { type: "images", items: [CB_VR_VIDEO] },
+      { type: "h", text: "No account, no dashboard" },
+      {
+        type: "p",
+        text: "The portal is white-labelled under the customer's own brand and domain. People sign in with their work email and a magic link, with no password to create, and a compact version can be embedded in an internal page.",
+      },
+      { type: "images", items: [CB_VR_SIGNIN, CB_VR_EMAIL] },
+      { type: "h", text: "Search by need, not by vendor name" },
+      {
+        type: "p",
+        text: "Employees rarely know which vendor they want; they know the job. Search accepts a vendor, a product, a service or a plain description such as \u201ca tool to transcribe internal meetings\u201d. Results open with what matters most, how many options are approved, approved with conditions or still in review, followed by each option's approval, vendor tier and next review, with reviews that are due or coming up flagged.",
+      },
+      { type: "images", items: [CB_VR_RESULTS] },
+      { type: "h", text: "Details the admins decide" },
+      {
+        type: "p",
+        text: "Opening a result explains why it fits the need, what use is approved and what is restricted, then the service and vendor details. Most of those fields, such as assessment outcome, next assessment date, tier, tags, lifecycle status and use case, are configured by portal admins, so each organization decides what its employees see. When nothing matches, the page says so plainly and offers two ways forward: refine the search or open a vendor intake.",
+      },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "The new Vendor Registry Portal shipped in 2026, giving employees outside the risk team a self-serve answer before they start an intake.",
       },
     ],
   },
