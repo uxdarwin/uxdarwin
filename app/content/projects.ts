@@ -146,6 +146,7 @@ const AB_GIRAFFE = AB("logo-giraffe", "The logo with a giraffe's head looking ou
 const AB_OLD_HOME = AB("old-home", "The previous Abacus website: grey and blue panels, round photo crops and a blue and gold logo", 1200, 2329);
 const AB_OLD_CONFERENCE = AB("old-conference", "The previous conference rooms page: a static floor plan image and a request by email or phone", 1600, 1550);
 const AB_EVENT_SPACES = AB("event-spaces", "The new Event Spaces page: room cards with capacity and size, a guests and layout filter, and a floor-plan map", 1758, 1744);
+const AB_VIDEO: ProjectImage = { src: "/media/abacus-cover.webp", video: "/media/abacus-cover.mp4", alt: "Scrolling the new Abacus home page: the park hero with the logo and booking bar, then the hotel at night", width: 1080, height: 1080 };
 const ABACUS = img(
   "abacus.webp",
   "Abacus Tierpark Hotel home page: an aerial park view behind the headline and a compact booking bar",
@@ -306,10 +307,10 @@ export const projects: Project[] = [
     image: ABACUS,
     coverVideo: { src: "/media/abacus-cover.mp4", poster: "/media/abacus-cover.webp", width: 1080, height: 1080 },
     story: [
-      { type: "images", items: [ABACUS] },
+      { type: "images", items: [ABACUS, AB_VIDEO] },
       {
         type: "p",
-        text: "A website redesign for a hotel next to Tierpark Berlin, designed through Cresco. I led and executed it end to end, and the new site is live at abacus-hotel.de.",
+        text: "A brand refresh and website redesign for a hotel next to Tierpark Berlin, designed through Cresco. I led and executed it end to end, and the new site is live at abacus-hotel.de.",
       },
       { type: "h", text: "A logo taken from the building" },
       {
