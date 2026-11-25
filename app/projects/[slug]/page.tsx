@@ -52,7 +52,7 @@ export default async function ProjectPage({ params }: Params) {
           <h1 className={styles.headline}>{p.description}</h1>
           {p.story.map((b, i) => {
             if (b.type === "images")
-              return <ImageCluster key={i} images={b.items} layout={b.layout} variant={cluster++} seed={`${p.slug}-${i}`} />;
+              return <ImageCluster key={i} images={b.items} layout={b.layout} center={b.center} variant={cluster++} seed={`${p.slug}-${i}`} />;
             if (b.type === "mosaic") return p.mosaic ? <MotionMosaic key={i} clips={p.mosaic} size="page" /> : null;
             if (b.type === "motion") return p.motion ? <MotionGrid key={i} clips={p.motion} size="page" /> : null;
             if (b.type === "trio")

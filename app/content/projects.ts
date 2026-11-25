@@ -16,7 +16,7 @@ export type ProjectImage = {
 export type Block =
   | { type: "p"; text: string }
   | { type: "h"; text: string }
-  | { type: "images"; items: ProjectImage[]; layout?: { x: number; y: number; w: number; rot: number }[] }
+  | { type: "images"; items: ProjectImage[]; layout?: { x: number; y: number; w: number; rot: number }[]; center?: boolean }
   | { type: "motion" }
   | { type: "mosaic" }
   /** A looping, muted screen recording. Portrait clips render as a phone-width column. */
@@ -80,6 +80,13 @@ const ST_PAYMENT_DETAIL = st("payment-detail", "Payment detail: status, payment 
 const ST_BLOCKED = st("blocked", "Blocked payments: a red banner with a path to support, above the payment and documents still to upload", 1366, 851);
 const ST_EMAIL = st("email", "Launch email to vendors: Statements is available, and how to give the billing team access", 720, 1088);
 const ST_DIAGRAM = st("diagram", "Decision map of every invoice and credit-note state, from upload to paid, including partial payments", 2600, 1302);
+const MOTION_MOSAIC: PageVideoSrc[] = [
+  { src: "/media/statements/anim1.mp4", poster: "/media/statements/anim1.webp", alt: "Empty state animation: the bill icon draws itself above “You don’t have invoices yet”", width: 688, height: 688 },
+  { src: "/media/statements/onb1.mp4", poster: "/media/statements/onb1.webp", alt: "Onboarding step 1 in context: the welcome illustration comes alive inside the modal", width: 1366, height: 688 },
+  { src: "/media/statements/onb2.mp4", poster: "/media/statements/onb2.webp", alt: "Onboarding step 2 in context: two teammates animate inside the invite-your-team modal", width: 1366, height: 688 },
+  { src: "/media/statements/anim2.mp4", poster: "/media/statements/anim2.webp", alt: "Empty state animation: the bill draws itself and a warning appears above “You have invoices to upload”", width: 688, height: 688 },
+];
+const MOTION_CLIPS: ProjectImage[] = MOTION_MOSAIC.map((v) => ({ src: v.poster, video: v.src, alt: v.alt, width: v.width, height: v.height }));
 const COCUY = img(
   "cocuy.webp",
   "Cover of Cocuy, the 1P Main Library, over a photo of the Púlpito del Diablo in El Cocuy",
@@ -511,12 +518,7 @@ export const projects: Project[] = [
     description: "Bringing motion to Mercado Libre’s B2B products, starting with the illustrations.",
     teaser: "A quick win around a frontend bottleneck: animating the illustration system in Lottie",
     wide: true,
-    mosaic: [
-      { src: "/media/statements/anim1.mp4", poster: "/media/statements/anim1.webp", alt: "Empty state animation: the bill icon draws itself above “You don’t have invoices yet”", width: 688, height: 688 },
-      { src: "/media/statements/onb1.mp4", poster: "/media/statements/onb1.webp", alt: "Onboarding step 1 in context: the welcome illustration comes alive inside the modal", width: 1366, height: 688 },
-      { src: "/media/statements/onb2.mp4", poster: "/media/statements/onb2.webp", alt: "Onboarding step 2 in context: two teammates animate inside the invite-your-team modal", width: 1366, height: 688 },
-      { src: "/media/statements/anim2.mp4", poster: "/media/statements/anim2.webp", alt: "Empty state animation: the bill draws itself and a warning appears above “You have invoices to upload”", width: 688, height: 688 },
-    ],
+    mosaic: MOTION_MOSAIC,
     motion: [
       { src: "/motion/saludo.json", label: "Greeting", width: 320, height: 160 },
       { src: "/motion/team.json", label: "Team", width: 320, height: 160 },
@@ -524,7 +526,18 @@ export const projects: Project[] = [
       { src: "/motion/bill-warning.json", label: "Bill warning", width: 100, height: 100 },
     ],
     story: [
-      { type: "mosaic" },
+      {
+        type: "images",
+        // Darwin's 2x2 layout: square and wide on top, wide and square below, centred.
+        items: MOTION_CLIPS,
+        layout: [
+          { x: 0, y: 0, w: 360, rot: 0 },
+          { x: 372, y: 0, w: 715, rot: 0 },
+          { x: 0, y: 372, w: 715, rot: 0 },
+          { x: 727, y: 372, w: 360, rot: 0 },
+        ],
+        center: true,
+      },
       {
         type: "p",
         text: "Motion was a long-standing debt at Mercado Libre, especially in its B2B products. Interface animation had to go through frontend development, which was already a bottleneck, so it kept losing to everything else on the roadmap.",
