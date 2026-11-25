@@ -193,7 +193,7 @@ const ATLAS_DASHBOARD = img("atlas-dashboard.webp", "Atlas contractor dashboard:
 const ATLAS_PROJECT = img("atlas-project-detail.webp", "Atlas project detail: the client, call history, and the property's climate trends, history, utility info and 3D scan", 1456, 819);
 const ATLAS_LOGIN = img("atlas-login.webp", "Atlas sign-in over a line illustration of a city and its landscape", 1456, 818);
 const ATLAS_CALLS_EMPTY = img("atlas-calls-empty.webp", "Atlas calls page empty state, with an illustration of a person on a call", 1456, 818);
-const ATLAS_COVER = img("atlas-cover.webp", "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video on keeping the right distance", 1600, 1000);
+const ATLAS_COVER: ProjectImage = { src: "/media/atlas-cover.webp", video: "/media/atlas-cover.mp4", alt: "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video, with me showing how to keep the right distance", width: 1600, height: 1000 };
 const AUGMEND_COVER = img("augmend-cover.webp", "Augmend workspace: an incident summary with its hypothesis beside shared windows and a CloudWatch log", 1600, 1000);
 const COOL_EARTH_COVER = img("cool-earth-cover.webp", "Cool Club by Cool Earth: badges and certificates on the home, beside the Learn section and the leaderboard", 1600, 1000);
 const SWIPPR_SWIPE_CARD = img("swippr-swipe-card.webp", "Swippr job card: location, salary and benefits in sight, a compatibility score, and swipe left, right or Super Swipp", 1512, 1048);
@@ -876,9 +876,10 @@ export const projects: Project[] = [
     year: 2024,
     employer: TT,
     client: "Atlas",
-    description: "Tools for home service businesses to scope and quote jobs remotely, from a phone scan to a 3D model.",
+    description: "Scope and quote home service jobs remotely, from a phone scan.",
     teaser: "Scope a job from a phone scan, not a site visit",
     image: ATLAS_COVER,
+    coverVideo: { src: "/media/atlas-cover.mp4", poster: "/media/atlas-cover.webp", width: 1600, height: 1000 },
     story: [
       { type: "images", items: [ATLAS_COVER, ATLAS_3D_SCAN] },
       { type: "p", text: TT_NOTE },
@@ -956,7 +957,7 @@ export const projects: Project[] = [
     year: 2023, // estimate
     employer: { label: "Founder" },
     client: "Swippr",
-    description: "A hiring startup I co-founded, with AI matching and a swipe-to-apply app before either was common.",
+    description: "A hiring startup I co-founded, with AI matching and swipe-to-apply.",
     teaser: "Swipe right on a job, with AI doing the matching",
     image: SWIPPR_COVER,
     carousel: ["swipe-card", "pricing", "pitch", "social", "post-job", "talent-profile", "b2b-hero", "one-pager", "b2b-login"].map((n) => `/images/carousel/swippr/${n}.webp`),
