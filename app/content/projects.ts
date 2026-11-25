@@ -170,12 +170,21 @@ const BFF_LANDING_HERO = img("bff-landing-hero.webp", "BFF landing page hero: So
 const BFF_LANDING_STEPS = img("bff-landing-steps.webp", "BFF landing page step 3: the request checkout with delivery email, payment method and total", 1443, 840);
 const BFF_DASHBOARD = img("bff-dashboard.webp", "BFF admin dashboard: a celebrity's monthly payout with billed total, manager, BFF and payment gateway fees", 1443, 840);
 const BFF_DESIGN_SYSTEM = img("bff-design-system.webp", "BFF design system: colours, typography, buttons, inputs, service and request cards, icons and illustrations", 1372, 876);
-const CHECK_MIG_COVER = img("check-mig-cover.webp", "Check Mig: migration registration flow screens, a travel record and the design system", 1600, 1000);
+const CHECK_MIG_COVER = img("check-mig-home.webp", "Check Mig home on the Migración Colombia site: two clear entry points, complete your registration or check and download it", 1463, 810);
+const CHECK_MIG_FLOW = img("check-mig-flow.webp", "Check Mig screens: trip direction, means of transport, the lookup form and the downloadable certificate laid out like a ticket", 1472, 792);
+const CHECK_MIG_DS = img("check-mig-design-system.webp", "Check Mig design system: colours, type scale, 12-column grid, spacing, buttons, inputs, icons and cards", 1568, 537);
 const COVERBASE_WEBSITE_COVER = img("coverbase-website-cover.webp", "Coverbase website: a customer video hero with the headline Agentic third-party risk and security", 1600, 1000);
 const SPICE_AI_WEBSITE_COVER = img("spice-ai-website-cover.webp", "Spice AI website: the hero, The Data and AI Stack in One Engine, beside a SQL playground", 1600, 1000);
 const SWIPPR_COVER = img("swippr-cover.webp", "Swippr website: Find your next job for free, with the free plan's features", 1600, 1000);
-const NOMICOL_COVER = img("nomicol-cover.webp", "Nomicol payroll web app: period summary with payroll status and the employee list, plus the mobile sign-up", 1600, 1000);
-const DOCUCOL_COVER = img("docucol-cover.webp", "Docucol: the assigned documents list beside an illustration of a person signing", 1600, 1000);
+const NOMICOL_DOCUCOL_COVER = img("nomicol-docucol-devices.webp", "Nomicol and Docucol on a laptop, a tablet and two phones, with the matching nc and dc marks", 1452, 833);
+const NOMICOL_LANDING = img("nomicol-landing.webp", "Nomicol landing page: Nómina en minutos, no días, with the sign-up on a phone and a customer quote", 1510, 803);
+const NOMICOL_BLOG = img("nomicol-blog.webp", "Nomicol landing page: articles on choosing an electronic payroll provider and payroll in the cloud", 1510, 803);
+const NOMICOL_DS = img("nomicol-design-system.webp", "Nomicol design system: brand and semantic colours, Poppins type scale, buttons, inputs, icons, illustrations and empty states", 1568, 591);
+const DOCUCOL_HERO = img("docucol-hero.webp", "Docucol: the documents you were invited to sign, beside an illustration of a person signing", 1554, 784);
+const DOCUCOL_LOGIN = img("docucol-login.webp", "Docucol sign-in: Únete a la revolución legal tech en Colombia", 1497, 808);
+const DOCUCOL_TEMPLATES = img("docucol-templates.webp", "Docucol onboarding: templates explained before the first document", 1497, 807);
+const DOCUCOL_SIGNATURE = img("docucol-signature.webp", "Docucol onboarding: create your digital signature by drawing it or uploading a file", 1498, 809);
+const DOCUCOL_WATERMARK = img("docucol-watermark.webp", "Docucol organization settings: add a watermark to your documents", 1497, 812);
 const CHARMED_COVER = img("charmed-cover.webp", "Charmed HUB: the texture generator on a 3D potion bottle, between the folder and geometry views", 1600, 1000);
 const ATLAS_COVER = img("atlas-cover.webp", "Atlas leads capture: Explore our 3D navigator tools, with a 3D capture of a garage", 1600, 1000);
 const AUGMEND_COVER = img("augmend-cover.webp", "Augmend workspace: an incident summary with its hypothesis beside shared windows and a CloudWatch log", 1600, 1000);
@@ -929,26 +938,50 @@ export const projects: Project[] = [
     year: 2022,
     employer: RV,
     client: "Nomicol and Docucol",
-    description: "Two products for small businesses: Nomicol for payroll, Docucol for contracts.",
-    teaser: "Payroll off spreadsheets, and contracts from template to signature",
-    image: NOMICOL_COVER,
+    description: "Payroll and contracts for small businesses in Colombia, without an accountant or a lawyer for every task.",
+    teaser: "Payroll in minutes, not days, and contracts from template to signature",
+    image: NOMICOL_DOCUCOL_COVER,
     story: [
-      { type: "images", items: [NOMICOL_COVER, DOCUCOL_COVER] },
+      { type: "images", items: [NOMICOL_DOCUCOL_COVER, DOCUCOL_HERO] },
       { type: "p", text: RV_NOTE },
-      { type: "h", text: "Nomicol: payroll without spreadsheets" },
       {
         type: "p",
-        text: "Nomicol helps small businesses move payroll off spreadsheets. Businesses register employees and keep a history of payment periods; managers update each period with overtime, deductions and other payments, and employees see the status of their next payment in real time.",
+        text: "Two products for the same customer: small businesses in Colombia that do their own admin. Nomicol runs payroll and Docucol handles contracts, and they share one family of marks, colours and devices.",
+      },
+      { type: "h", text: "Nomicol: payroll in minutes, not days" },
+      {
+        type: "p",
+        text: "92% of companies in Colombia have fewer than 20 employees, and most have no accounting or HR team. They run payroll by hand, which makes mistakes likely and can end in fines from government agencies.",
       },
       {
         type: "p",
-        text: "As UX lead I ran the process from start to finish: research over two sprints with 14 interviews, a benchmark and desk research, information architecture, interaction design, prototypes, the first release of the platform and the employee mobile app, and usability testing.",
+        text: "As UX lead I ran two research sprints over four weeks, with 14 interviews with accountants, business owners, department leads and employees, plus a benchmark and desk research. The interviews showed why existing payroll tools didn't help: their calculations weren't always right, they took a long time to learn, support was slow, and payslips didn't explain what employees cared about.",
       },
+      {
+        type: "p",
+        text: "So Nomicol had to be quick to learn and show its work. Businesses register their employees once and keep a history of every period and report. Managers update a period with overtime, deductions and other payments, and see at a glance which payrolls were accepted, rejected or flagged. Employees follow their next payment in real time from a mobile app. The landing page makes the same promise: payroll in minutes, not days.",
+      },
+      { type: "images", items: [NOMICOL_LANDING, NOMICOL_BLOG] },
+      {
+        type: "p",
+        text: "We launched the first version of the platform and the employee app, then ran usability tests to decide what came next. Behind it are more than 120 organization screens across 16 task flows, 10 employee screens across 4 flows, and a design system with its own colours, Poppins type scale, components, icons, illustrations and empty states.",
+      },
+      { type: "images", items: [NOMICOL_DS] },
       { type: "h", text: "Docucol: from template to signed contract" },
       {
         type: "p",
-        text: "Docucol lets people and companies create contracts from templates, invite others to review or sign digitally, add reminders and expiration dates, and organize documents in folders. I led the process from research and information architecture to user flows, wireframes and high-fidelity prototypes.",
+        text: "When people or companies need a contract, however simple, they usually go to a lawyer. That is expensive, and often more than the document needs. Docucol lets them create contracts from templates, invite others to review or sign digitally, add reminders and expiration dates, and keep everything organized in folders.",
       },
+      {
+        type: "p",
+        text: "I benchmarked six competitors across document creation, templates, digital signatures, invitations, reminders, expiration dates, file management, watermarks, collaboration, help and onboarding, and summed it up in a SWOT. Three things shaped the design. Template creation was the most complex part and tended to get cluttered. Onboarding and tutorials were crucial. And creating a document had to be easy to reach, with a clear sequence.",
+      },
+      {
+        type: "p",
+        text: "So onboarding teaches before it asks: a short carousel explains templates, then helps you create your digital signature by drawing it or uploading a file. Creating a document is always one button away, and organizations can add their own watermark from settings. The work covered more than 120 organization screens across 16 task flows, and 8 guest screens across 4 flows for people invited to sign.",
+      },
+      { type: "images", items: [DOCUCOL_LOGIN, DOCUCOL_TEMPLATES] },
+      { type: "images", items: [DOCUCOL_SIGNATURE, DOCUCOL_WATERMARK] },
     ],
   },
   {
@@ -1016,18 +1049,38 @@ export const projects: Project[] = [
     year: 2022,
     employer: { label: "Personal" },
     client: "Check Mig",
-    description: "A redesign of Colombia's migration form, to spend less time at the desk.",
-    teaser: "Tree testing, task flows and usability tests for a form every traveler fills",
+    description: "A redesign of Colombia's pre-travel migration form that cut the time to complete it from 12 minutes to 3.",
+    teaser: "The same migration form, from 12 minutes to 3",
     image: CHECK_MIG_COVER,
     story: [
-      { type: "images", items: [CHECK_MIG_COVER] },
+      { type: "images", items: [CHECK_MIG_COVER, CHECK_MIG_FLOW] },
       {
         type: "p",
-        text: "A personal redesign concept, not the live government service: the form travelers fill out before entering or leaving Colombia, so they can preload trip details and spend less time at immigration.",
+        text: "A personal redesign, not the live government service. Check-Mig is the form people fill in before they enter or leave Colombia, so they can preload their trip and spend less time at the immigration desk. Users complete it for themselves and the people they travel with, then look up and download their certificate.",
+      },
+      { type: "h", text: "A form you can't skip" },
+      {
+        type: "p",
+        text: "Travelers already have a long list of things to do before an international trip, and this form is long. It also isn't optional: without it, they can't travel. The service gets about 2.4 million visits a month, two thirds of them from Colombians, and the Android app had more than 100,000 downloads with a 2.4-star rating.",
       },
       {
         type: "p",
-        text: "Travelers complete the registration for themselves and their companions, choose how they travel, and download the resulting certificate. The goal was less time on task and a higher success rate. I ran research, personas, information architecture validated with tree testing, wireframes, a design system, motion and usability testing.",
+        text: "I ran the whole process myself: five interviews with people who had traveled abroad, analytics and desk research, personas and a customer journey, a revised site map validated with tree testing, task flows, wireframes, a design system, motion and usability testing. The interviews explained the rating. The main task took 12 minutes on average, people didn't understand the order of the form, and the system didn't tell them what was happening.",
+      },
+      { type: "h", text: "One clear path, one step at a time" },
+      {
+        type: "p",
+        text: "The home page now offers two doors: complete your registration, or look up and download it. The form splits into three steps (trip direction, flight details, passengers) with progress always visible on the left. Choices like the direction of travel and the means of transport are large cards with an icon, not dropdowns. The certificate comes back laid out like a ticket, with the traveler, flight, date and route, and a single button to download the PDF.",
+      },
+      {
+        type: "p",
+        text: "A small design system kept it consistent: a calm teal and green palette, a type scale, a 12-column grid, spacing, buttons with loading states, inputs with clear error and success states, icons and cards.",
+      },
+      { type: "images", items: [CHECK_MIG_DS] },
+      { type: "h", text: "Results" },
+      {
+        type: "p",
+        text: "I tested the clickable prototype with five users. All five completed the registration without problems, the average time dropped from 12 minutes to 3 (75% less), and users rated the experience 90% CSAT, calling it very friendly. The most common request was to save personal details for future trips.",
       },
     ],
   },
