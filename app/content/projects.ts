@@ -207,8 +207,6 @@ const SA_HYBRID = SA("diagram-hybrid", "Spice engine diagram, Hybrid SQL Search 
 const SA_INFERENCE = SA("diagram-inference", "Spice engine diagram, LLM Inference highlighted: serving and grounding AI in data", 2000, 1352);
 const SA_STACK = SA("stack", "The Data and AI Stack in One Engine: the Spice playground with a hybrid search query, its results and the three capability callouts", 2000, 1274);
 const SA_APPS = SA("diagram-apps", "Architecture diagram: AI apps on top of Spice AI, which connects S3 buckets and tables with AI models such as NVIDIA NIM, OpenAI and Hugging Face", 1388, 760);
-const SA_CODE = SA("code", "Marketing graphic: a hybrid search query with exponential recency decay in a Spice AI code window", 1386, 873);
-const SA_RESULTS = SA("results", "Marketing graphic: a Spice AI query over review messages beside its ranked results table", 1325, 764);
 const SA_22 = SA("2-2", "Spice 2.2 announcement: Spice Cloud Connect for BYOC, MySQL change data capture, Debezium CDC without Kafka and faster search", 2000, 1047);
 const SA_ICON = SA("icon", "The Spice AI app icon over a grid of the data sources and AI providers it connects", 1360, 1034);
 const SA_SIGNIN = SA("signin", "Spice Cloud Platform sign-in: continue with GitHub, beside what the platform does and the companies that run it in production", 2000, 1111);
@@ -734,10 +732,9 @@ export const projects: Project[] = [
       { type: "h", text: "Marketing design" },
       {
         type: "p",
-        text: "The same system carries the marketing work: release announcements such as Spice 2.2, code graphics that show real queries, the app icon, the Spice Cloud Platform sign-in and the closing call to action.",
+        text: "The same system carries the marketing work: release announcements such as Spice 2.2, the app icon, the Spice Cloud Platform sign-in and the closing call to action.",
       },
       { type: "images", items: [SA_22, SA_ICON] },
-      { type: "images", items: [SA_CODE, SA_RESULTS] },
       { type: "images", items: [SA_SIGNIN, SA_CTA] },
     ],
   },
