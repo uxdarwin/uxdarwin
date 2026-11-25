@@ -189,7 +189,11 @@ const CHARMED_COVER = img("charmed-cover.webp", "Charmed HUB: the texture genera
 const ATLAS_COVER = img("atlas-cover.webp", "Atlas leads capture: Explore our 3D navigator tools, with a 3D capture of a garage", 1600, 1000);
 const AUGMEND_COVER = img("augmend-cover.webp", "Augmend workspace: an incident summary with its hypothesis beside shared windows and a CloudWatch log", 1600, 1000);
 const COOL_EARTH_COVER = img("cool-earth-cover.webp", "Cool Club by Cool Earth: badges and certificates on the home, beside the Learn section and the leaderboard", 1600, 1000);
-const SWIPPR_B2B_CLIENTS = img("swippr-b2b-clients.webp", "Swippr B2B admin: the clients list, each client with open positions and buttons to view it or add a position", 1600, 978);
+const SWIPPR_SWIPE_CARD = img("swippr-swipe-card.webp", "Swippr job card: location, salary and benefits in sight, a compatibility score, and swipe left, right or Super Swipp", 1512, 1048);
+const SWIPPR_PITCH = img("swippr-pitch.webp", "Swippr pitch: talents read a job in under 30 seconds, match, book an interview and chat; companies see candidate profiles, set a budget and review matches", 1000, 1795);
+const SWIPPR_SOCIAL = img("swippr-social.webp", "Swippr candidate app on two phones: a job card with its compatibility score, and Start applying to jobs, for free", 1000, 1000);
+const SWIPPR_PRICING = img("swippr-pricing.webp", "Swippr pricing page: Find your next job for free, with the free plan for talent", 1000, 802);
+const SWIPPR_TALENT = img("swippr-talent-profile.webp", "Swippr B2B admin: a talent profile with bio, skills, contact, location, resume, English level and recruiter notes", 1400, 656);
 const SWIPPR_B2B_LOGIN = img("swippr-b2b-login.webp", "Swippr B2B admin sign-in: Welcome to Swippr, with Continue with Google", 1600, 978);
 const ML = { label: "Mercado Libre", brand: "mercadolibre" } as const;
 const CB = { label: "Coverbase", brand: "coverbase" } as const;
@@ -913,22 +917,39 @@ export const projects: Project[] = [
     year: 2023, // estimate
     employer: { label: "Founder" },
     client: "Swippr",
-    description: "A product I founded, took to production and sold.",
-    teaser: "From MVP to a B2B line with its own admin, design system and sales deck",
+    description: "A hiring startup I co-founded, with AI matching and a swipe-to-apply app before either was common.",
+    teaser: "Swipe right on a job, with AI doing the matching",
     image: SWIPPR_COVER,
-    carousel: ["pricing", "pitch", "social", "b2b-clients", "b2b-login"].map((n) => `/images/carousel/swippr/${n}.webp`),
+    carousel: ["swipe-card", "pricing", "pitch", "social", "talent-profile", "b2b-login"].map((n) => `/images/carousel/swippr/${n}.webp`),
     story: [
-      { type: "images", items: [SWIPPR_COVER] },
+      { type: "images", items: [SWIPPR_COVER, SWIPPR_SWIPE_CARD] },
       {
         type: "p",
-        text: "Swippr is a product I founded. It went into production and made sales. The record spans an MVP, a second release, white-label websites, then a B2B line with an admin, a design system, landing pages, branding, a one-pager, a sales deck and a pitch, after strategy work on goals, prioritization, information architecture, customer journeys and benchmarks.",
+        text: "Swippr was a hiring startup I co-founded with two partners. At the time, few products used AI to match candidates with companies, and applying for a job still meant long forms. Swippr matched both sides on what they cared about, and let candidates apply with a swipe.",
       },
-      { type: "h", text: "The B2B admin" },
+      { type: "h", text: "A job you can judge in 30 seconds" },
       {
         type: "p",
-        text: "The B2B line came with its own admin for the team placing talent: a sign-in, then a list of client companies with their open positions, where the team can open a client or add a position.",
+        text: "Every job card leads with location, salary, benefits and a compatibility score based on the candidate's own preferences, so a role can be judged in under 30 seconds. Swipe left, swipe right, or Super Swipp to stand out. Details only open when a role earns the attention. A match leads straight to a chat with the recruiter and a slot for the first interview, and the app is free for candidates.",
       },
-      { type: "images", items: [SWIPPR_B2B_CLIENTS, SWIPPR_B2B_LOGIN] },
+      { type: "images", items: [SWIPPR_SOCIAL, SWIPPR_PITCH] },
+      { type: "images", items: [SWIPPR_PRICING] },
+      { type: "h", text: "From a candidate app to a B2B service" },
+      {
+        type: "p",
+        text: "We built the app and got early validation from users and customers. A marketplace needs both sides at once, so to gain traction we moved to a B2B model: we helped three companies find talent, ran those searches through our own admin, and used each one to learn and improve the product.",
+      },
+      { type: "images", items: [SWIPPR_TALENT, SWIPPR_B2B_LOGIN] },
+      { type: "h", text: "My role" },
+      {
+        type: "p",
+        text: "As one of three founders, I designed the brand, the candidate app, the B2B admin, the landing pages and the marketing and sales assets. I also worked directly with our early partners and users, and made many of the product and business decisions.",
+      },
+      { type: "h", text: "Where it ended" },
+      {
+        type: "p",
+        text: "Distribution was the hardest part: reaching enough companies and candidates at the same time. After those first three companies, we decided to stop.",
+      },
     ],
   },
 
