@@ -92,7 +92,7 @@ const WED_VIDEO = {
   poster: "/media/wedding/invitation.webp",
   alt: "Scroll through the wedding invitation on a phone: the glowing monogram under a starry sky, the invitation over a cherry blossom scene, the RSVP envelope with its wax seal, the story timeline, the venue, the dress code and the questions",
   width: 800,
-  height: 1732,
+  height: 1720,
 };
 const wed = (n: string, alt: string) => img(`wedding-${n}.webp`, alt, 800, 1732);
 const WED_HERO = wed("hero", "The invitation’s opening: the monogram, “we invite you to our wedding” and a button to answer, over cherry blossoms");
