@@ -18,6 +18,7 @@ export type Block =
   | { type: "h"; text: string }
   | { type: "images"; items: ProjectImage[]; layout?: { x: number; y: number; w: number; rot: number }[] }
   | { type: "motion" }
+  | { type: "mosaic" }
   /** A looping, muted screen recording. Portrait clips render as a phone-width column. */
   | { type: "video"; src: string; poster: string; alt: string; width: number; height: number }
   /** Two overlapping, tilted images with a portrait video between them. */
@@ -44,8 +45,12 @@ export type Project = {
   image?: ProjectImage;
   /** Feed cover video: replaces the image in the card, fitted whole (never cropped). */
   coverVideo?: { src: string; poster: string; width: number; height: number };
+  /** A wide card: two thirds of a row, next to a tall photo when one is left. */
+  wide?: boolean;
   /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
   carousel?: string[];
+  /** Four screen animations shown as a mosaic in the card, and by a "mosaic" block. */
+  mosaic?: PageVideoSrc[];
   /** Lottie animations: played in the card instead of an image, and by a "motion" block. */
   motion?: MotionClip[];
   story: Block[];
@@ -421,7 +426,7 @@ export const projects: Project[] = [
     description: "One place for vendors selling to Mercado Libre to track every payment and invoice.",
     teaser: "When do I get paid? Why was I deducted? Designing the answers into every row",
     image: STATEMENTS,
-    carousel: ["1-states", "2-blocked", "3-partial", "4-filters", "5-email", "6-diagram"].map((n) => `/images/carousel/statements/${n}.webp`),
+    carousel: ["statements", "statements-states", "statements-two-payments", "statements-filters", "statements-blocked", "statements-email", "statements-diagram"].map((n) => `/images/projects/${n}.webp`),
     story: [
       { type: "images", items: [STATEMENTS] },
       {
@@ -451,7 +456,7 @@ export const projects: Project[] = [
       { type: "h", text: "Mapping every state first" },
       {
         type: "p",
-        text: "Before drawing a screen, I mapped what can happen to an invoice from the moment a vendor uploads it: review, differences, credit notes that arrive early, late, for less or for more, cancelled requests, and payments split in two. The map ended with close to fifty numbered states, each with the invoice status, the credit-note status and the payment status side by side. Every screen in the flow is one of those states, so engineering and finance could check any case against the same source.",
+        text: "Billing and payments leave no room for surprises, so before drawing a screen I mapped everything that can happen to an invoice from the moment a vendor uploads it: review, differences, credit notes that arrive early, late, for less or for more, cancelled requests, and payments split in two. I built the map in close collaboration with the product specialist and validated it again and again with the team members who handled billing and payments by hand. It ended with close to fifty numbered states, each with the invoice, credit-note and payment status side by side, and it surfaced cases even the product side hadn’t anticipated. Every screen in the flow is one of those states, so engineering and finance could check any case against the same source.",
       },
       { type: "images", items: [ST_DIAGRAM] },
       { type: "h", text: "First visit" },
@@ -488,13 +493,61 @@ export const projects: Project[] = [
       { type: "h", text: "Getting the right people in" },
       {
         type: "p",
-        text: "The people who need Statements are usually a vendor’s billing team, not whoever owns the Vendor Central account. So the launch includes an email for vendors that announces the section and walks the account owner through giving their billing team a finance permission in three steps. The design also covers what someone without that permission sees, one tax ID or many subsidiaries, pagination, the help form, and entry points from purchase orders and shipments. Every screen states its objective before its layout, and the empty-state illustrations were rebuilt into animation-ready layers for After Effects.",
+        text: "The people who need Statements are usually a vendor’s billing team, not whoever owns the Vendor Central account. I designed the launch communications too, including an email for vendors that announces the section and walks the account owner through giving their billing team a finance permission in three steps. The design also covers what someone without that permission sees, one tax ID or many subsidiaries, pagination, the help form, and entry points from purchase orders and shipments. Every screen states its objective before its layout, and the empty-state illustrations were rebuilt into animation-ready layers for After Effects.",
       },
       { type: "images", items: [ST_EMAIL] },
       { type: "h", text: "Outcome" },
       {
         type: "p",
         text: "I left Mercado Libre after the handoff, before implementation, so I have no post-launch metrics. The team has since shipped it in stages on this structure: the invoice and credit-note list for every country first, then payments and disputes for Argentina, Chile, Colombia and Peru, and now commercial-agreement credit notes everywhere and payments in Mexico.",
+      },
+    ],
+  },
+  {
+    slug: "motion",
+    year: 2025,
+    employer: ML,
+    client: "Motion",
+    description: "Bringing motion to Mercado Libre’s B2B products, starting with the illustrations.",
+    teaser: "A quick win around a frontend bottleneck: animating the illustration system in Lottie",
+    wide: true,
+    mosaic: [
+      { src: "/media/statements/anim1.mp4", poster: "/media/statements/anim1.webp", alt: "Empty state animation: the bill icon draws itself above “You don’t have invoices yet”", width: 688, height: 688 },
+      { src: "/media/statements/onb1.mp4", poster: "/media/statements/onb1.webp", alt: "Onboarding step 1 in context: the welcome illustration comes alive inside the modal", width: 1366, height: 688 },
+      { src: "/media/statements/onb2.mp4", poster: "/media/statements/onb2.webp", alt: "Onboarding step 2 in context: two teammates animate inside the invite-your-team modal", width: 1366, height: 688 },
+      { src: "/media/statements/anim2.mp4", poster: "/media/statements/anim2.webp", alt: "Empty state animation: the bill draws itself and a warning appears above “You have invoices to upload”", width: 688, height: 688 },
+    ],
+    motion: [
+      { src: "/motion/saludo.json", label: "Greeting", width: 320, height: 160 },
+      { src: "/motion/team.json", label: "Team", width: 320, height: 160 },
+      { src: "/motion/bill.json", label: "Bill", width: 100, height: 100 },
+      { src: "/motion/bill-warning.json", label: "Bill warning", width: 100, height: 100 },
+    ],
+    story: [
+      { type: "mosaic" },
+      {
+        type: "p",
+        text: "Motion was a long-standing debt at Mercado Libre, especially in its B2B products. Interface animation had to go through frontend development, which was already a bottleneck, so it kept losing to everything else on the roadmap.",
+      },
+      { type: "h", text: "Start where the assets already exist" },
+      {
+        type: "p",
+        text: "We already had an illustration system, so I led an initiative to animate those illustrations as Lottie files. Lottie plays from a small JSON file, so an animation ships like an image, with no extra frontend work and without weighing the page down. That made it a quick win: designers own the motion end to end, and engineering only places a file.",
+      },
+      { type: "h", text: "In context" },
+      {
+        type: "p",
+        text: "The first animations went into Statements, the section where vendors follow their payments: the two onboarding steps that welcome a vendor and invite their team, and the empty states for a vendor with no invoices yet or with invoices still to upload. I rebuilt each illustration into separate layers for After Effects so heads, hands and icons could move on their own.",
+      },
+      { type: "motion" },
+      {
+        type: "p",
+        text: "Four Lottie files came out of it: two spot illustrations, a greeting and a team, and two icons, a bill and a bill with a warning. Each one loops and loads like an image: the icons are 8 and 14 KB, the illustrations 109 and 123 KB.",
+      },
+      { type: "h", text: "Why it mattered" },
+      {
+        type: "p",
+        text: "It was a small change, but it made the interface feel alive, and it was the first push that got the team adding functional motion to our B2B interfaces.",
       },
     ],
   },
@@ -635,28 +688,6 @@ export const projects: Project[] = [
   },
 
   // ---------- 2024 ----------
-  {
-    // Employer and year are a guess from the files (yellow palette, bills, Spanish names): confirm with Darwin.
-    slug: "motion",
-    year: 2024,
-    employer: ML,
-    client: "Motion",
-    description: "Lottie animations for product moments: a greeting, a team, a bill and a bill with a warning.",
-    teaser: "Four looping animations, the largest under 125 KB",
-    motion: [
-      { src: "/motion/saludo.json", label: "Greeting", width: 320, height: 160 },
-      { src: "/motion/team.json", label: "Team", width: 320, height: 160 },
-      { src: "/motion/bill.json", label: "Bill", width: 100, height: 100 },
-      { src: "/motion/bill-warning.json", label: "Bill warning", width: 100, height: 100 },
-    ],
-    story: [
-      { type: "motion" },
-      {
-        type: "p",
-        text: "Four Lottie animations: two spot illustrations, a greeting and a team, and two icons, a bill and a bill with a warning. Each one loops and is light enough to load like an image: the icons are 8 and 14 KB, the illustrations 109 and 123 KB.",
-      },
-    ],
-  },
   {
     slug: "bulk-search",
     year: 2024,

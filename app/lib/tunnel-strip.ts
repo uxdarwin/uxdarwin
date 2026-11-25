@@ -120,7 +120,7 @@ export function createTunnel(
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
   // textures: 1px placeholder until each image loads
-  type Tex = { t: WebGLTexture; ar: number };
+  type Tex = { t: WebGLTexture; ar: number; loaded: boolean };
   const texParams = () => {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -131,12 +131,12 @@ export function createTunnel(
     const t = gl.createTexture()!; gl.bindTexture(gl.TEXTURE_2D, t);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([24,24,27,255]));
     texParams();
-    const tex: Tex = { t, ar: 1 };
+    const tex: Tex = { t, ar: 1, loaded: false };
     const img = new Image(); img.crossOrigin = "anonymous"; img.decoding = "async";
     img.onload = () => {
       gl.bindTexture(gl.TEXTURE_2D, t);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-      texParams(); tex.ar = img.naturalWidth / img.naturalHeight;
+      texParams(); tex.ar = img.naturalWidth / img.naturalHeight; tex.loaded = true;
     };
     img.src = src;
     return tex;
@@ -165,9 +165,15 @@ export function createTunnel(
     gl.uniformMatrix4fv(U.uP, false, [f/A,0,0,0, 0,f,0,0, 0,0,(far+near)/(near-far),-1, 0,0,(2*far*near)/(near-far),0]);
     const c = config;
     const k = ((c.curve / 100) * .0028 + (reduce ? 0 : (c.fold / 100) * vn * .0022)) * (1084 / layout.baseWidth) / sc;
-    const cw = layout.cardWidth * sc, ch = layout.cardHeight * sc, pitch = cw + c.gap * sc, n = texs.length;
-    const reps = Math.max(1, Math.ceil((W * 2.4) / (n * pitch))), M = n * reps, L = M * pitch;
-    gl.uniform1f(U.uK, k); gl.uniform1f(U.uD, D); gl.uniform2f(U.uSize, cw, ch); gl.uniform1f(U.uR, c.radius * sc);
+    // Every card shares one height; its width follows its image, so nothing is cropped.
+    // Until an image loads, its card keeps the layout's default width.
+    const ch = layout.cardHeight * sc, gap = c.gap * sc, n = texs.length;
+    const ws = texs.map((t) => (t.ar > 0 && t.loaded ? ch * t.ar : layout.cardWidth * sc));
+    const cyc = ws.reduce((a, w) => a + w + gap, 0);
+    const reps = Math.max(1, Math.ceil((W * 2.4) / cyc)), M = n * reps, L = reps * cyc;
+    const starts: number[] = []; let acc = 0;
+    for (let i = 0; i < n; i++) { starts.push(acc + ws[i] / 2); acc += ws[i] + gap; }
+    gl.uniform1f(U.uK, k); gl.uniform1f(U.uD, D); gl.uniform1f(U.uR, c.radius * sc);
     gl.uniform1f(U.uVel, vn); gl.uniform1f(U.uSm, c.smear / 100); gl.uniform1f(U.uFr, (c.fringe / 100) * dir);
     gl.uniform1f(U.uEd, (c.edge / 100) * .95);
     const zone = 1 - c.zone / 100; gl.uniform1f(U.uZone, zone); gl.uniform1f(U.uZoneV, zone);
@@ -179,13 +185,15 @@ export function createTunnel(
       const t = u * k, x = k < 1e-6 ? u : Math.sin(t) / k, z = k < 1e-6 ? -D : -D + (1 - Math.cos(t)) / k;
       return (x * D) / -z;
     };
-    const base = layout.centre === "seam" ? -pitch / 2 : 0;
+    const base = (layout.centre === "seam" ? -(ws[0] + gap) / 2 : 0) - starts[0];
     for (let i = 0; i < M; i++) {
-      const s = ((((i * pitch + offset + base + L / 2) % L) + L) % L) - L / 2;
+      const j = i % n, cw = ws[j];
+      const s = (((((Math.floor(i / n) * cyc + starts[j]) + offset + base + L / 2) % L) + L) % L) - L / 2;
       const a = proj(s - cw / 2), b = proj(s + cw / 2);
       if (!isFinite(a) && !isFinite(b)) continue;
       if (Math.min(a, b) > W / 2 + 4 || Math.max(a, b) < -W / 2 - 4) continue;
-      const tx = texs[i % n], ca = cw / ch;
+      const tx = texs[j], ca = cw / ch;
+      gl.uniform2f(U.uSize, cw, ch);
       gl.uniform2f(U.uUV, tx.ar > ca ? ca / tx.ar : 1, tx.ar > ca ? 1 : tx.ar / ca);
       gl.bindTexture(gl.TEXTURE_2D, tx.t); gl.uniform1f(U.uS, s);
       gl.drawArrays(gl.TRIANGLES, 0, vertCount);

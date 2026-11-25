@@ -1260,3 +1260,62 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Motion mosaic: four looping screen animations in two rows of equal height. Each clip's width
+   follows its aspect ratio (flex-grow is set inline), so the rows line up edge to edge. */
+.mosaic {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  aspect-ratio: 2062 / 1384;
+}
+.mosaicRow {
+  display: flex;
+  flex: 1 1 0;
+  gap: 8px;
+  min-height: 0;
+}
+.mosaicClip {
+  display: block;
+  flex-basis: 0;
+  min-width: 0;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  outline: 0.5px solid rgb(255 255 255 / 0.08);
+  outline-offset: -0.5px;
+  box-shadow: 4px 4px 8px rgb(0 0 0 / 0.4);
+}
+.rows .thumb:has(> .mosaic) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rows .thumb > .mosaic {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+.mosaic[data-size="page"] {
+  margin: 48px 0;
+}
+
+/* A wide project's row grows with its cover instead of clipping it to the row height. */
+.row[data-wide] {
+  height: auto;
+}
+.row[data-wide] .thumb:has(> .mosaic) {
+  flex: none;
+}
+.rows .row[data-wide] .thumb > .mosaic {
+  width: 100%;
+  max-height: none;
+}
+/* A regular card beside a wide one keeps its square cover, sitting level with the wide card's text. */
+.row[data-wide] .card + .card .thumb {
+  flex: none;
+  aspect-ratio: 1;
+  margin-top: auto;
+}

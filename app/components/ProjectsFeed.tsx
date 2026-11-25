@@ -6,6 +6,7 @@ import { media, type MediaTile } from "../content/media";
 import { projects, type Project } from "../content/projects";
 import { CompanyPanel } from "./CompanyPanel";
 import { MotionGrid } from "./MotionGrid";
+import { MotionMosaic } from "./MotionMosaic";
 import { MetaLogo } from "./ProjectMeta";
 import { seeded } from "./drag";
 import { useCompany } from "./filter";
@@ -48,6 +49,15 @@ function rowsOf(list: Project[], pool: MediaTile[]): Row[] {
   while (i < list.length) {
     if (isCarousel(list[i])) {
       rows.push({ type: "strip", projects: [list[i++]] });
+      continue;
+    }
+    // A wide project takes two thirds of a row, beside a tall photo when one is left, else
+    // beside the next card.
+    if (list[i].wide) {
+      const tile = left.narrow.shift();
+      if (tile) rows.push({ type: rows.length % 2 ? "mediaWide" : "wideMedia", projects: [list[i++]], media: tile });
+      else if (list[i + 1] && !isCarousel(list[i + 1])) rows.push({ type: "wideMedia", projects: list.slice(i, (i += 2)) });
+      else rows.push({ type: "single", projects: [list[i++]] });
       continue;
     }
     // Cards available before the next strip project.
@@ -97,7 +107,7 @@ export function ProjectsFeed() {
       <div className={styles.feedBody} data-panel={company ? "" : undefined}>
         <div ref={gridRef} className={styles.rows}>
           {rows.map((row) => (
-            <div key={row.projects[0].slug} className={styles.row} data-type={row.type}>
+            <div key={row.projects[0].slug} className={styles.row} data-type={row.type} data-wide={row.projects[0].wide || undefined}>
               {row.type === "strip" ? (
                 <CarouselRow project={row.projects[0]} />
               ) : (
@@ -203,7 +213,9 @@ function ProjectCard({ project: p }: { project: Project }) {
   return (
     <Link href={`/projects/${p.slug}`} className={styles.card} style={tiltOf(p.slug)} data-reveal="" data-sound-hover="" data-cuelume-tap="">
       <div className={styles.thumb}>
-        {p.motion ? (
+        {p.mosaic ? (
+          <MotionMosaic clips={p.mosaic} />
+        ) : p.motion ? (
           <MotionGrid clips={p.motion.slice(0, 4)} />
         ) : p.coverVideo ? (
           <CoverVideo video={p.coverVideo} label={p.image?.alt ?? p.client} />

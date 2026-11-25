@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { MotionMosaic } from "../../components/MotionMosaic";
 import { MotionGrid } from "../../components/MotionGrid";
 import { PageVideo } from "../../components/PageVideo";
 import { ImageCluster, type Slot } from "../../components/ImageCluster";
@@ -52,6 +53,7 @@ export default async function ProjectPage({ params }: Params) {
           {p.story.map((b, i) => {
             if (b.type === "images")
               return <ImageCluster key={i} images={b.items} layout={b.layout} variant={cluster++} seed={`${p.slug}-${i}`} />;
+            if (b.type === "mosaic") return p.mosaic ? <MotionMosaic key={i} clips={p.mosaic} size="page" /> : null;
             if (b.type === "motion") return p.motion ? <MotionGrid key={i} clips={p.motion} size="page" /> : null;
             if (b.type === "trio")
               return (
