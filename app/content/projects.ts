@@ -182,6 +182,8 @@ const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River V
 const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: inspection runs with controls finished, outcomes, compliance score and findings per application", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
 const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
+const CB_CONTRACTS_TRIAGE = img("cb-contracts-table.webp", "Contracts triage table: four work cards (notice deadlines, renewal decisions, missing renewal details, reviews needed) above one row per contract, ordered by notice due date", 2400, 1515);
+const CB_CONTRACTS_TIMELINE = img("cb-contracts-timeline.webp", "Timeline view of the same contracts: each row runs from its notice due date to the end of the current term, with a dashed line where the notice date is missing", 2400, 1544);
 const CB_CONTRACTS_PORTFOLIO: ProjectImage = { src: "/media/cb-contracts-portfolio.webp", video: "/media/cb-contracts-portfolio.mp4", alt: "The redesigned Contracts portfolio: Key Dates, Pending Tasks, Approvals and Portfolio cards above the table, a single Export button, the Add contracts menu, and a row menu that holds every contract action", width: 1920, height: 880 };
 const RADAR_COVER = img("radar-cover.webp", "Coverbase Radar: the signals list with severity and affected suppliers, and an event page with an AI summary, triage status and the vendors involved", 1600, 1000);
 const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment statuses: custom review steps in settings, and a workflow that moves an assessment into review", 1600, 1000);
@@ -535,10 +537,24 @@ export const projects: Project[] = [
         type: "p",
         text: "Procurement and legal teams track hundreds of vendor contracts, and the dates hidden inside them decide real money: notice periods, auto-renewals, termination windows. In 2026 Contract Guardian took the whole contract review into Coverbase: bulk import organized by vendor, engagement, service and key dates; AI clause review; redlines exported to Word with tracked changes; and multi-party e-signatures. That shipped in September.",
       },
-      { type: "h", text: "Start where people actually are" },
+      { type: "h", text: "First pass: triage before detail" },
       {
         type: "p",
-        text: "Before redesigning anything, I reviewed Contracts end to end with usage data. The portfolio and the contract detail made up over 99% of views; assembly, signatures, templates and the repository each had fewer than 50. So I started with the portfolio. Support conversations and customer calls pointed the same way: renewals and notices were one of the three largest themes, and customers asked directly for views like \u201cexpiring in six months\u201d and \u201cnotices in the next 60 days\u201d.",
+        text: "I started in September with a brief built around one scenario: an analyst opens Contracts to find what needs attention, then reviews several contracts in a row. The evidence pointed at the list itself. Rows were grouped by vendor, so one customer couldn't tell why they saw 24 rows when they had 764 contracts. The summary cards competed with equal weight, and product analytics showed a list, contract, list loop in 27.5% of journeys.",
+      },
+      {
+        type: "p",
+        text: "So the first pass treated the portfolio as triage. One row is one contract. The cards became work questions with an explicit count and the reason behind it: notice deadlines, renewal decisions needed, missing renewal details, reviews needed. The table sorts by the most actionable date, notice due, and its columns follow the triage story: contract, vendor, status, notice due, renewal decision, renewal, renewal term, current term end. Instead of a separate renewal runway screen, a timeline view reuses the same dataset and controls, and Start clause review moved from the global toolbar into each row so nobody has to pick the contract twice.",
+      },
+      { type: "images", items: [CB_CONTRACTS_TRIAGE, CB_CONTRACTS_TIMELINE] },
+      {
+        type: "p",
+        text: "To break the loop, I added a lightweight preview: a side panel that opens from a row, keeps the row highlighted and the table usable underneath, shows the vendor before the contract, steps to the previous or next contract in the current filtered order, and opens the full record when it's time to commit. Engineering had it implemented by early October, with a toggle to turn previews on or off, and I proposed it as a shared pattern for Vendors, Assessments, Radar, Findings and Cases.",
+      },
+      { type: "h", text: "Second pass: start where people actually are" },
+      {
+        type: "p",
+        text: "In November I went back to Contracts end to end with usage data. The portfolio and the contract detail made up over 99% of views; assembly, signatures, templates and the repository each had fewer than 50, so the portfolio stayed the focus. Support conversations and customer calls pointed the same way: renewals and notices were one of the three largest themes, and customers asked directly for views like \u201cexpiring in six months\u201d and \u201cnotices in the next 60 days\u201d.",
       },
       { type: "h", text: "What was broken" },
       {
