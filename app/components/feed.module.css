@@ -682,61 +682,6 @@
   border-radius: 28px;
 }
 
-/* Trio (Parque Caudal): gallery left, video centre, visual system right, overlapping and tilted.
-   Up to 1000px wide, centred on the text column, never under the side column. Positions are
-   percentages of the box, from Darwin's mock. */
-.trio {
-  --col-left: max(var(--title-inset), (100cqi - 720px) / 2);
-  --trio-w: min(1000px, 100cqi - 2 * var(--title-inset));
-  position: relative;
-  width: var(--trio-w);
-  margin: 72px 0 72px calc(max(var(--title-inset), (100cqi - var(--trio-w)) / 2) - var(--col-left));
-  aspect-ratio: 1000 / 600;
-}
-
-.trio > img,
-.trio > video {
-  position: absolute;
-  display: block;
-  height: auto;
-  -webkit-user-drag: none;
-}
-
-.trio > img {
-  filter: drop-shadow(4px 4px 8px rgb(0 0 0 / 0.4));
-}
-
-.trioLeft {
-  left: 0;
-  top: 7%;
-  width: 45%;
-  rotate: -2deg;
-}
-
-.trioRight {
-  right: 0;
-  top: 3%;
-  width: 46%;
-  rotate: 2deg;
-}
-
-.trioVideo {
-  left: 50%;
-  top: 0;
-  height: 100% !important;
-  width: auto;
-  translate: -50% 0;
-  border-radius: 24px;
-  outline: 0.5px solid rgb(255 255 255 / 0.08);
-  outline-offset: -0.5px;
-  box-shadow: 8px 8px 24px rgb(0 0 0 / 0.5);
-  background: #2a2a21;
-}
-
-.trio + .paragraph {
-  margin-top: 0;
-}
-
 .cluster + .sectionTitle,
 .pageVideo + .sectionTitle {
   margin-top: 0;

@@ -4,7 +4,14 @@
 
 import type { Brand } from "./profile";
 
-export type ProjectImage = { src: string; alt: string; width: number; height: number };
+export type ProjectImage = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** A muted looping clip shown instead of the image; src is then its poster. */
+  video?: string;
+};
 
 export type Block =
   | { type: "p"; text: string }
@@ -145,9 +152,9 @@ const PC_CONTACT = img(
 );
 const PC_GALLERY = img(
   "parque-caudal-gallery-full.webp",
-  "Gallery section: Conoce Parque Caudal, with the facade render large and eight thumbnails from facade and corner to kitchen, lobby, pool and BBQ area",
+  "Gallery section: Conoce Parque Caudal, with the facade render large and eight thumbnails from facade and corner to kitchen, lobby, pool and terrace",
   1440,
-  1542,
+  1600,
 );
 const PC_SYSTEM = img(
   "parque-caudal-system.webp",
