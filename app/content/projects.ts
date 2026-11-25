@@ -290,6 +290,7 @@ export const projects: Project[] = [
     description: "A website for furnished apartments and community spaces in four German cities.",
     teaser: "One floating card for location, apartment type and all-inclusive rent, right in the hero",
     image: NEON,
+    coverVideo: { src: "/media/neonwood-cover.mp4", poster: "/media/neonwood-cover.webp", width: 1080, height: 1080 },
     story: [
       { type: "images", items: [NEON] },
       {
