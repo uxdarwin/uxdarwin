@@ -44,9 +44,11 @@ export type Project = {
   /** Feed image. Projects without one get a typographic cover until assets are gathered. */
   image?: ProjectImage;
   /** Feed cover video: replaces the image in the card, fitted whole (never cropped). */
-  coverVideo?: { src: string; poster: string; width: number; height: number };
+  coverVideo?: { src: string; poster: string; width: number; height: number; /** Fill the cover box (crops only background margin). */ fill?: boolean };
   /** A wide card: two thirds of a row, next to a tall photo when one is left. */
   wide?: boolean;
+  /** With wide: share the row with the next card instead of a photo. */
+  pairNext?: boolean;
   /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
   carousel?: string[];
   /** Four screen animations shown as a mosaic in the card, and by a "mosaic" block. */
@@ -131,6 +133,20 @@ const NEON = img(
   1000,
   564,
 );
+const AB = (n: string, alt: string, w: number, h: number) => img(`abacus-${n}.webp`, alt, w, h);
+const AB_VARIATIONS = AB("logo-variations", "Abacus logo: three new white variations on deep green beside the previous blue and gold logo", 1600, 1797);
+const AB_SHAPES = AB("shapes", "Six hotel photos with the curves of the rotunda, the lobby floor, the furniture and the spa traced in red", 1920, 1080);
+const AB_BUILDING = AB("building-colors", "Colour swatches sampled from the hotel's entrance, lobby, banquet hall, rooms, winter garden and spa", 2000, 1121);
+const AB_SURROUNDINGS = AB("surroundings", "The surroundings: Friedrichsfelde Palace and its gardens, giraffes, zebras and the Tierpark entrance", 2000, 1121);
+const AB_PRIMARY = AB("primary-colors", "Primary colours: Green 800, Blue 500, Blue 300, Beige 200 and Coral 400", 1800, 991);
+const AB_FONTS = AB("fonts", "Fonts: Brandon Grotesque for the logo, Geist Sans for the website", 1800, 991);
+const AB_LOGO_PALETTE = AB("logo-palette", "The new logo in white on Green 800 beside blue, light blue, beige and coral panels", 1920, 1080);
+const AB_LOGO_PHOTO = AB("logo-photo", "The logo in white on black, and as a translucent mark over a sunset with a giraffe in the circle", 1920, 1080);
+const AB_GIRAFFE = AB("logo-giraffe", "The logo with a giraffe's head looking out through the circle", 1200, 1392);
+const AB_OLD_HOME = AB("old-home", "The previous Abacus website: grey and blue panels, round photo crops and a blue and gold logo", 1200, 2329);
+const AB_OLD_CONFERENCE = AB("old-conference", "The previous conference rooms page: a static floor plan image and a request by email or phone", 1600, 1550);
+const AB_EVENT_SPACES = AB("event-spaces", "The new Event Spaces page: room cards with capacity and size, a guests and layout filter, and a floor-plan map", 1758, 1744);
+const AB_VIDEO: ProjectImage = { src: "/media/abacus-cover.webp", video: "/media/abacus-cover.mp4", alt: "Scrolling the new Abacus home page: the park hero with the logo and booking bar, then the hotel at night", width: 1080, height: 1080 };
 const ABACUS = img(
   "abacus.webp",
   "Abacus Tierpark Hotel home page: an aerial park view behind the headline and a compact booking bar",
@@ -142,25 +158,66 @@ const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: a rene
 const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River Vendor Registry Portal: a search for a meeting-transcription tool with approved, conditional and in-review results", 1600, 1000);
 const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: discovered SaaS apps, posture score and a list of inspections with their status", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
-const COVERBASE_DESIGN_SYSTEM_COVER = img("coverbase-design-system-cover.webp", "Coverbase UI Library 2026: the library cover beside color ramps and the button documentation", 1600, 1000);
 const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
 const RAINFOREST_KIDS_COVER = img("rainforest-kids-cover.webp", "Rainforest Foundation kids course: a sloth guide asks a fill-in-the-blank question about greenhouse gases", 1600, 1000);
 const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment results: score, controls evaluated and an analysis summary with strengths, weaknesses and actions", 1600, 1000);
 const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
-const ALLTHENTICATE_COVER = img("allthenticate-cover.webp", "Allthenticate app: Touch ID sign-in and a list of doors and devices to unlock, with brand iconography and patterns", 1600, 1000);
-const BFF_COVER = img("bff-cover.webp", "BFF app: talent lists, service menus and booking flows on a grid of phones", 1600, 1000);
-const CHECK_MIG_COVER = img("check-mig-cover.webp", "Check Mig: migration registration flow screens, a travel record and the design system", 1600, 1000);
+const BFF_COVER = img("bff-cover.webp", "BFF: two phones with the fan home page and the request menu (comment, like, follow, greeting, serenade) beside a person holding a BFF sign", 1920, 1320);
+const BFF_MOCKUPS = img("bff-mockups.webp", "BFF fan app screens laid out on pink: talent search, featured talent, services, request details and a celebrity video", 1345, 896);
+const BFF_CLIENT = img("bff-client-app.webp", "BFF fan app store screens: home with a celebrity video, a 10% first-request offer, services with prices, and occasions", 1566, 685);
+const BFF_CELEBRITY = img("bff-celebrity-app.webp", "BFF celebrity app store screens: a cancelled song request, the request list with search and filters, and a pending greeting", 1507, 660);
+const BFF_LANDING_HERO = img("bff-landing-hero.webp", "BFF landing page hero: Somos fans de nuestros fans, with two phones showing the app", 1443, 840);
+const BFF_LANDING_STEPS = img("bff-landing-steps.webp", "BFF landing page step 3: the request checkout with delivery email, payment method and total", 1443, 840);
+const BFF_DASHBOARD = img("bff-dashboard.webp", "BFF admin dashboard: a celebrity's monthly payout with billed total, manager, BFF and payment gateway fees", 1443, 840);
+const BFF_DESIGN_SYSTEM = img("bff-design-system.webp", "BFF design system: colours, typography, buttons, inputs, service and request cards, icons and illustrations", 1372, 876);
+const CHECK_MIG_COVER = img("check-mig-home.webp", "Check Mig home on the Migración Colombia site: two clear entry points, complete your registration or check and download it", 1463, 810);
+const CHECK_MIG_FLOW = img("check-mig-flow.webp", "Check Mig screens: trip direction, means of transport, the lookup form and the downloadable certificate laid out like a ticket", 1472, 792);
+const CHECK_MIG_DS = img("check-mig-design-system.webp", "Check Mig design system: colours, type scale, 12-column grid, spacing, buttons, inputs, icons and cards", 1568, 537);
 const COVERBASE_WEBSITE_COVER = img("coverbase-website-cover.webp", "Coverbase website: a customer video hero with the headline Agentic third-party risk and security", 1600, 1000);
 const SPICE_AI_WEBSITE_COVER = img("spice-ai-website-cover.webp", "Spice AI website: the hero, The Data and AI Stack in One Engine, beside a SQL playground", 1600, 1000);
 const SWIPPR_COVER = img("swippr-cover.webp", "Swippr website: Find your next job for free, with the free plan's features", 1600, 1000);
-const NOMICOL_COVER = img("nomicol-cover.webp", "Nomicol payroll web app: period summary with payroll status and the employee list, plus the mobile sign-up", 1600, 1000);
-const DOCUCOL_COVER = img("docucol-cover.webp", "Docucol: the assigned documents list beside an illustration of a person signing", 1600, 1000);
-const SWEAT_440_COVER = img("sweat-440-cover.webp", "Sweat 440: station screens for group classes and the trainer video console", 1600, 1000);
+const NOMICOL_DOCUCOL_COVER = img("nomicol-docucol-devices.webp", "Nomicol and Docucol on a laptop, a tablet and two phones, with the matching nc and dc marks", 1452, 833);
+const NOMICOL_LANDING = img("nomicol-landing.webp", "Nomicol landing page: Nómina en minutos, no días, with the sign-up on a phone and a customer quote", 1510, 803);
+const NOMICOL_BLOG = img("nomicol-blog.webp", "Nomicol landing page: articles on choosing an electronic payroll provider and payroll in the cloud", 1510, 803);
+const NOMICOL_DS = img("nomicol-design-system.webp", "Nomicol design system: brand and semantic colours, Poppins type scale, buttons, inputs, icons, illustrations and empty states", 1568, 591);
+const DOCUCOL_HERO = img("docucol-hero.webp", "Docucol: the documents you were invited to sign, beside an illustration of a person signing", 1554, 784);
+const DOCUCOL_LOGIN = img("docucol-login.webp", "Docucol sign-in: Únete a la revolución legal tech en Colombia", 1497, 808);
+const DOCUCOL_TEMPLATES = img("docucol-templates.webp", "Docucol onboarding: templates explained before the first document", 1497, 807);
+const DOCUCOL_SIGNATURE = img("docucol-signature.webp", "Docucol onboarding: create your digital signature by drawing it or uploading a file", 1498, 809);
+const DOCUCOL_WATERMARK = img("docucol-watermark.webp", "Docucol organization settings: add a watermark to your documents", 1497, 812);
 const CHARMED_COVER = img("charmed-cover.webp", "Charmed HUB: the texture generator on a 3D potion bottle, between the folder and geometry views", 1600, 1000);
-const ATLAS_COVER = img("atlas-cover.webp", "Atlas leads capture: Explore our 3D navigator tools, with a 3D capture of a garage", 1600, 1000);
-const AUGMEND_COVER = img("augmend-cover.webp", "Augmend workspace: an incident summary with its hypothesis beside shared windows and a CloudWatch log", 1600, 1000);
+const ATLAS_3D_SCAN = img("atlas-3d-scan.webp", "Atlas: a 3D scan of a home, built from a client's phone capture, with the photos it came from", 1271, 952);
+const ATLAS_ONBOARDING = img("atlas-onboarding.webp", "Atlas client app onboarding: let's get capturing, then steps on moving through the room, looping around it and keeping walls in frame", 2000, 1085);
+const ATLAS_CAPTURE = img("atlas-capture.webp", "Atlas client app: capturing a garage by scan or photo, then a confirmation that the 3D model is on its way", 2000, 1418);
+const ATLAS_DASHBOARD = img("atlas-dashboard.webp", "Atlas contractor dashboard: projects in progress, recent calls, completed projects, conversion by funnel stage and completed scans", 1456, 818);
+const ATLAS_PROJECT = img("atlas-project-detail.webp", "Atlas project detail: the client, call history, and the property's climate trends, history, utility info and 3D scan", 1456, 819);
+const ATLAS_LOGIN = img("atlas-login.webp", "Atlas sign-in over a line illustration of a city and its landscape", 1456, 818);
+const ATLAS_CALLS_EMPTY = img("atlas-calls-empty.webp", "Atlas calls page empty state, with an illustration of a person on a call", 1456, 818);
+const ATLAS_COVER: ProjectImage = { src: "/media/atlas-cover.webp", video: "/media/atlas-cover.mp4", alt: "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video, with me showing how to keep the right distance", width: 1600, height: 1600 };
+const AUGMEND_COVER = img("augmend-cover.webp", "Augmend landing hero: Collective intelligence for developers, over a shared workspace with teammates' cursors", 1600, 1000);
+const AUGMEND_LANDING = img("augmend-landing.webp", "Augmend landing: Accelerate software development team speed with AI-augmented collaboration tools, with a waitlist field above the workspace", 2000, 1130);
+const AUGMEND_LOGO = img("augmend-logo.webp", "Augmend logo on lime, dark, light and white backgrounds", 888, 1366);
+const AUGMEND_COLORS = img("augmend-colors.webp", "Augmend color system: neutral, lime primary, violet complementary, error and warning scales", 1124, 1061);
+const AUGMEND_PITCH_PURPOSE = img("augmend-pitch-purpose.webp", "Pitch deck purpose slide: accelerate how teams build and operate software by reducing collaboration tax and augmenting team knowledge with AI", 1341, 892);
+const AUGMEND_PITCH_SOLUTION = img("augmend-pitch-solution.webp", "Pitch deck solution slide: a multiplayer workspace, Figma meets Copilot, rebuilt for devops", 1332, 890);
+const AUGMEND_SIGNUP = img("augmend-signup.webp", "Augmend sign-up: create an account beside the illustration Your team's shared brain", 1444, 830);
+const AUGMEND_EMPTY = img("augmend-empty-state.webp", "Augmend workspaces empty state with a binoculars illustration and a Create a multi-player workspace prompt", 1444, 722);
+const AUGMEND_WORKSPACE = img("augmend-workspace.webp", "Augmend shared workspace: a dashboard, terminals and CloudWatch logs side by side, with teammates' cursors and an events panel", 1400, 857);
+const AUGMEND_CLIENT = img("augmend-client-app.webp", "Onboarding step: download the client app to record and share activity with your colleagues", 918, 1309);
+const AUGMEND_WAITLIST = img("augmend-waitlist.webp", "Waitlist modal: Welcome on board, with an illustration of shared windows and cursors", 1030, 1122);
+const AUGMEND_EMAIL_BETA = img("augmend-email-beta.webp", "Private beta confirmation email: You're on the list and we're so excited", 778, 1269);
+const AUGMEND_EMAIL_ARTICLE = img("augmend-email-article.webp", "Newsletter email announcing a new article, with the Augmend app icon between mail and calendar icons", 778, 1232);
+const AUGMEND_EMAIL_INVITE = img("augmend-email-invite.webp", "Team invitation email with two people fitting puzzle pieces together", 712, 1212);
 const COOL_EARTH_COVER = img("cool-earth-cover.webp", "Cool Club by Cool Earth: badges and certificates on the home, beside the Learn section and the leaderboard", 1600, 1000);
-const SWIPPR_B2B_CLIENTS = img("swippr-b2b-clients.webp", "Swippr B2B admin: the clients list, each client with open positions and buttons to view it or add a position", 1600, 978);
+const SWIPPR_SWIPE_CARD = img("swippr-swipe-card.webp", "Swippr job card: location, salary and benefits in sight, a compatibility score, and swipe left, right or Super Swipp", 1512, 1048);
+const SWIPPR_PITCH = img("swippr-pitch.webp", "Swippr pitch: talents read a job in under 30 seconds, match, book an interview and chat; companies see candidate profiles, set a budget and review matches", 1000, 1795);
+const SWIPPR_SOCIAL = img("swippr-social.webp", "Swippr candidate app on two phones: a job card with its compatibility score, and Start applying to jobs, for free", 1000, 1000);
+const SWIPPR_PRICING = img("swippr-pricing.webp", "Swippr pricing page: Find your next job for free, with the free plan for talent", 1000, 802);
+const SWIPPR_POST_JOB = img("swippr-post-job.webp", "Swippr: post a job by role, seniority, English level, countries, work mode, skills and monthly salary range", 952, 1240);
+const SWIPPR_B2B_HERO = img("swippr-b2b-hero.webp", "Swippr nearshoring landing page: Supercharge your growth with world-class tech talent", 1400, 856);
+const SWIPPR_B2B_PROCESS = img("swippr-b2b-process.webp", "Swippr landing page: our proven process, from tailored recruitment to skills validation, interview guidance and candidate reports", 1339, 896);
+const SWIPPR_ONE_PAGER = img("swippr-one-pager.webp", "Swippr sales one-pager: organize your candidate data to hire faster, with the platform's import, pipeline and match suggestions", 1003, 1204);
+const SWIPPR_TALENT = img("swippr-talent-profile.webp", "Swippr B2B admin: a talent profile with bio, skills, contact, location, resume, English level and recruiter notes", 1400, 656);
 const SWIPPR_B2B_LOGIN = img("swippr-b2b-login.webp", "Swippr B2B admin sign-in: Welcome to Swippr, with Continue with Google", 1600, 978);
 const ML = { label: "Mercado Libre", brand: "mercadolibre" } as const;
 const CB = { label: "Coverbase", brand: "coverbase" } as const;
@@ -282,30 +339,67 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "neon-wood",
+    slug: "abacus",
     year: 2026,
     employer: { label: "Freelance" },
-    client: "Neon Wood",
-    url: "https://neonwood.com/",
-    description: "A website for furnished apartments and community spaces in four German cities.",
-    teaser: "One floating card for location, apartment type and all-inclusive rent, right in the hero",
-    image: NEON,
-    coverVideo: { src: "/media/neonwood-cover.mp4", poster: "/media/neonwood-cover.webp", width: 1080, height: 1080 },
+    client: "Abacus Tierpark Hotel",
+    url: "https://www.abacus-hotel.de/en",
+    description: "A brand refresh and website redesign for a Berlin hotel next to Tierpark.",
+    teaser: "A logo and palette drawn from the building and the park, and event spaces that are easy to book",
+    image: ABACUS,
+    coverVideo: { src: "/media/abacus-cover.mp4", poster: "/media/abacus-cover.webp", width: 1080, height: 1080 },
     story: [
-      { type: "images", items: [NEON] },
+      { type: "images", items: [ABACUS, AB_VIDEO] },
       {
         type: "p",
-        text: "Neon Wood rents furnished apartments and community spaces in Berlin, Cologne, Frankfurt and Tübingen. I designed the website through Cresco, a Berlin studio, and led and executed it end to end. It is live at neonwood.com.",
+        text: "A brand refresh and website redesign for a hotel next to Tierpark Berlin, designed through Cresco. I led and executed it end to end, and the new site is live at abacus-hotel.de.",
       },
-      { type: "h", text: "The decision on top of the photo" },
+      { type: "h", text: "A logo taken from the building" },
       {
         type: "p",
-        text: "The home hero puts the decision on a full-bleed photo. A floating card switches between apartments and community spaces, picks a location and an apartment type with its all-inclusive monthly rent, and offers two actions: book a visit or rent an apartment.",
+        text: "I refreshed the logo too. The previous one was a blue and gold badge with a gradient, and its blue and grey site said nothing about the life around the hotel. I started from the building itself: the rotunda over the entrance, the curved lobby floor with the Abacus emblem set into it, the rounded furniture and the tiled curves of the spa. Those curves became the new mark, a rounded tag with a circle cut through it, drawn in a few variations.",
       },
-      { type: "h", text: "A whole site, not a home page" },
+      { type: "images", items: [AB_SHAPES, AB_VARIATIONS] },
       {
         type: "p",
-        text: "The site maps out location and building pages, a city overview, room categories and types, promotions, pricing, partners, events, sustainable living, an app page, a page for parents, a blog, about, contact and legal pages, with mobile layouts at 430 px for the key pages. Each review got its own dated design round, from March to July 2026, next to a logo, a style guide, illustrations and a sitemap.",
+        text: "The logo palette comes from the same place. I sampled colours from photos of the entrance, the lobby, the banquet hall, the rooms, the winter garden and the spa: teal and petrol, forest green, warm beige, mustard and a deep red.",
+      },
+      { type: "images", items: [AB_BUILDING] },
+      { type: "h", text: "A brand that feels like the park" },
+      {
+        type: "p",
+        text: "The hotel sits next to Tierpark Berlin, Europe's largest landscape zoo, with Friedrichsfelde Palace and its gardens inside it. I wanted the brand to carry that: deep greens, open sky, sand and the warmth of the animals. The style guide sets five primary colours (Green 800, Blue 500, Blue 300, Beige 200 and Coral 400), each with a full ramp, plus light and dark transparency scales. Brandon Grotesque sets the logo and Geist Sans the website, so every page uses the same two fonts.",
+      },
+      { type: "images", items: [AB_SURROUNDINGS, AB_PRIMARY] },
+      { type: "images", items: [AB_LOGO_PALETTE, AB_FONTS] },
+      {
+        type: "p",
+        text: "The circle in the mark leaves room for the place to show through, from a sunset over the savanna to a giraffe looking out.",
+      },
+      { type: "images", items: [AB_LOGO_PHOTO, AB_GIRAFFE] },
+      { type: "h", text: "Where Berlin slows down" },
+      {
+        type: "p",
+        text: "The hero sets an aerial park view behind the logo and a serif italic headline, with a compact booking bar for dates, guests and reserve, and a link to location and parking. The home page is shown as a before-and-after pair, with alternative headline treatments and a responsive version at 400 px.",
+      },
+      {
+        type: "p",
+        text: "The architecture covers the hotel (rooms, amenities, gastronomy, location and parking, benefits for families, special offers), event spaces, the restaurant, contact and a booking flow, supported by logo, style guide, components and assets pages.",
+      },
+      { type: "h", text: "Booking an event space" },
+      {
+        type: "p",
+        text: "Events were the part of the old site that asked the most of visitors. The conference pages showed a static floor plan image, a long table of capacities for every layout, and an email address and phone number for requests.",
+      },
+      { type: "images", items: [AB_OLD_HOME, AB_OLD_CONFERENCE] },
+      {
+        type: "p",
+        text: "The new Event Spaces page opens with what a planner needs first: 14 spaces for 10 to 280 people, from 27 to 400 m², and the kinds of events they host. Every room is a card with its capacity and size, a floor-plan map highlights the room you pick, and a filter for guests and layout (cinema, parliament, U shape, block, banquet or a circle of chairs) narrows the list. Getting a quote or booking a space is one click from there, and the technology included in each room sits on the same page.",
+      },
+      { type: "images", items: [AB_EVENT_SPACES] },
+      {
+        type: "p",
+        text: "The room booking flow follows the same system, from room and rate selection to extras, guest details, payment and a confirmation page.",
       },
     ],
   },
@@ -349,28 +443,19 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "abacus",
+    slug: "vendor-registry",
     year: 2026,
-    employer: { label: "Freelance" },
-    client: "Abacus Tierpark Hotel",
-    url: "https://www.abacus-hotel.de/en",
-    description: "A website redesign for a Berlin hotel next to Tierpark, with booking up front.",
-    teaser: "Before and after: a home page that leads with the park and a one-line booking bar",
-    image: ABACUS,
+    employer: CB,
+    client: "Vendor Registry Portal",
+    description: "The Vendor Registry Portal, one of Coverbase's finished product areas.",
+    teaser: "A finished portal design, dated September 2026",
+    image: VENDOR_REGISTRY_COVER,
     story: [
-      { type: "images", items: [ABACUS] },
+      { type: "images", items: [VENDOR_REGISTRY_COVER] },
+      { type: "p", text: CB_NOTE },
       {
         type: "p",
-        text: "A website redesign for a hotel next to Tierpark Berlin, designed through Cresco. I led and executed it end to end, and the new site is live at abacus-hotel.de.",
-      },
-      { type: "h", text: "Where Berlin slows down" },
-      {
-        type: "p",
-        text: "The hero sets an aerial park view behind the logo and a serif italic headline, with a compact booking bar for dates, guests and reserve, and a link to location and parking. The home page is shown as a before-and-after pair, with alternative headline treatments and a responsive version at 400 px.",
-      },
-      {
-        type: "p",
-        text: "The architecture covers the hotel (rooms, amenities, gastronomy, location and parking, benefits for families, special offers), event spaces, the restaurant, contact and a booking flow, supported by logo, style guide, components and assets pages.",
+        text: "The Vendor Registry Portal is one of the product areas I marked as finished design, with a cover dated September 2026.",
       },
     ],
   },
@@ -392,23 +477,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "vendor-registry",
-    year: 2026,
-    employer: CB,
-    client: "Vendor Registry Portal",
-    description: "The Vendor Registry Portal, one of Coverbase's finished product areas.",
-    teaser: "A finished portal design, dated September 2026",
-    image: VENDOR_REGISTRY_COVER,
-    story: [
-      { type: "images", items: [VENDOR_REGISTRY_COVER] },
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "The Vendor Registry Portal is one of the product areas I marked as finished design, with a cover dated September 2026.",
-      },
-    ],
-  },
-  {
     slug: "radar",
     year: 2026,
     employer: CB,
@@ -424,64 +492,59 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "cencora-audit",
+    slug: "coverbase-brand-marketing",
     year: 2026,
     employer: CB,
-    client: "Cencora workflow audit",
-    description: "A design audit of a customer's workflow, with dashboard and configuration studies.",
-    teaser: "A customer workflow audit, with dashboard and configuration architecture studies",
-    image: CENCORA_AUDIT_COVER,
+    client: "Brand and marketing website",
+    description: "Coverbase's marketing website, campaign assets and a private page for its Customer Advisory Board.",
+    teaser: "Website v3, case studies, a lead-magnet report and a code-gated advisory board page",
+    image: COVERBASE_WEBSITE_COVER,
+    wide: true,
+    pairNext: true,
     story: [
-      { type: "images", items: [CENCORA_AUDIT_COVER] },
+      { type: "images", items: [COVERBASE_WEBSITE_COVER, CAB_SITE_COVER] },
       { type: "p", text: CB_NOTE },
       {
         type: "p",
-        text: "The Cencora Workflow design audit sits in the Design Audit folder next to a dashboard architecture study and a configuration architecture board. The cover is dated June 2026.",
+        text: "I designed Coverbase's brand and marketing updates on top of the Coverbase V2 Brand library: Marketing Website v3, a case-study template and its redesign, a changelog, and marketing assets for social posts, email templates, a one-pager, a sales deck, print material and a lead-magnet report on third-party risk management in the age of AI.",
+      },
+      {
+        type: "p",
+        text: "For the Customer Advisory Board meeting in April 2026, I designed a private landing page. The prototype opens on a code-gated entry screen over a full-bleed photo, with the meeting title and date beside a four-digit code input.",
       },
     ],
   },
   {
-    slug: "cab-site",
+    slug: "neon-wood",
     year: 2026,
-    employer: CB,
-    client: "Customer Advisory Board",
-    description: "A code-gated landing page for Coverbase's Customer Advisory Board meeting.",
-    teaser: "A private entry screen: meeting title, date and a four-digit code over a full-bleed photo",
-    image: CAB_SITE_COVER,
+    employer: { label: "Freelance" },
+    client: "Neon Wood",
+    url: "https://neonwood.com/",
+    description: "A website for furnished apartments and community spaces in four German cities.",
+    teaser: "One floating card for location, apartment type and all-inclusive rent, right in the hero",
+    image: NEON,
+    coverVideo: { src: "/media/neonwood-cover.mp4", poster: "/media/neonwood-cover.webp", width: 1080, height: 1080 },
     story: [
-      { type: "images", items: [CAB_SITE_COVER] },
-      { type: "p", text: CB_NOTE },
+      { type: "images", items: [NEON] },
       {
         type: "p",
-        text: "A landing page for the Customer Advisory Board meeting in April 2026. The prototype opens on a code-gated entry screen over a full-bleed photo, with the meeting title and date beside a four-digit code input.",
+        text: "Neon Wood rents furnished apartments and community spaces in Berlin, Cologne, Frankfurt and Tübingen. I designed the website through Cresco, a Berlin studio, and led and executed it end to end. It is live at neonwood.com.",
+      },
+      { type: "h", text: "The decision on top of the photo" },
+      {
+        type: "p",
+        text: "The home hero puts the decision on a full-bleed photo. A floating card switches between apartments and community spaces, picks a location and an apartment type with its all-inclusive monthly rent, and offers two actions: book a visit or rent an apartment.",
+      },
+      { type: "h", text: "A whole site, not a home page" },
+      {
+        type: "p",
+        text: "The site maps out location and building pages, a city overview, room categories and types, promotions, pricing, partners, events, sustainable living, an app page, a page for parents, a blog, about, contact and legal pages, with mobile layouts at 430 px for the key pages. Each review got its own dated design round, from March to July 2026, next to a logo, a style guide, illustrations and a sitemap.",
       },
     ],
   },
-  {
-    slug: "spice-ai-website",
-    year: 2026,
-    employer: { label: "Spice AI" },
-    client: "Website and design system",
-    description: "The Spice AI website, its design system and media kit.",
-    teaser: "One system behind the website, the design system and the media kit",
-    image: SPICE_AI_WEBSITE_COVER,
-    story: [
-      { type: "images", items: [SPICE_AI_WEBSITE_COVER] },
-      {
-        type: "p",
-        text: "Spice AI builds an open-source runtime that gives developers one SQL interface to query and accelerate data from databases, warehouses and lakes. I started working with them through Toptal and continued as a part-time client.",
-      },
-      {
-        type: "p",
-        text: "The Spice AI folder holds the website design from February 2026, the Spice AI design system and a media kit, with the old website kept for comparison.",
-      },
-    ],
-  },
-
-  // ---------- 2025 ----------
   {
     slug: "statements",
-    year: 2025,
+    year: 2026,
     employer: ML,
     client: "Statements",
     description: "One place for vendors selling to Mercado Libre to track every payment and invoice.",
@@ -507,7 +570,7 @@ export const projects: Project[] = [
       { type: "h", text: "My role" },
       {
         type: "p",
-        text: "As UX Technical Lead for First Party, I led the project and did all of the design execution, from the brief and research through the final screens and the handoff in October 2025, working with the product manager and the engineering lead.",
+        text: "As UX Technical Lead for First Party, I led the project and did all of the design execution, from the brief and research through the final screens and the handoff, which started in October 2025 and ran into January 2026, working with the product manager and the engineering lead.",
       },
       { type: "h", text: "Integrate, don’t replace" },
       {
@@ -564,6 +627,45 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "cencora-audit",
+    year: 2026,
+    employer: CB,
+    client: "Cencora workflow audit",
+    description: "A design audit of a customer's workflow, with dashboard and configuration studies.",
+    teaser: "A customer workflow audit, with dashboard and configuration architecture studies",
+    image: CENCORA_AUDIT_COVER,
+    story: [
+      { type: "images", items: [CENCORA_AUDIT_COVER] },
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "The Cencora Workflow design audit sits in the Design Audit folder next to a dashboard architecture study and a configuration architecture board. The cover is dated June 2026.",
+      },
+    ],
+  },
+  {
+    slug: "spice-ai-website",
+    year: 2026,
+    employer: { label: "Spice AI" },
+    client: "Website and design system",
+    description: "The Spice AI website, its design system and media kit.",
+    teaser: "One system behind the website, the design system and the media kit",
+    image: SPICE_AI_WEBSITE_COVER,
+    story: [
+      { type: "images", items: [SPICE_AI_WEBSITE_COVER] },
+      {
+        type: "p",
+        text: "Spice AI builds an open-source runtime that gives developers one SQL interface to query and accelerate data from databases, warehouses and lakes. I started working with them through Toptal and continued as a part-time client.",
+      },
+      {
+        type: "p",
+        text: "The Spice AI folder holds the website design from February 2026, the Spice AI design system and a media kit, with the old website kept for comparison.",
+      },
+    ],
+  },
+
+  // ---------- 2025 ----------
   {
     slug: "motion",
     year: 2025,
@@ -719,40 +821,6 @@ export const projects: Project[] = [
       { type: "p", text: "Inspect v2 and Zero Touch v2 are both marked finished design work." },
     ],
   },
-  {
-    slug: "coverbase-design-system",
-    year: 2025, // estimate
-    employer: CB,
-    client: "V2 Brand and UI Library",
-    description: "The design system Coverbase's product and marketing share.",
-    teaser: "One brand library and one UI library for product and marketing",
-    image: COVERBASE_DESIGN_SYSTEM_COVER,
-    story: [
-      { type: "images", items: [COVERBASE_DESIGN_SYSTEM_COVER] },
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "I built the design system shared by product and marketing as two published libraries: Coverbase V2 Brand and Coverbase V2 UI Library.",
-      },
-    ],
-  },
-  {
-    slug: "coverbase-website",
-    year: 2025, // estimate
-    employer: CB,
-    client: "Marketing website",
-    description: "Coverbase's marketing website, case studies, changelog and campaign assets.",
-    teaser: "Website v3, case studies and a lead-magnet report on third-party risk in the age of AI",
-    image: COVERBASE_WEBSITE_COVER,
-    story: [
-      { type: "images", items: [COVERBASE_WEBSITE_COVER] },
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "Marketing Website v3, a case-study template and its redesign, a changelog, and marketing assets for social posts, email templates, a one-pager, a sales deck, print material and a lead-magnet report on third-party risk management in the age of AI.",
-      },
-    ],
-  },
 
   // ---------- 2024 ----------
   {
@@ -780,20 +848,6 @@ export const projects: Project[] = [
       {
         type: "p",
         text: "Every First Party tool handled 403, 404, 500, offline and mobile errors differently, from unstyled browser pages to mismatched illustrations. The work documented the most frequent errors, wrote guidance for each type, and got First Party teams to adopt the standard illustrations and wordings, aligned with the front-end technical lead so it could ship as a pattern.",
-      },
-    ],
-  },
-  {
-    slug: "screen-objectives",
-    year: 2024,
-    employer: ML,
-    client: "Screen objectives",
-    description: "A working method that ties every screen to a business and communication objective.",
-    teaser: "Templates, guidelines and an AI prompt that checks whether an objective is well written",
-    story: [
-      {
-        type: "p",
-        text: "A method for the team rather than a screen: guidelines with do's and don'ts, a template that breaks business objectives down into experience, communication and screen objectives, and an AI prompt that checks whether an experience objective is well written. Figma components attach the objectives to every screen; Statements uses them throughout.",
       },
     ],
   },
@@ -830,6 +884,52 @@ export const projects: Project[] = [
     ],
   },
 
+  {
+    slug: "atlas",
+    year: 2024,
+    employer: TT,
+    client: "Atlas",
+    description: "Scope and quote home service jobs remotely, from a phone scan.",
+    teaser: "Scope a job from a phone scan, not a site visit",
+    image: ATLAS_COVER,
+    coverVideo: { src: "/media/atlas-cover.mp4", poster: "/media/atlas-cover.webp", width: 1600, height: 1600, fill: true },
+    story: [
+      { type: "images", items: [ATLAS_COVER, ATLAS_3D_SCAN] },
+      { type: "p", text: TT_NOTE },
+      {
+        type: "p",
+        text: "Atlas built tools for home service businesses to scope and quote projects remotely. Instead of driving out to measure a room, a contractor asks the client to scan it with their phone, and Atlas turns the scan into a 3D model the team can quote from. I was its founding designer: I designed the first and second versions, the design system behind them, the prototypes and the product's visual assets.",
+      },
+      { type: "h", text: "A scan anyone can get right" },
+      {
+        type: "p",
+        text: "The whole product depends on a good capture from someone who has never done one. So the client app teaches before it asks: a short, playful tutorial covers how to move through the room, loop around it and keep the walls in frame, then the camera takes over. Clients can send a full scan or single photos, and they hear back when the 3D model is ready. I also helped film the onboarding videos, and appear in them.",
+      },
+      { type: "images", items: [ATLAS_ONBOARDING] },
+      { type: "images", items: [ATLAS_CAPTURE] },
+      { type: "h", text: "One workspace for the contractor" },
+      {
+        type: "p",
+        text: "On the other side, contractors work from a dashboard of projects in progress, recent calls, completed scans and conversion through each stage of the funnel. Each project brings the client, the call history and everything known about the property into one place: climate trends, property history, utility info and the 3D scan.",
+      },
+      { type: "images", items: [ATLAS_DASHBOARD, ATLAS_PROJECT] },
+      {
+        type: "p",
+        text: "A line-illustration style carries the brand through the product, from sign-in to empty states.",
+      },
+      { type: "images", items: [ATLAS_LOGIN, ATLAS_CALLS_EMPTY] },
+      { type: "h", text: "A system the frontend could read" },
+      {
+        type: "p",
+        text: "I built the design system in the same language as our frontend developer's components, so a handoff mapped straight to code. That kept implementation fast and simple through both versions.",
+      },
+      { type: "h", text: "Where it ended" },
+      {
+        type: "p",
+        text: "Atlas was later wound down. It remains one of the most fun projects I've worked on: computer vision, construction and a product that had to work for people holding a phone in their garage.",
+      },
+    ],
+  },
   // ---------- 2023 (estimates) ----------
   {
     slug: "charmed",
@@ -849,36 +949,50 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "atlas",
-    year: 2023, // estimate
-    employer: TT,
-    client: "Atlas",
-    description: "One product organized around three roles: contractors, clients and admins.",
-    teaser: "Designing one product for three kinds of users",
-    image: ATLAS_COVER,
-    story: [
-      { type: "images", items: [ATLAS_COVER] },
-      { type: "p", text: TT_NOTE },
-      {
-        type: "p",
-        text: "The pilot handoff has passwordless and password sign-in, capture, profile and subscription, a contractor area for projects and clients, a client area for captures, and an admin area for projects, clients, team, lead capture and measurement requests, followed by an MVP handoff and a Scenarios AI file.",
-      },
-    ],
-  },
-  {
     slug: "augmend",
-    year: 2023, // estimate
+    year: 2023, // estimate: the files date from 2022 to 2023
     employer: TT,
     client: "Augmend",
-    description: "Product, design system and landing page for Augmend.",
-    teaser: "From a demo prototype to brand, pitch and landing page",
+    description: "A real-time incident workspace for dev teams, with an AI assistant.",
+    teaser: "Fix incidents together, with AI that remembers",
     image: AUGMEND_COVER,
     story: [
-      { type: "images", items: [AUGMEND_COVER] },
+      { type: "images", items: [AUGMEND_COVER, AUGMEND_LANDING] },
       { type: "p", text: TT_NOTE },
       {
         type: "p",
-        text: "Seven files: the product with a demo prototype, the Augmend design system, a landing page with desktop mockups, plus brand, pitch, emails and flows.",
+        text: "Augmend was a Seattle-based dev tools startup building a new way to manage incidents: a shared space where engineers track and mitigate a problem in real time. It was built to be transparent, so clients and stakeholders could follow the progress, with AI support to guide the team and prevent bad outcomes. I joined as the Product Designer and helped shape the product vision from scratch.",
+      },
+      { type: "h", text: "A pitch built on one idea" },
+      {
+        type: "p",
+        text: "The founding idea fit in a sentence: reduce the collaboration tax and augment what the team knows with AI. I designed the pitch deck the founders used to raise capital, and it framed the product as a multiplayer workspace, Figma meets Copilot, rebuilt for devops.",
+      },
+      { type: "images", items: [AUGMEND_PITCH_PURPOSE, AUGMEND_PITCH_SOLUTION] },
+      { type: "h", text: "Prototypes first, then the MVP" },
+      {
+        type: "p",
+        text: "Before committing to a build, the founder and CEO and I co-created prototypes and took them into customer conversations to validate the experience. Then I designed the MVP: a canvas where everyone brings their own tools, dashboards, terminals and logs, and works side by side, with every step recorded so the team keeps the context.",
+      },
+      { type: "images", items: [AUGMEND_WORKSPACE] },
+      { type: "images", items: [AUGMEND_SIGNUP, AUGMEND_EMPTY] },
+      { type: "images", items: [AUGMEND_CLIENT, AUGMEND_WAITLIST] },
+      { type: "h", text: "A brand for developers" },
+      {
+        type: "p",
+        text: "I designed the brand too: the A mark and wordmark, a dark interface with a lime accent, and a playful illustration style with teammates' cursors that runs from the product to the landing page.",
+      },
+      { type: "images", items: [AUGMEND_LOGO, AUGMEND_COLORS] },
+      { type: "h", text: "Landing page and emails" },
+      {
+        type: "p",
+        text: "The landing page invited teams to join the waitlist for the private beta, and a few emails carried the same voice: the beta confirmation, a newsletter for new articles and the team invitation.",
+      },
+      { type: "images", items: [AUGMEND_EMAIL_BETA, AUGMEND_EMAIL_ARTICLE, AUGMEND_EMAIL_INVITE] },
+      { type: "h", text: "My role" },
+      {
+        type: "p",
+        text: "I was the Product Designer (UX/UI) from the start. I designed the MVP, the brand, the landing page, the emails and the pitch deck, and co-created the prototypes we used to validate the experience with customers.",
       },
     ],
   },
@@ -887,96 +1001,102 @@ export const projects: Project[] = [
     year: 2023, // estimate
     employer: { label: "Founder" },
     client: "Swippr",
-    description: "A product I founded, took to production and sold.",
-    teaser: "From MVP to a B2B line with its own admin, design system and sales deck",
+    description: "A hiring startup I co-founded, with AI matching and swipe-to-apply.",
+    teaser: "Swipe right on a job, with AI doing the matching",
     image: SWIPPR_COVER,
-    carousel: ["pricing", "pitch", "social", "b2b-clients", "b2b-login"].map((n) => `/images/carousel/swippr/${n}.webp`),
+    carousel: ["swipe-card", "pricing", "pitch", "social", "post-job", "talent-profile", "b2b-hero", "one-pager", "b2b-login"].map((n) => `/images/carousel/swippr/${n}.webp`),
     story: [
-      { type: "images", items: [SWIPPR_COVER] },
+      { type: "images", items: [SWIPPR_COVER, SWIPPR_SWIPE_CARD] },
       {
         type: "p",
-        text: "Swippr is a product I founded. It went into production and made sales. The record spans an MVP, a second release, white-label websites, then a B2B line with an admin, a design system, landing pages, branding, a one-pager, a sales deck and a pitch, after strategy work on goals, prioritization, information architecture, customer journeys and benchmarks.",
+        text: "Swippr was a hiring startup I co-founded with two partners. At the time, few products used AI to match candidates with companies, and applying for a job still meant long forms. Swippr matched both sides on what they cared about, and let candidates apply with a swipe.",
       },
-      { type: "h", text: "The B2B admin" },
+      { type: "h", text: "A job you can judge in 30 seconds" },
       {
         type: "p",
-        text: "The B2B line came with its own admin for the team placing talent: a sign-in, then a list of client companies with their open positions, where the team can open a client or add a position.",
+        text: "Every job card leads with location, salary, benefits and a compatibility score based on the candidate's own preferences, so a role can be judged in under 30 seconds. Swipe left, swipe right, or Super Swipp to stand out. Details only open when a role earns the attention. A match leads straight to a chat with the recruiter and a slot for the first interview, and the app is free for candidates.",
       },
-      { type: "images", items: [SWIPPR_B2B_CLIENTS, SWIPPR_B2B_LOGIN] },
+      { type: "images", items: [SWIPPR_SOCIAL, SWIPPR_PITCH] },
+      { type: "images", items: [SWIPPR_PRICING] },
+      { type: "h", text: "From a candidate app to a B2B service" },
+      {
+        type: "p",
+        text: "We built the app and got early validation from users and customers. A marketplace needs both sides at once, so to gain traction we moved to a B2B model: we helped three companies find talent, ran those searches through our own admin, and used each one to learn and improve the product.",
+      },
+      {
+        type: "p",
+        text: "A company could post a role in one screen: who they need, seniority, English level, the countries to search, the work mode, skills and a salary range. On our side, every talent had a profile we could match and assign to a position.",
+      },
+      { type: "images", items: [SWIPPR_POST_JOB, SWIPPR_TALENT] },
+      {
+        type: "p",
+        text: "The B2B offer needed its own voice, so I designed a nearshoring landing page and a sales one-pager that explained the service and the platform behind it.",
+      },
+      { type: "images", items: [SWIPPR_B2B_HERO, SWIPPR_B2B_PROCESS] },
+      { type: "images", items: [SWIPPR_ONE_PAGER, SWIPPR_B2B_LOGIN] },
+      { type: "h", text: "My role" },
+      {
+        type: "p",
+        text: "As one of three founders, I designed the brand, the candidate app, the B2B admin, the landing pages and the marketing and sales assets. I also worked directly with our early partners and users, and made many of the product and business decisions.",
+      },
+      { type: "h", text: "Where it ended" },
+      {
+        type: "p",
+        text: "Distribution was the hardest part: reaching enough companies and candidates at the same time. After those first three companies, we decided to stop.",
+      },
     ],
   },
 
   // ---------- 2022 ----------
   {
-    slug: "nomicol",
+    slug: "nomicol-docucol",
     year: 2022,
     employer: RV,
-    client: "Nomicol",
-    description: "A payroll platform that moves small businesses off spreadsheets.",
-    teaser: "14 interviews, two sprints, and a payroll summary managers can read at a glance",
-    image: NOMICOL_COVER,
+    client: "Nomicol and Docucol",
+    description: "Payroll and contracts for small businesses in Colombia, without an accountant or a lawyer for every task.",
+    teaser: "Payroll in minutes, not days, and contracts from template to signature",
+    image: NOMICOL_DOCUCOL_COVER,
     story: [
-      { type: "images", items: [NOMICOL_COVER] },
+      { type: "images", items: [NOMICOL_DOCUCOL_COVER, DOCUCOL_HERO] },
       { type: "p", text: RV_NOTE },
       {
         type: "p",
-        text: "Nomicol helps small businesses move payroll off spreadsheets. Businesses register employees and keep a history of payment periods; managers update each period with overtime, deductions and other payments, and employees see the status of their next payment in real time.",
+        text: "Two products for the same customer: small businesses in Colombia that do their own admin. Nomicol runs payroll and Docucol handles contracts, and they share one family of marks, colours and devices.",
+      },
+      { type: "h", text: "Nomicol: payroll in minutes, not days" },
+      {
+        type: "p",
+        text: "92% of companies in Colombia have fewer than 20 employees, and most have no accounting or HR team. They run payroll by hand, which makes mistakes likely and can end in fines from government agencies.",
       },
       {
         type: "p",
-        text: "As UX lead I ran the process from start to finish: research over two sprints with 14 interviews, a benchmark and desk research, information architecture, interaction design, prototypes, the first release of the platform and the employee mobile app, and usability testing.",
+        text: "As UX lead I ran two research sprints over four weeks, with 14 interviews with accountants, business owners, department leads and employees, plus a benchmark and desk research. The interviews showed why existing payroll tools didn't help: their calculations weren't always right, they took a long time to learn, support was slow, and payslips didn't explain what employees cared about.",
       },
-    ],
-  },
-  {
-    slug: "docucol",
-    year: 2022,
-    employer: RV,
-    client: "Docucol",
-    description: "Contract lifecycle management: templates, digital signatures and reminders.",
-    teaser: "From template to signed contract, with reviewers, reminders and expiration dates",
-    image: DOCUCOL_COVER,
-    story: [
-      { type: "images", items: [DOCUCOL_COVER] },
-      { type: "p", text: RV_NOTE },
       {
         type: "p",
-        text: "Docucol lets people and companies create contracts from templates, invite others to review or sign digitally, add reminders and expiration dates, and organize documents in folders. I led the process from research and information architecture to user flows, wireframes and high-fidelity prototypes.",
+        text: "So Nomicol had to be quick to learn and show its work. Businesses register their employees once and keep a history of every period and report. Managers update a period with overtime, deductions and other payments, and see at a glance which payrolls were accepted, rejected or flagged. Employees follow their next payment in real time from a mobile app. The landing page makes the same promise: payroll in minutes, not days.",
       },
-    ],
-  },
-  {
-    slug: "sweat-440",
-    year: 2022,
-    employer: RV,
-    client: "Sweat 440",
-    description: "A TV interface redesign and admin portal for a HIIT gym chain.",
-    teaser: "Four stations, 40 minutes: redesigning the screens that guide every class",
-    image: SWEAT_440_COVER,
-    story: [
-      { type: "images", items: [SWEAT_440_COVER] },
-      { type: "p", text: RV_NOTE },
+      { type: "images", items: [NOMICOL_LANDING, NOMICOL_BLOG] },
       {
         type: "p",
-        text: "Sweat 440 runs 40-minute sessions split into four 10-minute stations, each guided by TV screens. I redesigned the TV interface, with the exercise video, station count and countdown, and designed an admin portal to create and edit training sessions.",
+        text: "We launched the first version of the platform and the employee app, then ran usability tests to decide what came next. Behind it are more than 120 organization screens across 16 task flows, 10 employee screens across 4 flows, and a design system with its own colours, Poppins type scale, components, icons, illustrations and empty states.",
       },
-    ],
-  },
-  {
-    slug: "allthenticate",
-    year: 2022,
-    employer: RV,
-    client: "Allthenticate",
-    description: "Dashboard, groups and permissions for an authentication startup.",
-    teaser: "Dashboard, groups and permissions, on web and mobile",
-    image: ALLTHENTICATE_COVER,
-    story: [
-      { type: "images", items: [ALLTHENTICATE_COVER] },
-      { type: "p", text: RV_NOTE },
+      { type: "images", items: [NOMICOL_DS] },
+      { type: "h", text: "Docucol: from template to signed contract" },
       {
         type: "p",
-        text: "An authentication startup's dashboard, groups and permissions management, and mobile screens.",
+        text: "When people or companies need a contract, however simple, they usually go to a lawyer. That is expensive, and often more than the document needs. Docucol lets them create contracts from templates, invite others to review or sign digitally, add reminders and expiration dates, and keep everything organized in folders.",
       },
+      {
+        type: "p",
+        text: "I benchmarked six competitors across document creation, templates, digital signatures, invitations, reminders, expiration dates, file management, watermarks, collaboration, help and onboarding, and summed it up in a SWOT. Three things shaped the design. Template creation was the most complex part and tended to get cluttered. Onboarding and tutorials were crucial. And creating a document had to be easy to reach, with a clear sequence.",
+      },
+      {
+        type: "p",
+        text: "So onboarding teaches before it asks: a short carousel explains templates, then helps you create your digital signature by drawing it or uploading a file. Creating a document is always one button away, and organizations can add their own watermark from settings. The work covered more than 120 organization screens across 16 task flows, and 8 guest screens across 4 flows for people invited to sign.",
+      },
+      { type: "images", items: [DOCUCOL_LOGIN, DOCUCOL_TEMPLATES] },
+      { type: "images", items: [DOCUCOL_SIGNATURE, DOCUCOL_WATERMARK] },
     ],
   },
   {
@@ -984,13 +1104,59 @@ export const projects: Project[] = [
     year: 2022,
     employer: RV,
     client: "BFF (Best Friend Famoso)",
-    description: "An app that connects celebrities with their fans.",
-    teaser: "A client web app and design system that connect celebrities and fans",
+    description: "An app where Latin American fans book personal videos and messages from their favourite celebrities.",
+    teaser: "A fan app, a celebrity app, a landing page and an admin dashboard on one design system",
     image: BFF_COVER,
     story: [
-      { type: "images", items: [BFF_COVER] },
+      { type: "images", items: [BFF_COVER, BFF_MOCKUPS] },
       { type: "p", text: RV_NOTE },
-      { type: "p", text: "An app connecting celebrities with their fans, with a client web app and a design system." },
+      {
+        type: "p",
+        text: "BFF (Best Friend Famoso) is an app where fans find Latin American celebrities they admire, from actors and singers to comedians, influencers and content creators, and ask them for something personal: a custom video, a serenade, or a like, comment or follow on social media. Fans can request it for themselves or as a gift, businesses can book special services, and celebrities can apply to join and manage their requests in their own app.",
+      },
+      { type: "h", text: "Fans were willing to pay, but rarely got noticed" },
+      {
+        type: "p",
+        text: "In Colombia, fans tried to reach celebrities through social media and ask for a personal message or video. Many were willing to pay for it, but they were unlikely to get an answer. Celebrities, on their side, couldn't keep their audience happy and were missing an extra source of income.",
+      },
+      {
+        type: "p",
+        text: "I led the design from start to end. I helped run the user research, designed the information architecture and the interactions, and we launched the first versions of the fan app, the celebrity app, a landing page and an admin dashboard. After launch we ran usability tests and used them to prioritise the next releases.",
+      },
+      {
+        type: "p",
+        text: "Both sides had to win. For fans, contacting a celebrity had to be fast and simple, a request had to feel personal, and they had to know where it stood. For celebrities, creating and managing a profile and answering requests had to be easy.",
+      },
+      { type: "h", text: "The fan app" },
+      {
+        type: "p",
+        text: "Fans browse celebrities by category and by occasion (birthdays, love, celebrations, special dates), see every service with its price upfront, and send a request in three steps: what they want, their account, and payment.",
+      },
+      { type: "images", items: [BFF_CLIENT] },
+      { type: "h", text: "The celebrity app" },
+      {
+        type: "p",
+        text: "Celebrities see their pending, completed and cancelled requests, search them by ID or client, and filter them by service. Each request opens with who it is for, the fan's instructions and the price, so they can record their answer or reject it from the same screen.",
+      },
+      { type: "images", items: [BFF_CELEBRITY] },
+      { type: "h", text: "Landing page and admin dashboard" },
+      {
+        type: "p",
+        text: "The landing page introduces BFF to fans, walks them through a request step by step, and links to apply as a celebrity. The admin dashboard lets the BFF team manage requests, payments, celebrities, clients and admins, and the catalogue of categories, services and occasions. Each celebrity's monthly payout shows what was billed and what they receive after the manager, BFF and payment-gateway fees.",
+      },
+      { type: "images", items: [BFF_LANDING_HERO, BFF_LANDING_STEPS] },
+      { type: "images", items: [BFF_DASHBOARD] },
+      { type: "h", text: "One system for four products" },
+      {
+        type: "p",
+        text: "A shared design system kept the four products consistent: a bold palette of primary, secondary and tertiary colours, Archivo Expanded for headlines and Helios Antique for text, service, occasion and request cards, inputs, buttons, notifications, and a set of icons and illustrations.",
+      },
+      { type: "images", items: [BFF_DESIGN_SYSTEM] },
+      { type: "h", text: "Results" },
+      {
+        type: "p",
+        text: "On the main tasks, finding celebrities and requesting services, fans had a 95% success rate and a 91% satisfaction score. Celebrities rated the app 97.5% CSAT on average across all tasks and described it as easy to use, valuable and helpful. Cancelling a request was the hardest part for users, so it went into the next release.",
+      },
     ],
   },
   {
@@ -998,18 +1164,38 @@ export const projects: Project[] = [
     year: 2022,
     employer: { label: "Personal" },
     client: "Check Mig",
-    description: "A redesign of Colombia's migration form, to spend less time at the desk.",
-    teaser: "Tree testing, task flows and usability tests for a form every traveler fills",
+    description: "A redesign of Colombia's pre-travel migration form that cut the time to complete it from 12 minutes to 3.",
+    teaser: "The same migration form, from 12 minutes to 3",
     image: CHECK_MIG_COVER,
     story: [
-      { type: "images", items: [CHECK_MIG_COVER] },
+      { type: "images", items: [CHECK_MIG_COVER, CHECK_MIG_FLOW] },
       {
         type: "p",
-        text: "A personal redesign concept, not the live government service: the form travelers fill out before entering or leaving Colombia, so they can preload trip details and spend less time at immigration.",
+        text: "A personal redesign, not the live government service. Check-Mig is the form people fill in before they enter or leave Colombia, so they can preload their trip and spend less time at the immigration desk. Users complete it for themselves and the people they travel with, then look up and download their certificate.",
+      },
+      { type: "h", text: "A form you can't skip" },
+      {
+        type: "p",
+        text: "Travelers already have a long list of things to do before an international trip, and this form is long. It also isn't optional: without it, they can't travel. The service gets about 2.4 million visits a month, two thirds of them from Colombians, and the Android app had more than 100,000 downloads with a 2.4-star rating.",
       },
       {
         type: "p",
-        text: "Travelers complete the registration for themselves and their companions, choose how they travel, and download the resulting certificate. The goal was less time on task and a higher success rate. I ran research, personas, information architecture validated with tree testing, wireframes, a design system, motion and usability testing.",
+        text: "I ran the whole process myself: five interviews with people who had traveled abroad, analytics and desk research, personas and a customer journey, a revised site map validated with tree testing, task flows, wireframes, a design system, motion and usability testing. The interviews explained the rating. The main task took 12 minutes on average, people didn't understand the order of the form, and the system didn't tell them what was happening.",
+      },
+      { type: "h", text: "One clear path, one step at a time" },
+      {
+        type: "p",
+        text: "The home page now offers two doors: complete your registration, or look up and download it. The form splits into three steps (trip direction, flight details, passengers) with progress always visible on the left. Choices like the direction of travel and the means of transport are large cards with an icon, not dropdowns. The certificate comes back laid out like a ticket, with the traveler, flight, date and route, and a single button to download the PDF.",
+      },
+      {
+        type: "p",
+        text: "A small design system kept it consistent: a calm teal and green palette, a type scale, a 12-column grid, spacing, buttons with loading states, inputs with clear error and success states, icons and cards.",
+      },
+      { type: "images", items: [CHECK_MIG_DS] },
+      { type: "h", text: "Results" },
+      {
+        type: "p",
+        text: "I tested the clickable prototype with five users. All five completed the registration without problems, the average time dropped from 12 minutes to 3 (75% less), and users rated the experience 90% CSAT, calling it very friendly. The most common request was to save personal details for future trips.",
       },
     ],
   },

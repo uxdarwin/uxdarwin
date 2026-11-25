@@ -7,7 +7,7 @@ import { PageVideo } from "../../components/PageVideo";
 import { ImageCluster, type Slot } from "../../components/ImageCluster";
 import { ProjectMeta } from "../../components/ProjectMeta";
 import { Shell } from "../../components/Shell";
-import { getProject, projects } from "../../content/projects";
+import { getProject, projects, type Block, type Project, type ProjectImage } from "../../content/projects";
 import styles from "../../components/feed.module.css";
 
 // Two tilted images with a portrait clip on top between them (Darwin's Parque Caudal mock).
@@ -35,6 +35,8 @@ export default async function ProjectPage({ params }: Params) {
   const p = getProject((await params).slug);
   if (!p) notFound();
 
+  // Darwin's rule: the feed cover always appears in the page's first row of assets.
+  const story = withCover(p);
   let cluster = 0;
   return (
     <Shell page="project">
@@ -50,7 +52,7 @@ export default async function ProjectPage({ params }: Params) {
         <div className={styles.pageBody}>
           <ProjectMeta project={p} withUrl />
           <h1 className={styles.headline}>{p.description}</h1>
-          {p.story.map((b, i) => {
+          {story.map((b, i) => {
             if (b.type === "images")
               return <ImageCluster key={i} images={b.items} layout={b.layout} center={b.center} variant={cluster++} seed={`${p.slug}-${i}`} />;
             if (b.type === "mosaic") return p.mosaic ? <MotionMosaic key={i} clips={p.mosaic} size="page" /> : null;
@@ -74,4 +76,17 @@ export default async function ProjectPage({ params }: Params) {
       </article>
     </Shell>
   );
+}
+
+function withCover(p: Project): Block[] {
+  const cover: ProjectImage | undefined = p.coverVideo
+    ? { src: p.coverVideo.poster, video: p.coverVideo.src, alt: p.image?.alt ?? p.description, width: p.coverVideo.width, height: p.coverVideo.height }
+    : p.image;
+  const at = p.story.findIndex((b) => b.type !== "p" && b.type !== "h");
+  const first = p.story[at];
+  if (!cover || first?.type !== "images") return p.story;
+  if (first.items.some((it) => (it.video ?? it.src) === (cover.video ?? cover.src))) return p.story;
+  const story = [...p.story];
+  story[at] = { ...first, items: [cover, ...first.items], layout: undefined };
+  return story;
 }

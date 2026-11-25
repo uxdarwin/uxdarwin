@@ -54,17 +54,23 @@ function rowsOf(list: Project[], pool: MediaTile[]): Row[] {
     // A wide project takes two thirds of a row, beside a tall photo when one is left, else
     // beside the next card.
     if (list[i].wide) {
+      if (list[i].pairNext && list[i + 1] && !isCarousel(list[i + 1])) {
+        rows.push({ type: "wideMedia", projects: list.slice(i, (i += 2)) });
+        step++;
+        continue;
+      }
       const tile = left.narrow.shift();
       if (tile) rows.push({ type: rows.length % 2 ? "mediaWide" : "wideMedia", projects: [list[i++]], media: tile });
       else if (list[i + 1] && !isCarousel(list[i + 1])) rows.push({ type: "wideMedia", projects: list.slice(i, (i += 2)) });
       else rows.push({ type: "single", projects: [list[i++]] });
       continue;
     }
-    // Cards available before the next strip project.
+    // Cards available before the next strip or wide project.
     let room = 0;
-    while (i + room < list.length && !isCarousel(list[i + room])) room++;
+    while (i + room < list.length && !isCarousel(list[i + room]) && !list[i + room].wide) room++;
 
-    let type: RowType | null = null;
+    // Exactly two cards before a strip or wide project: keep them together.
+    let type: RowType | null = room === 2 ? "two" : null;
     for (let tries = 0; tries < PATTERN.length && !type; tries++, step++) {
       const t = PATTERN[step % PATTERN.length];
       const kind = MEDIA_KIND[t];
@@ -195,7 +201,7 @@ function CoverVideo({ video, label }: { video: NonNullable<Project["coverVideo"]
   return (
     <video
       ref={ref}
-      className={styles.coverVideo}
+      className={video.fill ? `${styles.coverVideo} ${styles.coverVideoFill}` : styles.coverVideo}
       src={video.src}
       poster={video.poster}
       width={video.width}
