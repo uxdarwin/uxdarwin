@@ -47,6 +47,8 @@ export type Project = {
   coverVideo?: { src: string; poster: string; width: number; height: number };
   /** A wide card: two thirds of a row, next to a tall photo when one is left. */
   wide?: boolean;
+  /** With wide: share the row with the next card instead of a photo. */
+  pairNext?: boolean;
   /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
   carousel?: string[];
   /** Four screen animations shown as a mosaic in the card, and by a "mosaic" block. */
@@ -131,6 +133,19 @@ const NEON = img(
   1000,
   564,
 );
+const AB = (n: string, alt: string, w: number, h: number) => img(`abacus-${n}.webp`, alt, w, h);
+const AB_VARIATIONS = AB("logo-variations", "Abacus logo: three new white variations on deep green beside the previous blue and gold logo", 1600, 1797);
+const AB_SHAPES = AB("shapes", "Six hotel photos with the curves of the rotunda, the lobby floor, the furniture and the spa traced in red", 1920, 1080);
+const AB_BUILDING = AB("building-colors", "Colour swatches sampled from the hotel's entrance, lobby, banquet hall, rooms, winter garden and spa", 2000, 1121);
+const AB_SURROUNDINGS = AB("surroundings", "The surroundings: Friedrichsfelde Palace and its gardens, giraffes, zebras and the Tierpark entrance", 2000, 1121);
+const AB_PRIMARY = AB("primary-colors", "Primary colours: Green 800, Blue 500, Blue 300, Beige 200 and Coral 400", 1800, 991);
+const AB_FONTS = AB("fonts", "Fonts: Brandon Grotesque for the logo, Geist Sans for the website", 1800, 991);
+const AB_LOGO_PALETTE = AB("logo-palette", "The new logo in white on Green 800 beside blue, light blue, beige and coral panels", 1920, 1080);
+const AB_LOGO_PHOTO = AB("logo-photo", "The logo in white on black, and as a translucent mark over a sunset with a giraffe in the circle", 1920, 1080);
+const AB_GIRAFFE = AB("logo-giraffe", "The logo with a giraffe's head looking out through the circle", 1200, 1392);
+const AB_OLD_HOME = AB("old-home", "The previous Abacus website: grey and blue panels, round photo crops and a blue and gold logo", 1200, 2329);
+const AB_OLD_CONFERENCE = AB("old-conference", "The previous conference rooms page: a static floor plan image and a request by email or phone", 1600, 1550);
+const AB_EVENT_SPACES = AB("event-spaces", "The new Event Spaces page: room cards with capacity and size, a guests and layout filter, and a floor-plan map", 1758, 1744);
 const ABACUS = img(
   "abacus.webp",
   "Abacus Tierpark Hotel home page: an aerial park view behind the headline and a compact booking bar",
@@ -142,7 +157,6 @@ const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: a rene
 const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River Vendor Registry Portal: a search for a meeting-transcription tool with approved, conditional and in-review results", 1600, 1000);
 const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: discovered SaaS apps, posture score and a list of inspections with their status", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
-const COVERBASE_DESIGN_SYSTEM_COVER = img("coverbase-design-system-cover.webp", "Coverbase UI Library 2026: the library cover beside color ramps and the button documentation", 1600, 1000);
 const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
 const RAINFOREST_KIDS_COVER = img("rainforest-kids-cover.webp", "Rainforest Foundation kids course: a sloth guide asks a fill-in-the-blank question about greenhouse gases", 1600, 1000);
 const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment results: score, controls evaluated and an analysis summary with strengths, weaknesses and actions", 1600, 1000);
@@ -287,8 +301,8 @@ export const projects: Project[] = [
     employer: { label: "Freelance" },
     client: "Abacus Tierpark Hotel",
     url: "https://www.abacus-hotel.de/en",
-    description: "A website redesign for a Berlin hotel next to Tierpark, with booking up front.",
-    teaser: "Before and after: a home page that leads with the park and a one-line booking bar",
+    description: "A brand refresh and website redesign for a Berlin hotel next to Tierpark.",
+    teaser: "A logo and palette drawn from the building and the park, and event spaces that are easy to book",
     image: ABACUS,
     coverVideo: { src: "/media/abacus-cover.mp4", poster: "/media/abacus-cover.webp", width: 1080, height: 1080 },
     story: [
@@ -297,6 +311,29 @@ export const projects: Project[] = [
         type: "p",
         text: "A website redesign for a hotel next to Tierpark Berlin, designed through Cresco. I led and executed it end to end, and the new site is live at abacus-hotel.de.",
       },
+      { type: "h", text: "A logo taken from the building" },
+      {
+        type: "p",
+        text: "I refreshed the logo too. The previous one was a blue and gold badge with a gradient, and its blue and grey site said nothing about the life around the hotel. I started from the building itself: the rotunda over the entrance, the curved lobby floor with the Abacus emblem set into it, the rounded furniture and the tiled curves of the spa. Those curves became the new mark, a rounded tag with a circle cut through it, drawn in a few variations.",
+      },
+      { type: "images", items: [AB_SHAPES, AB_VARIATIONS] },
+      {
+        type: "p",
+        text: "The logo palette comes from the same place. I sampled colours from photos of the entrance, the lobby, the banquet hall, the rooms, the winter garden and the spa: teal and petrol, forest green, warm beige, mustard and a deep red.",
+      },
+      { type: "images", items: [AB_BUILDING] },
+      { type: "h", text: "A brand that feels like the park" },
+      {
+        type: "p",
+        text: "The hotel sits next to Tierpark Berlin, Europe's largest landscape zoo, with Friedrichsfelde Palace and its gardens inside it. I wanted the brand to carry that: deep greens, open sky, sand and the warmth of the animals. The style guide sets five primary colours (Green 800, Blue 500, Blue 300, Beige 200 and Coral 400), each with a full ramp, plus light and dark transparency scales. Brandon Grotesque sets the logo and Geist Sans the website, so every page uses the same two fonts.",
+      },
+      { type: "images", items: [AB_SURROUNDINGS, AB_PRIMARY] },
+      { type: "images", items: [AB_LOGO_PALETTE, AB_FONTS] },
+      {
+        type: "p",
+        text: "The circle in the mark leaves room for the place to show through, from a sunset over the savanna to a giraffe looking out.",
+      },
+      { type: "images", items: [AB_LOGO_PHOTO, AB_GIRAFFE] },
       { type: "h", text: "Where Berlin slows down" },
       {
         type: "p",
@@ -305,6 +342,21 @@ export const projects: Project[] = [
       {
         type: "p",
         text: "The architecture covers the hotel (rooms, amenities, gastronomy, location and parking, benefits for families, special offers), event spaces, the restaurant, contact and a booking flow, supported by logo, style guide, components and assets pages.",
+      },
+      { type: "h", text: "Booking an event space" },
+      {
+        type: "p",
+        text: "Events were the part of the old site that asked the most of visitors. The conference pages showed a static floor plan image, a long table of capacities for every layout, and an email address and phone number for requests.",
+      },
+      { type: "images", items: [AB_OLD_HOME, AB_OLD_CONFERENCE] },
+      {
+        type: "p",
+        text: "The new Event Spaces page opens with what a planner needs first: 14 spaces for 10 to 280 people, from 27 to 400 m², and the kinds of events they host. Every room is a card with its capacity and size, a floor-plan map highlights the room you pick, and a filter for guests and layout (cinema, parliament, U shape, block, banquet or a circle of chairs) narrows the list. Getting a quote or booking a space is one click from there, and the technology included in each room sits on the same page.",
+      },
+      { type: "images", items: [AB_EVENT_SPACES] },
+      {
+        type: "p",
+        text: "The room booking flow follows the same system, from room and rate selection to extras, guest details, payment and a confirmation page.",
       },
     ],
   },
@@ -348,6 +400,78 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "vendor-registry",
+    year: 2026,
+    employer: CB,
+    client: "Vendor Registry Portal",
+    description: "The Vendor Registry Portal, one of Coverbase's finished product areas.",
+    teaser: "A finished portal design, dated September 2026",
+    image: VENDOR_REGISTRY_COVER,
+    story: [
+      { type: "images", items: [VENDOR_REGISTRY_COVER] },
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "The Vendor Registry Portal is one of the product areas I marked as finished design, with a cover dated September 2026.",
+      },
+    ],
+  },
+  {
+    slug: "contracts",
+    year: 2026,
+    employer: CB,
+    client: "Contracts",
+    description: "Contract management inside Coverbase's vendor-risk platform.",
+    teaser: "From a contracts area to clause-by-clause review with Contract Guardian",
+    image: CONTRACTS_COVER,
+    story: [
+      { type: "images", items: [CONTRACTS_COVER] },
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "Two finished files cover contract work: Contracts, with a cover dated September 2026, and Clause Review, Contract Guardian v1, which reviews contracts clause by clause.",
+      },
+    ],
+  },
+  {
+    slug: "radar",
+    year: 2026,
+    employer: CB,
+    client: "Radar",
+    description: "Radar, a Coverbase product surface redesigned through three versions.",
+    teaser: "Why Radar needed a v2 and then a v3 within a year",
+    story: [
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "Radar went through v2 and v3, both marked finished, with the v3 cover dated October 2026. The version numbers show the surface was redesigned more than once as the product grew.",
+      },
+    ],
+  },
+  {
+    slug: "coverbase-brand-marketing",
+    year: 2026,
+    employer: CB,
+    client: "Brand and marketing website",
+    description: "Coverbase's marketing website, campaign assets and a private page for its Customer Advisory Board.",
+    teaser: "Website v3, case studies, a lead-magnet report and a code-gated advisory board page",
+    image: COVERBASE_WEBSITE_COVER,
+    wide: true,
+    pairNext: true,
+    story: [
+      { type: "images", items: [COVERBASE_WEBSITE_COVER, CAB_SITE_COVER] },
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "I designed Coverbase's brand and marketing updates on top of the Coverbase V2 Brand library: Marketing Website v3, a case-study template and its redesign, a changelog, and marketing assets for social posts, email templates, a one-pager, a sales deck, print material and a lead-magnet report on third-party risk management in the age of AI.",
+      },
+      {
+        type: "p",
+        text: "For the Customer Advisory Board meeting in April 2026, I designed a private landing page. The prototype opens on a code-gated entry screen over a full-bleed photo, with the meeting title and date beside a four-digit code input.",
+      },
+    ],
+  },
+  {
     slug: "neon-wood",
     year: 2026,
     employer: { label: "Freelance" },
@@ -376,113 +500,8 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "contracts",
-    year: 2026,
-    employer: CB,
-    client: "Contracts",
-    description: "Contract management inside Coverbase's vendor-risk platform.",
-    teaser: "From a contracts area to clause-by-clause review with Contract Guardian",
-    image: CONTRACTS_COVER,
-    story: [
-      { type: "images", items: [CONTRACTS_COVER] },
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "Two finished files cover contract work: Contracts, with a cover dated September 2026, and Clause Review, Contract Guardian v1, which reviews contracts clause by clause.",
-      },
-    ],
-  },
-  {
-    slug: "vendor-registry",
-    year: 2026,
-    employer: CB,
-    client: "Vendor Registry Portal",
-    description: "The Vendor Registry Portal, one of Coverbase's finished product areas.",
-    teaser: "A finished portal design, dated September 2026",
-    image: VENDOR_REGISTRY_COVER,
-    story: [
-      { type: "images", items: [VENDOR_REGISTRY_COVER] },
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "The Vendor Registry Portal is one of the product areas I marked as finished design, with a cover dated September 2026.",
-      },
-    ],
-  },
-  {
-    slug: "radar",
-    year: 2026,
-    employer: CB,
-    client: "Radar",
-    description: "Radar, a Coverbase product surface redesigned through three versions.",
-    teaser: "Why Radar needed a v2 and then a v3 within a year",
-    story: [
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "Radar went through v2 and v3, both marked finished, with the v3 cover dated October 2026. The version numbers show the surface was redesigned more than once as the product grew.",
-      },
-    ],
-  },
-  {
-    slug: "cencora-audit",
-    year: 2026,
-    employer: CB,
-    client: "Cencora workflow audit",
-    description: "A design audit of a customer's workflow, with dashboard and configuration studies.",
-    teaser: "A customer workflow audit, with dashboard and configuration architecture studies",
-    image: CENCORA_AUDIT_COVER,
-    story: [
-      { type: "images", items: [CENCORA_AUDIT_COVER] },
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "The Cencora Workflow design audit sits in the Design Audit folder next to a dashboard architecture study and a configuration architecture board. The cover is dated June 2026.",
-      },
-    ],
-  },
-  {
-    slug: "cab-site",
-    year: 2026,
-    employer: CB,
-    client: "Customer Advisory Board",
-    description: "A code-gated landing page for Coverbase's Customer Advisory Board meeting.",
-    teaser: "A private entry screen: meeting title, date and a four-digit code over a full-bleed photo",
-    image: CAB_SITE_COVER,
-    story: [
-      { type: "images", items: [CAB_SITE_COVER] },
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "A landing page for the Customer Advisory Board meeting in April 2026. The prototype opens on a code-gated entry screen over a full-bleed photo, with the meeting title and date beside a four-digit code input.",
-      },
-    ],
-  },
-  {
-    slug: "spice-ai-website",
-    year: 2026,
-    employer: { label: "Spice AI" },
-    client: "Website and design system",
-    description: "The Spice AI website, its design system and media kit.",
-    teaser: "One system behind the website, the design system and the media kit",
-    image: SPICE_AI_WEBSITE_COVER,
-    story: [
-      { type: "images", items: [SPICE_AI_WEBSITE_COVER] },
-      {
-        type: "p",
-        text: "Spice AI builds an open-source runtime that gives developers one SQL interface to query and accelerate data from databases, warehouses and lakes. I started working with them through Toptal and continued as a part-time client.",
-      },
-      {
-        type: "p",
-        text: "The Spice AI folder holds the website design from February 2026, the Spice AI design system and a media kit, with the old website kept for comparison.",
-      },
-    ],
-  },
-
-  // ---------- 2025 ----------
-  {
     slug: "statements",
-    year: 2025,
+    year: 2026,
     employer: ML,
     client: "Statements",
     description: "One place for vendors selling to Mercado Libre to track every payment and invoice.",
@@ -508,7 +527,7 @@ export const projects: Project[] = [
       { type: "h", text: "My role" },
       {
         type: "p",
-        text: "As UX Technical Lead for First Party, I led the project and did all of the design execution, from the brief and research through the final screens and the handoff in October 2025, working with the product manager and the engineering lead.",
+        text: "As UX Technical Lead for First Party, I led the project and did all of the design execution, from the brief and research through the final screens and the handoff, which started in October 2025 and ran into January 2026, working with the product manager and the engineering lead.",
       },
       { type: "h", text: "Integrate, don’t replace" },
       {
@@ -565,6 +584,45 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "cencora-audit",
+    year: 2026,
+    employer: CB,
+    client: "Cencora workflow audit",
+    description: "A design audit of a customer's workflow, with dashboard and configuration studies.",
+    teaser: "A customer workflow audit, with dashboard and configuration architecture studies",
+    image: CENCORA_AUDIT_COVER,
+    story: [
+      { type: "images", items: [CENCORA_AUDIT_COVER] },
+      { type: "p", text: CB_NOTE },
+      {
+        type: "p",
+        text: "The Cencora Workflow design audit sits in the Design Audit folder next to a dashboard architecture study and a configuration architecture board. The cover is dated June 2026.",
+      },
+    ],
+  },
+  {
+    slug: "spice-ai-website",
+    year: 2026,
+    employer: { label: "Spice AI" },
+    client: "Website and design system",
+    description: "The Spice AI website, its design system and media kit.",
+    teaser: "One system behind the website, the design system and the media kit",
+    image: SPICE_AI_WEBSITE_COVER,
+    story: [
+      { type: "images", items: [SPICE_AI_WEBSITE_COVER] },
+      {
+        type: "p",
+        text: "Spice AI builds an open-source runtime that gives developers one SQL interface to query and accelerate data from databases, warehouses and lakes. I started working with them through Toptal and continued as a part-time client.",
+      },
+      {
+        type: "p",
+        text: "The Spice AI folder holds the website design from February 2026, the Spice AI design system and a media kit, with the old website kept for comparison.",
+      },
+    ],
+  },
+
+  // ---------- 2025 ----------
   {
     slug: "motion",
     year: 2025,
@@ -718,40 +776,6 @@ export const projects: Project[] = [
       { type: "images", items: [INSPECT_ZERO_TOUCH_COVER] },
       { type: "p", text: CB_NOTE },
       { type: "p", text: "Inspect v2 and Zero Touch v2 are both marked finished design work." },
-    ],
-  },
-  {
-    slug: "coverbase-design-system",
-    year: 2025, // estimate
-    employer: CB,
-    client: "V2 Brand and UI Library",
-    description: "The design system Coverbase's product and marketing share.",
-    teaser: "One brand library and one UI library for product and marketing",
-    image: COVERBASE_DESIGN_SYSTEM_COVER,
-    story: [
-      { type: "images", items: [COVERBASE_DESIGN_SYSTEM_COVER] },
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "I built the design system shared by product and marketing as two published libraries: Coverbase V2 Brand and Coverbase V2 UI Library.",
-      },
-    ],
-  },
-  {
-    slug: "coverbase-website",
-    year: 2025, // estimate
-    employer: CB,
-    client: "Marketing website",
-    description: "Coverbase's marketing website, case studies, changelog and campaign assets.",
-    teaser: "Website v3, case studies and a lead-magnet report on third-party risk in the age of AI",
-    image: COVERBASE_WEBSITE_COVER,
-    story: [
-      { type: "images", items: [COVERBASE_WEBSITE_COVER] },
-      { type: "p", text: CB_NOTE },
-      {
-        type: "p",
-        text: "Marketing Website v3, a case-study template and its redesign, a changelog, and marketing assets for social posts, email templates, a one-pager, a sales deck, print material and a lead-magnet report on third-party risk management in the age of AI.",
-      },
     ],
   },
 

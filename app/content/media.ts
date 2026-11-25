@@ -42,16 +42,6 @@ export const media: MediaTile[] = [
     focus: "50% 55%",
   },
   {
-    key: "mercadolibre-talk",
-    src: "/images/companies/mercadolibre.webp",
-    alt: "Darwin giving a technical talk to the Mercado Libre team in Bogotá",
-    width: 960,
-    height: 720,
-    kind: "narrow",
-    focus: "100% 50%",
-    brand: "mercadolibre",
-  },
-  {
     key: "coverbase-team",
     src: "/images/companies/coverbase.webp",
     alt: "The Coverbase team at their 2026 on-site in Mexico City",
