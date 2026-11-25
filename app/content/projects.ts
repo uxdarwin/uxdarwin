@@ -870,13 +870,28 @@ export const projects: Project[] = [
     employer: TT,
     client: "Cool Earth",
     description: "A gamified donor experience that won Toptal's global hackathon.",
-    teaser: "Leading design for the winning team, from design sprint to UI library",
+    teaser: "Turning donors into members with a gamified Cool Club",
     image: COOL_EARTH_COVER,
     story: [
       { type: "images", items: [COOL_EARTH_COVER] },
       {
         type: "p",
-        text: "I led design for Cool Earth's gamified donor experience in Toptal's global hackathon in Q1 2024, which our team won. The work runs from a design sprint board through explorations to a published Cool Earth UI library.",
+        text: "Cool Earth is a charity that fights carbon emissions by keeping rainforests standing, and it works through the Indigenous and forest communities who have looked after those forests for generations. In Toptal's global hackathon in Q1 2024, Cool Earth asked teams for an immersive, educational and interactive way to turn businesses into long-term charity partners. I led design for our team, and we won.",
+      },
+      { type: "h", text: "The challenge" },
+      {
+        type: "p",
+        text: "The brief asked for more than a campaign. The solution had to highlight the charity's impact, hook people's attention and convert them into donors, while serving outreach, fundraising and education alike. It also had to be low budget and low maintenance, easy for teams with basic technical skills to run with little training, true to Cool Earth's brand, and able to win new donors while strengthening existing partners. Judges scored the clarity of the idea, the clarity of how it reaches its audience, the approach, how widely Cool Earth's teams could use it, and the brand fit.",
+      },
+      { type: "h", text: "Giving as a game" },
+      {
+        type: "p",
+        text: "Our idea was Cool Club: a membership where a business's support becomes progress it can see and share. Members learn about the forest and its communities, earn badges and certificates as their contribution grows, and climb a leaderboard. The game mechanics give a company a reason to come back and progress it can show, which is what turns a one-off gift into a lasting partnership, and the same content works for outreach, fundraising and education.",
+      },
+      { type: "h", text: "High fidelity to sell the idea" },
+      {
+        type: "p",
+        text: "A hackathon is won in a few minutes of demo, and judges and donors respond to what feels real. So I prioritized high-fidelity mockups in Cool Earth's own look over wireframes or diagrams: the audience could picture the product live on day one, feel the emotional pull of the mission, and see that the brand criterion was met. I also built a Cool Earth UI library, so every screen stayed consistent and on brand.",
       },
     ],
   },
