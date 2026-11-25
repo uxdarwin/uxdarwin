@@ -225,7 +225,12 @@ const BFF_DESIGN_SYSTEM = img("bff-design-system.webp", "BFF design system: colo
 const CHECK_MIG_COVER = img("check-mig-home.webp", "Check Mig home on the Migración Colombia site: two clear entry points, complete your registration or check and download it", 1463, 810);
 const CHECK_MIG_FLOW = img("check-mig-flow.webp", "Check Mig screens: trip direction, means of transport, the lookup form and the downloadable certificate laid out like a ticket", 1472, 792);
 const CHECK_MIG_DS = img("check-mig-design-system.webp", "Check Mig design system: colours, type scale, 12-column grid, spacing, buttons, inputs, icons and cards", 1568, 537);
-const BM_COVER: ProjectImage = { src: "/media/cb-brand-cover.webp", video: "/media/cb-brand-cover.mp4", alt: "Coverbase website's closing call to action: an engraved Great Wall scene with a drone, where the cursor itself becomes the Book a demo button", width: 1600, height: 824 };
+const BM_COVER: ProjectImage = { src: "/media/cb-brand-cover.webp", video: "/media/cb-brand-cover.mp4", alt: "The website's Applied AI section with its isometric platform diagram, in front of the closing call to action: an engraved Great Wall scene with a drone, where the cursor becomes the Book a demo button", width: 1600, height: 1000 };
+const BM_SITE_CTA: ProjectImage = { src: "/media/cb-site-cta-footer.webp", video: "/media/cb-site-cta-footer.mp4", alt: "Footer experiment: a shader dome over an engraved Great Wall scene, parallax layers as the page scrolls into the blue footer, and a cursor that turns into the Book a demo button", width: 1600, height: 824 };
+const BM_LOGO_ANIM: ProjectImage = { src: "/media/cb-logo-animation.webp", video: "/media/cb-logo-animation.mp4", alt: "The Coverbase logo animation: the mark's three shapes round into capsules, shrink into three circles that rotate around the center, and open back into the mark", width: 1000, height: 1000 };
+const BM_LOGO_GRID = img("cb-logo-guide-grid.webp", "Logo animation guideline, step 1: the mark on its construction lines", 1000, 1000);
+const BM_LOGO_CAPSULES = img("cb-logo-guide-capsules.webp", "Logo animation guideline, step 2: each shape becomes a rounded capsule on the same construction lines", 1000, 1000);
+const BM_LOGO_ROTATION = img("cb-logo-guide-rotation.webp", "Logo animation guideline, step 3: the capsules become three circles that rotate around the mark's center", 1000, 1000);
 const BM_MARK = img("cb-brand-mark.webp", "The refreshed Coverbase mark on its construction lines: two rounded triangles that meet on one shared axis", 2400, 1350);
 const BM_AUDIT = img("cb-brand-audit.webp", "Audit of the previous mark, annotated: misaligned edges where the shapes meet, an overlapped point, and a right edge that doesn't follow a design grid", 2400, 1350);
 const BM_GRID = img("cb-brand-grid.webp", "The construction grid for the new mark: every edge sits on the same set of 30-degree lines", 2400, 1350);
@@ -238,7 +243,7 @@ const BM_SITE_APPLIED = img("cb-site-applied-ai.webp", "Website, Applied AI sect
 const BM_SITE_AGENT: ProjectImage = { src: "/media/cb-site-agent-work.webp", video: "/media/cb-site-agent-work.mp4", alt: "Isometric Agent work illustration: trust center, public records and your requirements feed an agent that collects evidence, maps it to controls and isolates the gaps", width: 1600, height: 806 };
 const BM_SITE_DIAGRAM: ProjectImage = { src: "/media/cb-site-diagram.webp", video: "/media/cb-site-diagram.mp4", alt: "Interactive isometric diagram: evidence and requirements route through Coverbase in three steps, with a caption for each step", width: 1600, height: 1142 };
 const BM_SITE_INDUSTRIES: ProjectImage = { src: "/media/cb-site-industries.webp", video: "/media/cb-site-industries.mp4", alt: "Industries section with hover animations on each isometric illustration: regulated institutions, security and compliance, growing vendor networks", width: 1600, height: 900 };
-const BM_AMSTERDAM: ProjectImage = { src: "/media/cb-amsterdam-event.webp", video: "/media/cb-amsterdam-event.mp4", alt: "Amsterdam event page: An evening on the Amsterdam canals, with date and boarding location, a section for guests in town for the conference week, and the Reserve your seat form", width: 1600, height: 828 };
+const BM_AMSTERDAM: ProjectImage = { src: "/media/cb-amsterdam-event.webp", video: "/media/cb-amsterdam-event.mp4", alt: "Amsterdam event page: An evening on the Amsterdam canals, with date and boarding location, why the evening matters, a welcome for guests in town for the conference week, and the Reserve your seat form", width: 1600, height: 828 };
 const BM_CAB_HERO = img("cb-cab-hero.webp", "Customer Advisory Board page hero: the meeting title, date with Add to calendar, and the Napa Valley venue with directions, over a photo of the winery", 1800, 932);
 const BM_CAB_GUEST = img("cb-cab-guest.webp", "Customer Advisory Board page for guests: what the day is for and what Coverbase covers, a sticky card with date and location, and an event schedule with expandable sessions", 1800, 1925);
 const BM_NYC_OG = img("cb-nyc-dinner-og.webp", "Share image for the New York executive dinner: title, date, venue and Event by invitation only over a photo of the restaurant", 1600, 840);
@@ -679,7 +684,7 @@ export const projects: Project[] = [
     description: "A refreshed Coverbase mark and brand foundations, a richer marketing website, and the event pages and ads around it.",
     teaser: "A logo rebuilt on a real grid, a website with motion, and event pages guests can act on",
     image: BM_COVER,
-    coverVideo: { src: "/media/cb-brand-cover.mp4", poster: "/media/cb-brand-cover.webp", width: 1600, height: 824, fill: true },
+    coverVideo: { src: "/media/cb-brand-cover.mp4", poster: "/media/cb-brand-cover.webp", width: 1600, height: 1000, fill: true },
     wide: true,
     pairNext: true,
     story: [
@@ -687,6 +692,11 @@ export const projects: Project[] = [
       {
         type: "p",
         text: "Beyond the product, I worked on how Coverbase shows up outside it. In 2026 that meant three things: tightening the logo and writing down brand foundations, raising the craft of the marketing website, and designing the pages and assets marketing used to fill rooms.",
+      },
+      { type: "images", items: [BM_SITE_CTA] },
+      {
+        type: "p",
+        text: "The footer started as an experiment in how far the site's visual language could go: a shader for the dome, layered illustrations for parallax as the page scrolls, and cursor effects that turn the pointer into the Book a demo button, so a visitor can click anywhere on the scene.",
       },
       { type: "h", text: "Brand: a mark that holds up close" },
       {
@@ -701,6 +711,13 @@ export const projects: Project[] = [
       },
       { type: "images", items: [BM_WORDMARK, BM_COLORS] },
       { type: "images", items: [BM_VARIATIONS] },
+      { type: "h", text: "The logo in motion" },
+      {
+        type: "p",
+        text: "I also gave the mark a motion of its own. The animation never leaves the construction grid: each shape rounds into a capsule along the same lines, the capsules shrink into three circles that rotate around the mark's center, and they open back into the logo. I built it in code with Claude and wrote guidelines for each step, so it can be reproduced anywhere the brand needs to move.",
+      },
+      { type: "images", items: [BM_LOGO_ANIM, BM_LOGO_GRID] },
+      { type: "images", items: [BM_LOGO_CAPSULES, BM_LOGO_ROTATION] },
       { type: "h", text: "Website: from a fast build to a crafted one" },
       {
         type: "p",
@@ -710,13 +727,13 @@ export const projects: Project[] = [
       { type: "images", items: [BM_SITE_APPLIED, BM_SITE_AGENT] },
       {
         type: "p",
-        text: "Motion does the explaining. The platform diagram walks through how evidence and requirements route through Coverbase step by step, the Industries illustrations animate on hover, and in the closing call to action the cursor itself becomes the Book a demo button, so a visitor can click anywhere on the scene.",
+        text: "Motion does the explaining. The platform diagram walks through how evidence and requirements route through Coverbase step by step, and the Industries illustrations animate on hover.",
       },
       { type: "images", items: [BM_SITE_DIAGRAM, BM_SITE_INDUSTRIES] },
       { type: "h", text: "Marketing: pages a guest can act on" },
       {
         type: "p",
-        text: "For a hosted evening on the Amsterdam canals during a major industry conference week, I designed a landing page that reads like the invitation it is: one scene, the date and boarding area up front, a short reason to come, and a reservation form that asks for four fields.",
+        text: "For a hosted evening on the Amsterdam canals during a major industry conference week, I designed a landing page that reads like the invitation it is: one scene, the date and boarding area up front, a short reason to come, a welcome for guests whether or not they have a conference badge, and a reservation form that asks for four fields.",
       },
       { type: "images", items: [BM_AMSTERDAM] },
       {
