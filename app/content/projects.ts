@@ -192,6 +192,9 @@ const CB_RADAR_BACKTEST = img("cb-radar-backtest.webp", "Radar's New Detector fo
 const CB_RADAR_MAP = img("cb-radar-map.webp", "A Radar event for a critical file-transfer vulnerability, with the Exposure map showing which vendors are hit directly and which through a shared provider", 2400, 1502);
 const CB_RADAR_DETECTORS = img("cb-radar-detectors.webp", "The same Radar event on its Detectors tab: each detector that fired, with severity, confidence and the sources behind it", 2400, 1579);
 const CB_RADAR_EMPTY = img("cb-radar-empty.webp", "Radar's empty state while it monitors the recommended detectors, with a banner to review them", 2400, 1500);
+const CB_INSPECT_START = img("cb-inspect-start.webp", "Inspect's first-run page: what Inspect can do, then two ways to start, connecting an identity provider (Okta or Microsoft Entra) or browsing the application library", 2400, 1500);
+const CB_OKTA_SELECT = img("cb-okta-select.webp", "Connect Okta to Inspect, step 3: app details and connection verified, three synced applications to choose from, and an explicit approval before Inspect provisions anything", 2400, 1500);
+const CB_INSPECT_CONFIG = img("cb-inspect-config.webp", "Configuration, Inspect: one card each for Okta, Microsoft Entra and Google OAuth, with connection status, last sync and how many applications are added", 2400, 405);
 const CB_OKTA_CONNECT = img("cb-okta-connect.webp", "Connect Okta to Inspect: app details are found, then step-by-step setup of the public key, scopes and roles Inspect needs", 2400, 1747);
 const CB_OKTA_DONE = img("cb-okta-done.webp", "Okta connection completed: three applications ready for inspection, with New inspection and View applications", 2400, 1500);
 const CB_INSPECT_APPS = img("cb-inspect-apps.webp", "Inspect's Applications tab: counts of added, unavailable, inspected and not-inspected apps, the Okta sync status, and each app with its source and last inspection", 2400, 1500);
@@ -1042,9 +1045,20 @@ export const projects: Project[] = [
       { type: "h", text: "A guided connection to Okta" },
       {
         type: "p",
-        text: "Inspect needs access to the company's identity provider before it can test anything. I designed the connection as a guided, three-step flow inside the product: find the Okta app, grant exactly the scopes Inspect needs, then choose the applications to inspect. Each step validates as you go and explains what the access allows, and why, before anything is provisioned.",
+        text: "Inspect needs access to the company's identity provider before it can test anything. I started with the first screen: say plainly what Inspect does, then offer two ways in, connect Okta or Microsoft Entra to discover managed apps, or browse an application library for a quick test or an app outside the identity provider. The word library mattered: it tells people there are ready-made settings to start from.",
       },
-      { type: "images", items: [CB_OKTA_CONNECT, CB_OKTA_DONE] },
+      { type: "images", items: [CB_INSPECT_START] },
+      {
+        type: "p",
+        text: "The connection itself became four guided steps: app details, configuring the connection, syncing and selecting applications, and preparing them for inspection. Each step separates what the person does in Okta from what Coverbase checks automatically, and asks for access only when it becomes relevant: the scopes for creating an inspection identity are explained up front but used only after apps are chosen, behind an explicit approval. I designed the loading and error states of every step, plus an empty inventory, so a wrong client ID or a missing role can be fixed in place without starting over.",
+      },
+      { type: "images", items: [CB_OKTA_CONNECT, CB_OKTA_SELECT] },
+      { type: "images", items: [CB_OKTA_DONE] },
+      {
+        type: "p",
+        text: "Connections then got one home under Configuration: a card for each of Okta, Microsoft Entra and Google OAuth, with status, last sync, the inventory available and the apps already added to Inspect.",
+      },
+      { type: "images", items: [CB_INSPECT_CONFIG] },
       { type: "h", text: "From one inspection to continuous checks" },
       {
         type: "p",
