@@ -1329,7 +1329,8 @@
   max-height: none;
 }
 /* A regular card beside a wide one keeps its square cover, sitting level with the wide card's text. */
-.row[data-wide] .card + .card .thumb {
+.row[data-type="wideMedia"][data-wide] .card + .card .thumb,
+.row[data-type="mediaWide"][data-wide] .card:has(+ .card) .thumb {
   flex: none;
   aspect-ratio: 1;
   margin-top: auto;

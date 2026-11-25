@@ -51,6 +51,8 @@ export type Project = {
   wide?: boolean;
   /** With wide: share the row with the next card instead of a photo. */
   pairNext?: boolean;
+  /** With wide: share the row with the previous card, which sits on the left. */
+  pairPrev?: boolean;
   /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
   carousel?: string[];
   /** Four screen animations shown as a mosaic in the card, and by a "mosaic" block. */
@@ -190,7 +192,6 @@ const CB_CONTRACTS_TRIAGE = img("cb-contracts-table.webp", "Contracts triage tab
 const CB_CONTRACTS_TIMELINE = img("cb-contracts-timeline.webp", "Timeline view of the same contracts: each row runs from its notice due date to the end of the current term, with a dashed line where the notice date is missing", 2400, 1544);
 const CB_CONTRACTS_PORTFOLIO: ProjectImage = { src: "/media/cb-contracts-portfolio.webp", video: "/media/cb-contracts-portfolio.mp4", alt: "The redesigned Contracts portfolio: Key Dates, Pending Tasks, Approvals and Portfolio cards above the table, a single Export button, the Add contracts menu, and a row menu that holds every contract action", width: 1920, height: 880 };
 const RADAR_COVER = img("radar-cover.webp", "Coverbase Radar: the signals list with severity and affected suppliers, and an event page with an AI summary, triage status and the vendors involved", 1600, 1000);
-const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment statuses: custom review steps in settings, and a workflow that moves an assessment into review", 1600, 1000);
 const CB_ZERO_TOUCH = img("cb-zero-touch.webp", "Zero Touch Assessment for 1Password: review results with a low-risk score beside the sections for supplier profile, reputational risk, controls and security posture", 2400, 1372);
 const CB_RADAR_BACKTEST = img("cb-radar-backtest.webp", "Radar's New Detector form: sources, categories, severity threshold and guidance for what Radar should watch", 2400, 1372);
 const CB_RADAR_MAP = img("cb-radar-map.webp", "A Radar event for a critical file-transfer vulnerability, with the Exposure map showing which vendors are hit directly and which through a shared provider", 2400, 1502);
@@ -921,10 +922,28 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "appraiser",
+    year: 2025, // estimate
+    employer: CB,
+    client: "Appraiser V2",
+    description: "One Coverbase product surface, from low-fidelity rounds to high fidelity.",
+    teaser: "Every round saved as a dated version: how Appraiser evolved",
+    image: APPRAISER_COVER,
+    story: [
+      { type: "images", items: [APPRAISER_COVER] },
+      {
+        type: "p",
+        text: "The Appraiser V2 file runs from low-fidelity rounds to high-fidelity rounds, each saved as a dated version, which makes it the clearest record of one Coverbase surface evolving over time.",
+      },
+    ],
+  },
+  {
     slug: "cocuy",
     year: 2025,
     employer: ML,
     client: "Cocuy",
+    wide: true,
+    pairPrev: true,
     description: "Cocuy, the B2B design system that gave Mercado Libre's First Party tools one language.",
     teaser: "From launch in June to 62,000+ component insertions and a squad of its own",
     image: COCUY,
@@ -1007,53 +1026,6 @@ export const projects: Project[] = [
       {
         type: "p",
         text: "Next: make Cocuy an official satellite library of Andes, move reusable patterns into the Seller Experience library, and keep building it in code as 1P UI Core.",
-      },
-    ],
-  },
-  {
-    slug: "appraiser",
-    year: 2025, // estimate
-    employer: CB,
-    client: "Appraiser V2",
-    description: "One Coverbase product surface, from low-fidelity rounds to high fidelity.",
-    teaser: "Every round saved as a dated version: how Appraiser evolved",
-    image: APPRAISER_COVER,
-    story: [
-      { type: "images", items: [APPRAISER_COVER] },
-      {
-        type: "p",
-        text: "The Appraiser V2 file runs from low-fidelity rounds to high-fidelity rounds, each saved as a dated version, which makes it the clearest record of one Coverbase surface evolving over time.",
-      },
-    ],
-  },
-  {
-    slug: "assessments",
-    year: 2026,
-    employer: CB,
-    client: "Assessments",
-    description: "Vendor assessments in Coverbase: how risk is scored, reviewed and tracked to a decision.",
-    teaser: "Making risk scores readable and reviews trackable",
-    image: ASSESSMENTS_COVER,
-    story: [
-      { type: "images", items: [ASSESSMENTS_COVER] },
-      {
-        type: "p",
-        text: "Assessments are the core of vendor risk work: collect evidence, evaluate controls, score the risk, record findings and decide. In 2026 I worked on how that flow reads and moves, without changing the scoring model underneath.",
-      },
-      { type: "h", text: "Scores people can read" },
-      {
-        type: "p",
-        text: "I redesigned how risk scores are displayed across assessments and vendors, and introduced Risk Domains, so a score can be broken down into the areas it comes from and traced back from an assessment to the vendor's overall risk.",
-      },
-      { type: "h", text: "Reviews that live in the product" },
-      {
-        type: "p",
-        text: "Internal review steps often lived in email and spreadsheets. Custom statuses and review workflows bring those steps into Coverbase: teams add their own stages, workflows move assessments through them and create reviews, and an assessment only moves forward when the required reviews are done.",
-      },
-      { type: "h", text: "Result" },
-      {
-        type: "p",
-        text: "Risk Domains and the refreshed score display shipped in May 2026, SLA tracking per assessment stage in June, and custom statuses with review workflows in July.",
       },
     ],
   },

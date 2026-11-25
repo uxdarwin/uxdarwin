@@ -51,6 +51,12 @@ function rowsOf(list: Project[], pool: MediaTile[]): Row[] {
       rows.push({ type: "strip", projects: [list[i++]] });
       continue;
     }
+    // A card followed by a wide project that pairs back: card on the left, wide on the right.
+    if (!list[i].wide && !isCarousel(list[i]) && list[i + 1]?.wide && list[i + 1].pairPrev) {
+      rows.push({ type: "mediaWide", projects: list.slice(i, (i += 2)) });
+      step++;
+      continue;
+    }
     // A wide project takes two thirds of a row, beside a tall photo when one is left, else
     // beside the next card.
     if (list[i].wide) {
@@ -113,7 +119,7 @@ export function ProjectsFeed() {
       <div className={styles.feedBody} data-panel={company ? "" : undefined}>
         <div ref={gridRef} className={styles.rows}>
           {rows.map((row) => (
-            <div key={row.projects[0].slug} className={styles.row} data-type={row.type} data-wide={row.projects[0].wide || undefined}>
+            <div key={row.projects[0].slug} className={styles.row} data-type={row.type} data-wide={row.projects.some((p) => p.wide) || undefined}>
               {row.type === "strip" ? (
                 <CarouselRow project={row.projects[0]} />
               ) : (
