@@ -1,9 +1,12 @@
 {
   "headers": [
     {
-      "source": "/images/(.*)",
+      "source": "/(images|media)/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "https://platform.a.team" }
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://platform.a.team"
+        }
       ]
     }
   ]
