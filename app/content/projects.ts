@@ -112,6 +112,9 @@ const COCUY = img(
   562,
 );
 const SPICE_COVER: ProjectImage = { src: "/media/spice-org-cover.webp", video: "/media/spice-org-cover.mp4", alt: "Spice.org hero intro: the navigation, headline, buttons and SQL query explorer rise into place over the lined background", width: 1600, height: 1468 };
+const SPICE_M_HERO = img("spice-org-mobile-hero.webp", "Spice.org on mobile: the headline, buttons and query explorer with paging dots", 786, 1704);
+const SPICE_M_MENU = img("spice-org-mobile-menu.webp", "Spice.org on mobile: the navigation menu open over the hero, with the demo video below", 786, 1604);
+const SPICE_M_CTA = img("spice-org-mobile-cta.webp", "Spice.org on mobile: the closing call to action and a customer quote", 474, 1116);
 const SPICE_CAPS = img(
   "spice-org-capabilities.webp",
   "Spice.org capability cards: federated data access, data acceleration, self-hostable and open source, secure AI/ML gateway",
@@ -758,6 +761,7 @@ export const projects: Project[] = [
         type: "p",
         text: "The page continues through customer logos, four capability cards, example use cases, a before-and-after architecture diagram, an install section with CLI commands for macOS, Linux and Windows, a code-editor demo and a closing call to action. The file holds three dated high-fidelity rounds, wireframes, a responsive set at 393 px, components, an icon library, and color, spacing and border tokens.",
       },
+      { type: "images", items: [SPICE_M_HERO, SPICE_M_MENU, SPICE_M_CTA] },
     ],
   },
   {
