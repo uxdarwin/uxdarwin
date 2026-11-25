@@ -201,7 +201,7 @@ function CoverVideo({ video, label }: { video: NonNullable<Project["coverVideo"]
   return (
     <video
       ref={ref}
-      className={styles.coverVideo}
+      className={video.fill ? `${styles.coverVideo} ${styles.coverVideoFill}` : styles.coverVideo}
       src={video.src}
       poster={video.poster}
       width={video.width}

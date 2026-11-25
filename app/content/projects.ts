@@ -44,7 +44,7 @@ export type Project = {
   /** Feed image. Projects without one get a typographic cover until assets are gathered. */
   image?: ProjectImage;
   /** Feed cover video: replaces the image in the card, fitted whole (never cropped). */
-  coverVideo?: { src: string; poster: string; width: number; height: number };
+  coverVideo?: { src: string; poster: string; width: number; height: number; /** Fill the cover box (crops only background margin). */ fill?: boolean };
   /** A wide card: two thirds of a row, next to a tall photo when one is left. */
   wide?: boolean;
   /** With wide: share the row with the next card instead of a photo. */
@@ -193,7 +193,7 @@ const ATLAS_DASHBOARD = img("atlas-dashboard.webp", "Atlas contractor dashboard:
 const ATLAS_PROJECT = img("atlas-project-detail.webp", "Atlas project detail: the client, call history, and the property's climate trends, history, utility info and 3D scan", 1456, 819);
 const ATLAS_LOGIN = img("atlas-login.webp", "Atlas sign-in over a line illustration of a city and its landscape", 1456, 818);
 const ATLAS_CALLS_EMPTY = img("atlas-calls-empty.webp", "Atlas calls page empty state, with an illustration of a person on a call", 1456, 818);
-const ATLAS_COVER: ProjectImage = { src: "/media/atlas-cover.webp", video: "/media/atlas-cover.mp4", alt: "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video, with me showing how to keep the right distance", width: 1600, height: 1000 };
+const ATLAS_COVER: ProjectImage = { src: "/media/atlas-cover.webp", video: "/media/atlas-cover.mp4", alt: "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video, with me showing how to keep the right distance", width: 1600, height: 1600 };
 const AUGMEND_COVER = img("augmend-cover.webp", "Augmend landing hero: Collective intelligence for developers, over a shared workspace with teammates' cursors", 1600, 1000);
 const AUGMEND_LANDING = img("augmend-landing.webp", "Augmend landing: Accelerate software development team speed with AI-augmented collaboration tools, with a waitlist field above the workspace", 2000, 1130);
 const AUGMEND_LOGO = img("augmend-logo.webp", "Augmend logo on lime, dark, light and white backgrounds", 888, 1366);
@@ -892,7 +892,7 @@ export const projects: Project[] = [
     description: "Scope and quote home service jobs remotely, from a phone scan.",
     teaser: "Scope a job from a phone scan, not a site visit",
     image: ATLAS_COVER,
-    coverVideo: { src: "/media/atlas-cover.mp4", poster: "/media/atlas-cover.webp", width: 1600, height: 1000 },
+    coverVideo: { src: "/media/atlas-cover.mp4", poster: "/media/atlas-cover.webp", width: 1600, height: 1600, fill: true },
     story: [
       { type: "images", items: [ATLAS_COVER, ATLAS_3D_SCAN] },
       { type: "p", text: TT_NOTE },
