@@ -186,7 +186,9 @@ const DOCUCOL_LOGIN = img("docucol-login.webp", "Docucol sign-in: Únete a la re
 const DOCUCOL_TEMPLATES = img("docucol-templates.webp", "Docucol onboarding: templates explained before the first document", 1497, 807);
 const DOCUCOL_SIGNATURE = img("docucol-signature.webp", "Docucol onboarding: create your digital signature by drawing it or uploading a file", 1498, 809);
 const DOCUCOL_WATERMARK = img("docucol-watermark.webp", "Docucol organization settings: add a watermark to your documents", 1497, 812);
-const CHARMED_COVER = img("charmed-cover.webp", "Charmed sign-in: an astronaut and a robot facing an alien landscape, with the Charmed star rising over a wireframe terrain", 1370, 896);
+const CHARMED_COVER: ProjectImage = { src: "/media/charmed-cover.webp", video: "/media/charmed-cover.mp4", alt: "Charmed sign-in prototype: an astronaut and a robot facing an alien landscape as the Charmed star rises over a wireframe terrain", width: 1600, height: 976 };
+const CHARMED_ONBOARDING: ProjectImage = { src: "/media/charmed-onboarding.webp", video: "/media/charmed-onboarding.mp4", alt: "Onboarding prototype: a completed quest opens a chest worth 1,000 credits", width: 1400, height: 862 };
+const CHARMED_WEBSITE: ProjectImage = { src: "/media/charmed-website.webp", video: "/media/charmed-website.mp4", alt: "Website prototype: the AI Texture Generator page scrolling through generated materials, refinement and art-direction controls", width: 1600, height: 982 };
 const CHARMED_WEB_HERO = img("charmed-website-hero.webp", "Charmed website: AI Texture Generator hero with a robot carrying two generated materials", 1336, 896);
 const CHARMED_WEB_MATERIALS = img("charmed-website-materials.webp", "Charmed website: bring your vision to life in 3D, with textures being added to the robot", 1336, 896);
 const CHARMED_WEB_REFINE = img("charmed-website-refine.webp", "Charmed website: enhance and refine textured objects, adjusting color saturation on a patch", 1336, 896);
@@ -196,7 +198,6 @@ const CHARMED_HELICOPTER = img("charmed-texture-helicopter.webp", "Texture Gener
 const CHARMED_ANIMATOR = img("charmed-animator.webp", "3D Animator empty state: a rigged mannequin ready to animate", 1400, 856);
 const CHARMED_ANIMATOR_MOBILE = img("charmed-animator-mobile.webp", "3D Animator on mobile: a character preview with animation thumbnails and share", 732, 1537);
 const CHARMED_DESIGNER: ProjectImage = { ...img("charmed-3d-designer.webp", "3D Designer: a couch and lamp scene with object, environment and reference image panels and a generated preview", 1429, 788), transparent: true };
-const CHARMED_QUESTS = img("charmed-quests.webp", "Onboarding quests: a completed quest unlocks a chest and 1,000 credits", 1070, 660);
 const CHARMED_EMAIL_WAITLIST = img("charmed-email-waitlist.webp", "Waitlist email: you're on the first group to try Charmed's texture app, with a megaphone illustration", 761, 1287);
 const CHARMED_EMAIL_NOTIFY = img("charmed-email-notifications.webp", "Product update email introducing notifications for finished textures", 930, 993);
 const ATLAS_3D_SCAN = img("atlas-3d-scan.webp", "Atlas: a 3D scan of a home, built from a client's phone capture, with the photos it came from", 1271, 952);
@@ -951,6 +952,7 @@ export const projects: Project[] = [
     description: "AI tools that take game creators from an idea to an animated 3D asset.",
     teaser: "Texture, animate and build 3D game assets with AI",
     image: CHARMED_COVER,
+    coverVideo: { src: "/media/charmed-cover.mp4", poster: "/media/charmed-cover.webp", width: 1600, height: 976 },
     story: [
       { type: "images", items: [CHARMED_COVER, CHARMED_WEB_HERO] },
       { type: "p", text: TT_NOTE },
@@ -977,12 +979,13 @@ export const projects: Project[] = [
         type: "p",
         text: "For an audience of game makers, onboarding became a game too: quests to generate a geometry, texture an object, animate a character or share in the showcase, each one unlocking a chest of credits to spend in the tools.",
       },
-      { type: "images", items: [CHARMED_QUESTS] },
+      { type: "images", items: [CHARMED_ONBOARDING] },
       { type: "h", text: "Website and emails" },
       {
         type: "p",
         text: "The website shows the product at work, with materials, textures and refinements animating on a single robot, and the emails welcomed the first beta users and announced new features.",
       },
+      { type: "images", items: [CHARMED_WEBSITE] },
       { type: "images", items: [CHARMED_WEB_MATERIALS, CHARMED_WEB_REFINE] },
       { type: "images", items: [CHARMED_EMAIL_WAITLIST, CHARMED_EMAIL_NOTIFY] },
       { type: "h", text: "My role" },
