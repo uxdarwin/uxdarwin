@@ -195,7 +195,6 @@ const AUDIT_STEP2 = img("audit-step2.webp", "New vendor, step 2: vendor details 
 const AUDIT_ABOUT = img("audit-about.webp", "The About tab: extracted company profile, location, custom fields, registration and products as collapsible cards", 2400, 2253);
 const AUDIT_PROPERTIES = img("audit-properties.webp", "The Properties tab: tags, contacts, owners and watchers, plus shortcuts to services, findings, commitments and questionnaire submissions", 2400, 1500);
 const AUDIT_OVERVIEW = img("audit-overview.webp", "The redesigned home page: actionable at-a-glance cards, a calmer work queue empty state and recent completed assessments", 2400, 1500);
-const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
 const CB_CONTRACTS_TRIAGE = img("cb-contracts-table.webp", "Contracts triage table: four work cards (notice deadlines, renewal decisions, missing renewal details, reviews needed) above one row per contract, ordered by notice due date", 2400, 1515);
 const CB_CONTRACTS_TIMELINE = img("cb-contracts-timeline.webp", "Timeline view of the same contracts: each row runs from its notice due date to the end of the current term, with a dashed line where the notice date is missing", 2400, 1544);
 const CB_CONTRACTS_PORTFOLIO: ProjectImage = { src: "/media/cb-contracts-portfolio.webp", video: "/media/cb-contracts-portfolio.mp4", alt: "The redesigned Contracts portfolio: Key Dates, Pending Tasks, Approvals and Portfolio cards above the table, a single Export button, the Add contracts menu, and a row menu that holds every contract action", width: 1920, height: 880 };
@@ -226,7 +225,26 @@ const BFF_DESIGN_SYSTEM = img("bff-design-system.webp", "BFF design system: colo
 const CHECK_MIG_COVER = img("check-mig-home.webp", "Check Mig home on the Migración Colombia site: two clear entry points, complete your registration or check and download it", 1463, 810);
 const CHECK_MIG_FLOW = img("check-mig-flow.webp", "Check Mig screens: trip direction, means of transport, the lookup form and the downloadable certificate laid out like a ticket", 1472, 792);
 const CHECK_MIG_DS = img("check-mig-design-system.webp", "Check Mig design system: colours, type scale, 12-column grid, spacing, buttons, inputs, icons and cards", 1568, 537);
-const COVERBASE_WEBSITE_COVER = img("coverbase-website-cover.webp", "Coverbase website: a customer video hero with the headline Agentic third-party risk and security", 1600, 1000);
+const BM_COVER: ProjectImage = { src: "/media/cb-brand-cover.webp", video: "/media/cb-brand-cover.mp4", alt: "Coverbase website's closing call to action: an engraved Great Wall scene with a drone, where the cursor itself becomes the Book a demo button", width: 1600, height: 824 };
+const BM_MARK = img("cb-brand-mark.webp", "The refreshed Coverbase mark on its construction lines: two rounded triangles that meet on one shared axis", 2400, 1350);
+const BM_AUDIT = img("cb-brand-audit.webp", "Audit of the previous mark, annotated: misaligned edges where the shapes meet, an overlapped point, and a right edge that doesn't follow a design grid", 2400, 1350);
+const BM_GRID = img("cb-brand-grid.webp", "The construction grid for the new mark: every edge sits on the same set of 30-degree lines", 2400, 1350);
+const BM_ICON = img("cb-brand-icon.webp", "The new Coverbase icon with a blue gradient on white", 2400, 1350);
+const BM_WORDMARK = img("cb-brand-wordmark.webp", "The Coverbase logo in white on a deep blue gradient", 2400, 1350);
+const BM_COLORS = img("cb-brand-colors.webp", "Brand guidelines, colors: the primary blue scale from 50 to 950, with 700 marked as the main color", 2400, 1350);
+const BM_VARIATIONS = img("cb-brand-variations.webp", "Brand guidelines, logo variations: full logo and icon in gradient, solid blue, gradient black and solid black, on light and dark backgrounds", 2400, 1350);
+const BM_SITE_WALK: ProjectImage = { src: "/media/cb-site-walkthrough.webp", video: "/media/cb-site-walkthrough.mp4", alt: "Scrolling the redesigned Coverbase website: the Applied AI platform diagram, the supplier work queue, platform agents, TPM-Bench v2 results, industries and the closing call to action", width: 1600, height: 888 };
+const BM_SITE_APPLIED = img("cb-site-applied-ai.webp", "Website, Applied AI section: an isometric platform diagram over an engraved mountain landscape, with three cards on how agents work across the vendor lifecycle", 2400, 1427);
+const BM_SITE_AGENT: ProjectImage = { src: "/media/cb-site-agent-work.webp", video: "/media/cb-site-agent-work.mp4", alt: "Isometric Agent work illustration: trust center, public records and your requirements feed an agent that collects evidence, maps it to controls and isolates the gaps", width: 1600, height: 806 };
+const BM_SITE_DIAGRAM: ProjectImage = { src: "/media/cb-site-diagram.webp", video: "/media/cb-site-diagram.mp4", alt: "Interactive isometric diagram: evidence and requirements route through Coverbase in three steps, with a caption for each step", width: 1600, height: 1142 };
+const BM_SITE_INDUSTRIES: ProjectImage = { src: "/media/cb-site-industries.webp", video: "/media/cb-site-industries.mp4", alt: "Industries section with hover animations on each isometric illustration: regulated institutions, security and compliance, growing vendor networks", width: 1600, height: 900 };
+const BM_AMSTERDAM: ProjectImage = { src: "/media/cb-amsterdam-event.webp", video: "/media/cb-amsterdam-event.mp4", alt: "Amsterdam event page: An evening on the Amsterdam canals, with date and boarding location, a section for guests in town for the conference week, and the Reserve your seat form", width: 1600, height: 828 };
+const BM_CAB_HERO = img("cb-cab-hero.webp", "Customer Advisory Board page hero: the meeting title, date with Add to calendar, and the Napa Valley venue with directions, over a photo of the winery", 1800, 932);
+const BM_CAB_GUEST = img("cb-cab-guest.webp", "Customer Advisory Board page for guests: what the day is for and what Coverbase covers, a sticky card with date and location, and an event schedule with expandable sessions", 1800, 1925);
+const BM_NYC_OG = img("cb-nyc-dinner-og.webp", "Share image for the New York executive dinner: title, date, venue and Event by invitation only over a photo of the restaurant", 1600, 840);
+const BM_NYC_PAGE = img("cb-nyc-dinner-page.webp", "New York executive dinner page: hero with date, venue and Reserve your seat, then why the dinner matters, three stats, the three topics and a short agenda beside a sticky reservation card", 1800, 2606);
+const BM_AD_RADAR = img("cb-ad-radar.webp", "Radar ad: Watch Your Vendors Between Reviews. Once a year isn't monitoring. This is. coverbase.com/radar", 1600, 1600);
+const BM_AD_REPORT = img("cb-ad-report.webp", "Report ad: TPRM Wasn't Built for the World We're In Now, with the open 2026 report and a small robot", 1600, 1600);
 const SPICE_AI_WEBSITE_COVER = img("spice-ai-website-cover.webp", "Spice AI website: the hero, The Data and AI Stack in One Engine, beside a SQL playground", 1600, 1000);
 const SA = (f: string, alt: string, w: number, h: number) => img(`spice-ai-${f}.webp`, alt, w, h);
 const SA_HOME_HERO = SA("home-hero", "Spice AI homepage on desktop: The Data and AI Stack in One Engine, beside a SQL playground with hybrid search, LLM inference and federation callouts, over the customer logos", 2000, 1378);
@@ -657,22 +675,65 @@ export const projects: Project[] = [
     slug: "coverbase-brand-marketing",
     year: 2026,
     employer: CB,
-    client: "Brand and marketing website",
-    description: "Coverbase's marketing website, campaign assets and a private page for its Customer Advisory Board.",
-    teaser: "Website v3, case studies, a lead-magnet report and a code-gated advisory board page",
-    image: COVERBASE_WEBSITE_COVER,
+    client: "Brand, website and marketing",
+    description: "A refreshed Coverbase mark and brand foundations, a richer marketing website, and the event pages and ads around it.",
+    teaser: "A logo rebuilt on a real grid, a website with motion, and event pages guests can act on",
+    image: BM_COVER,
+    coverVideo: { src: "/media/cb-brand-cover.mp4", poster: "/media/cb-brand-cover.webp", width: 1600, height: 824, fill: true },
     wide: true,
     pairNext: true,
     story: [
-      { type: "images", items: [COVERBASE_WEBSITE_COVER, CAB_SITE_COVER] },
+      { type: "images", items: [BM_COVER] },
       {
         type: "p",
-        text: "I designed Coverbase's brand and marketing updates on top of the Coverbase V2 Brand library: Marketing Website v3, a case-study template and its redesign, a changelog, and marketing assets for social posts, email templates, a one-pager, a sales deck, print material and a lead-magnet report on third-party risk management in the age of AI.",
+        text: "Beyond the product, I worked on how Coverbase shows up outside it. In 2026 that meant three things: tightening the logo and writing down brand foundations, raising the craft of the marketing website, and designing the pages and assets marketing used to fill rooms.",
       },
+      { type: "h", text: "Brand: a mark that holds up close" },
       {
         type: "p",
-        text: "For the Customer Advisory Board meeting in April 2026, I designed a private landing page. The prototype opens on a code-gated entry screen over a full-bleed photo, with the meeting title and date beside a four-digit code input.",
+        text: "I started with an audit of the existing mark: the two shapes were misaligned where they met, they overlapped at the center point, and the right edge didn't land on any grid. I rebuilt it on one set of 30-degree construction lines with consistent rounded corners, so every edge has a reason to be where it is.",
       },
+      { type: "images", items: [BM_AUDIT, BM_GRID] },
+      { type: "images", items: [BM_MARK, BM_ICON] },
+      {
+        type: "p",
+        text: "Then I set new foundations so every team could use the brand consistently: a primary blue scale with one main color, logo and icon variations for light and dark backgrounds, and type pairings, collected in a 2026 brand guidelines deck.",
+      },
+      { type: "images", items: [BM_WORDMARK, BM_COLORS] },
+      { type: "images", items: [BM_VARIATIONS] },
+      { type: "h", text: "Website: from a fast build to a crafted one" },
+      {
+        type: "p",
+        text: "The CEO had rebuilt the website in Ploy to move fast. I proposed a set of improvements on top of it and designed them for production: a visual direction mixing engraving with geometric dithering, warmer and lighter backgrounds with grain, and isometric illustrations as a reusable language for explaining the platform. I updated the illustrative product view, the platform diagrams, the TPM-Bench v2 results section and the footer.",
+      },
+      { type: "images", items: [BM_SITE_WALK] },
+      { type: "images", items: [BM_SITE_APPLIED, BM_SITE_AGENT] },
+      {
+        type: "p",
+        text: "Motion does the explaining. The platform diagram walks through how evidence and requirements route through Coverbase step by step, the Industries illustrations animate on hover, and in the closing call to action the cursor itself becomes the Book a demo button, so a visitor can click anywhere on the scene.",
+      },
+      { type: "images", items: [BM_SITE_DIAGRAM, BM_SITE_INDUSTRIES] },
+      { type: "h", text: "Marketing: pages a guest can act on" },
+      {
+        type: "p",
+        text: "For a hosted evening on the Amsterdam canals during a major industry conference week, I designed a landing page that reads like the invitation it is: one scene, the date and boarding area up front, a short reason to come, and a reservation form that asks for four fields.",
+      },
+      { type: "images", items: [BM_AMSTERDAM] },
+      {
+        type: "p",
+        text: "The Customer Advisory Board page was built for executives traveling to a full day in Napa Valley, so clarity mattered more than persuasion. Everything a guest needs to plan sits where they look first: the date with Add to calendar, the venue with directions, a note that travel, lodging and meals are covered, and a schedule from the morning departure to the ride back, with each session expanding to show what it covers.",
+      },
+      { type: "images", items: [BM_CAB_HERO, BM_CAB_GUEST] },
+      {
+        type: "p",
+        text: "The same structure carried over to an executive dinner in New York, with its own share image so the invitation looks right wherever it's posted: the hero answers when, where and how to reserve, and the page explains why the evening is worth it before the short agenda.",
+      },
+      { type: "images", items: [BM_NYC_OG, BM_NYC_PAGE] },
+      {
+        type: "p",
+        text: "Campaign ads used the same blues and a single idea each: watching vendors between annual reviews with Radar, and a free 2026 report on third-party risk in the age of AI.",
+      },
+      { type: "images", items: [BM_AD_RADAR, BM_AD_REPORT] },
     ],
   },
   {
