@@ -73,10 +73,12 @@ function rowsOf(list: Project[], pool: MediaTile[]): Row[] {
     }
     // Cards available before the next strip or wide project.
     let room = 0;
-    while (i + room < list.length && !isCarousel(list[i + room]) && !list[i + room].wide) room++;
+    while (i + room < list.length && !isCarousel(list[i + room]) && !list[i + room].wide) if (list[i + room++].rowEnd) break;
 
     // Exactly two cards before a strip or wide project: keep them together.
     let type: RowType | null = room === 2 ? "two" : null;
+    // A row closed by rowEnd still takes its turn in the pattern, so the rows after it keep their layout.
+    if (type && list[i + 1]?.rowEnd) step++;
     for (let tries = 0; tries < PATTERN.length && !type; tries++, step++) {
       const t = PATTERN[step % PATTERN.length];
       const kind = MEDIA_KIND[t];

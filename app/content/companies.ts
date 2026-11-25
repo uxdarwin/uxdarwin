@@ -20,7 +20,7 @@ export const companies: Partial<Record<Brand, CompanyContext>> = {
     where: "San Francisco, CA",
     domain: "coverbase.ai",
     photo: { src: "/images/companies/coverbase.webp", width: 960, height: 540, caption: "Mexico City · 2026 Team On-site" },
-    about: "AI procurement and vendor-risk platform. $20M Series A, with customers like CVS Health, Cencora and BlackRock.",
+    about: "AI procurement and vendor-risk platform. $20M Series A, with customers like CVS Health and BlackRock.",
     roles: [
       { title: "Founding Designer, full-time", dates: "Feb 2026 – Now" },
       { title: "Founding Designer, contractor", dates: "Nov 2024 – Jan 2026" },

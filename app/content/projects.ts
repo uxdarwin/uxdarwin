@@ -53,6 +53,8 @@ export type Project = {
   pairNext?: boolean;
   /** With wide: share the row with the previous card, which sits on the left. */
   pairPrev?: boolean;
+  /** Close the feed row after this card, so the cards before it share a row on their own. */
+  rowEnd?: boolean;
   /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
   carousel?: string[];
   /** Four screen animations shown as a mosaic in the card, and by a "mosaic" block. */
@@ -179,15 +181,20 @@ const ABACUS = img(
   556,
 );
 
-const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: portfolio value, notice deadlines and clauses that need a decision above the contracts table, with the Actions menu open on Import contracts", 1600, 1000);
+const CONTRACTS_COVER: ProjectImage = { src: "/media/cb-contracts-cover.webp", video: "/media/cb-contracts-cover.mp4", alt: "The redesigned Contracts portfolio in use, adding contracts and opening a row menu, in front of the timeline view that runs each contract from its notice due date to the end of its term", width: 1600, height: 1000 };
 const CB_VR_VIDEO: ProjectImage = { src: "/media/cb-vendor-registry.webp", video: "/media/cb-vendor-registry.mp4", alt: "Vendor Registry Portal walkthrough: sign in with a work email, open the magic link, describe a need, and get approved, conditional and in-review options", width: 1920, height: 1064 };
 const CB_VR_SIGNIN = img("cb-vr-signin.webp", "Vendor Registry sign-in under the customer's own brand: work email only, with a magic link instead of a password", 2400, 1330);
 const CB_VR_EMAIL = img("cb-vr-email.webp", "The sign-in email: one button to open the Vendor Registry, branded for the customer and powered by Coverbase", 2400, 1330);
 const CB_VR_RESULTS = img("cb-vr-results.webp", "Search results for a described need: counts of approved, conditional and in-review options above a table with approval, vendor, tier and next review", 2400, 1330);
 const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River Vendor Registry Portal: a search for a meeting-transcription tool with approved, conditional and in-review results", 1600, 1000);
-const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: inspection runs with controls finished, outcomes, compliance score and findings per application", 1600, 1000);
-const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
-const CAB_SITE_COVER = img("cab-site-cover.webp", "Customer Advisory Board landing page: meeting title and date beside a four-digit code entry over a vineyard photo", 1600, 1000);
+const INSPECT_ZERO_TOUCH_COVER = img("inspect-cover-square.webp", "Inspect's first-run page, what Inspect can do and two ways to get started, in front of a completed Zero Touch assessment", 1600, 1600);
+const AUDIT_COVER: ProjectImage = img("audit-cover.webp", "The redesigned vendor profile, with the Coverbase Agent summarizing a new vendor and recommending next steps, in front of the search-first New vendor step", 1600, 1000);
+const AUDIT_AGENT = img("audit-agent.webp", "Vendor profile right after creation: the Coverbase Agent explains what was filled in, lists recommended next steps as a checklist, and a vertical lifecycle sits beside it", 2400, 1665);
+const AUDIT_STEP1 = img("audit-step1.webp", "New vendor, step 1: search-first, with Select and continue on a matched profile and Continue from scratch always visible", 2400, 1500);
+const AUDIT_STEP2 = img("audit-step2.webp", "New vendor, step 2: vendor details with AI autofill, and the fields that drive workflows marked Used by workflow", 2400, 1500);
+const AUDIT_ABOUT = img("audit-about.webp", "The About tab: extracted company profile, location, custom fields, registration and products as collapsible cards", 2400, 2253);
+const AUDIT_PROPERTIES = img("audit-properties.webp", "The Properties tab: tags, contacts, owners and watchers, plus shortcuts to services, findings, commitments and questionnaire submissions", 2400, 1500);
+const AUDIT_OVERVIEW = img("audit-overview.webp", "The redesigned home page: actionable at-a-glance cards, a calmer work queue empty state and recent completed assessments", 2400, 1500);
 const CB_CONTRACTS_TRIAGE = img("cb-contracts-table.webp", "Contracts triage table: four work cards (notice deadlines, renewal decisions, missing renewal details, reviews needed) above one row per contract, ordered by notice due date", 2400, 1515);
 const CB_CONTRACTS_TIMELINE = img("cb-contracts-timeline.webp", "Timeline view of the same contracts: each row runs from its notice due date to the end of the current term, with a dashed line where the notice date is missing", 2400, 1544);
 const CB_CONTRACTS_PORTFOLIO: ProjectImage = { src: "/media/cb-contracts-portfolio.webp", video: "/media/cb-contracts-portfolio.mp4", alt: "The redesigned Contracts portfolio: Key Dates, Pending Tasks, Approvals and Portfolio cards above the table, a single Export button, the Add contracts menu, and a row menu that holds every contract action", width: 1920, height: 880 };
@@ -207,7 +214,6 @@ const CB_OKTA_DONE = img("cb-okta-done.webp", "Okta connection completed: three 
 const CB_INSPECT_APPS = img("cb-inspect-apps.webp", "Inspect's Applications tab: counts of added, unavailable, inspected and not-inspected apps, the Okta sync status, and each app with its source and last inspection", 2400, 1500);
 const CB_AD_POINT = img("cb-inspect-ad-point.webp", "Inspect campaign ad: a castle certificate reads Security status while the real castle behind it crumbles. Your vendor passed the test. Is it still true today?", 1620, 1620);
 const CB_AD_VERIFY = img("cb-inspect-ad-verify.webp", "Inspect campaign ad: a small robot with an Inspector badge scans a castle into a wireframe. Test your third parties continuously", 1620, 1620);
-const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
 const BFF_COVER = img("bff-cover.webp", "BFF: two phones with the fan home page and the request menu (comment, like, follow, greeting, serenade) beside a person holding a BFF sign", 1920, 1320);
 const BFF_MOCKUPS = img("bff-mockups.webp", "BFF fan app screens laid out on pink: talent search, featured talent, services, request details and a celebrity video", 1345, 896);
 const BFF_CLIENT = img("bff-client-app.webp", "BFF fan app store screens: home with a celebrity video, a 10% first-request offer, services with prices, and occasions", 1566, 685);
@@ -219,7 +225,31 @@ const BFF_DESIGN_SYSTEM = img("bff-design-system.webp", "BFF design system: colo
 const CHECK_MIG_COVER = img("check-mig-home.webp", "Check Mig home on the Migración Colombia site: two clear entry points, complete your registration or check and download it", 1463, 810);
 const CHECK_MIG_FLOW = img("check-mig-flow.webp", "Check Mig screens: trip direction, means of transport, the lookup form and the downloadable certificate laid out like a ticket", 1472, 792);
 const CHECK_MIG_DS = img("check-mig-design-system.webp", "Check Mig design system: colours, type scale, 12-column grid, spacing, buttons, inputs, icons and cards", 1568, 537);
-const COVERBASE_WEBSITE_COVER = img("coverbase-website-cover.webp", "Coverbase website: a customer video hero with the headline Agentic third-party risk and security", 1600, 1000);
+const BM_COVER: ProjectImage = { src: "/media/cb-brand-cover.webp", video: "/media/cb-brand-cover.mp4", alt: "The website's Applied AI section with its isometric platform diagram, in front of the closing call to action: an engraved Great Wall scene with a drone, where the cursor becomes the Book a demo button", width: 1600, height: 1000 };
+const BM_SITE_CTA: ProjectImage = { src: "/media/cb-site-cta-footer.webp", video: "/media/cb-site-cta-footer.mp4", alt: "Footer experiment: a shader dome over an engraved Great Wall scene, parallax layers as the page scrolls into the blue footer, and a cursor that turns into the Book a demo button", width: 1600, height: 824 };
+const BM_LOGO_ANIM: ProjectImage = { src: "/media/cb-logo-animation.webp", video: "/media/cb-logo-animation.mp4", alt: "The Coverbase logo animation: the mark's three shapes round into capsules, shrink into three circles that rotate around the center, and open back into the mark", width: 1000, height: 1000 };
+const BM_LOGO_GRID = img("cb-logo-guide-grid.webp", "Logo animation guideline, step 1: the mark on its construction lines", 1000, 1000);
+const BM_LOGO_CAPSULES = img("cb-logo-guide-capsules.webp", "Logo animation guideline, step 2: each shape becomes a rounded capsule on the same construction lines", 1000, 1000);
+const BM_LOGO_ROTATION = img("cb-logo-guide-rotation.webp", "Logo animation guideline, step 3: the capsules become three circles that rotate around the mark's center", 1000, 1000);
+const BM_MARK = img("cb-brand-mark.webp", "The refreshed Coverbase mark on its construction lines: two rounded triangles that meet on one shared axis", 2400, 1350);
+const BM_AUDIT = img("cb-brand-audit.webp", "Audit of the previous mark, annotated: misaligned edges where the shapes meet, an overlapped point, and a right edge that doesn't follow a design grid", 2400, 1350);
+const BM_GRID = img("cb-brand-grid.webp", "The construction grid for the new mark: every edge sits on the same set of 30-degree lines", 2400, 1350);
+const BM_ICON = img("cb-brand-icon.webp", "The new Coverbase icon with a blue gradient on white", 2400, 1350);
+const BM_WORDMARK = img("cb-brand-wordmark.webp", "The Coverbase logo in white on a deep blue gradient", 2400, 1350);
+const BM_COLORS = img("cb-brand-colors.webp", "Brand guidelines, colors: the primary blue scale from 50 to 950, with 700 marked as the main color", 2400, 1350);
+const BM_VARIATIONS = img("cb-brand-variations.webp", "Brand guidelines, logo variations: full logo and icon in gradient, solid blue, gradient black and solid black, on light and dark backgrounds", 2400, 1350);
+const BM_SITE_WALK: ProjectImage = { src: "/media/cb-site-walkthrough.webp", video: "/media/cb-site-walkthrough.mp4", alt: "Scrolling the redesigned Coverbase website: the Applied AI platform diagram, the supplier work queue, platform agents, TPM-Bench v2 results, industries and the closing call to action", width: 1600, height: 888 };
+const BM_SITE_APPLIED = img("cb-site-applied-ai.webp", "Website, Applied AI section: an isometric platform diagram over an engraved mountain landscape, with three cards on how agents work across the vendor lifecycle", 2400, 1427);
+const BM_SITE_AGENT: ProjectImage = { src: "/media/cb-site-agent-work.webp", video: "/media/cb-site-agent-work.mp4", alt: "Isometric Agent work illustration: trust center, public records and your requirements feed an agent that collects evidence, maps it to controls and isolates the gaps", width: 1600, height: 806 };
+const BM_SITE_DIAGRAM: ProjectImage = { src: "/media/cb-site-diagram.webp", video: "/media/cb-site-diagram.mp4", alt: "Interactive isometric diagram: evidence and requirements route through Coverbase in three steps, with a caption for each step", width: 1600, height: 1142 };
+const BM_SITE_INDUSTRIES: ProjectImage = { src: "/media/cb-site-industries.webp", video: "/media/cb-site-industries.mp4", alt: "Industries section with hover animations on each isometric illustration: regulated institutions, security and compliance, growing vendor networks", width: 1600, height: 900 };
+const BM_AMSTERDAM: ProjectImage = { src: "/media/cb-amsterdam-event.webp", video: "/media/cb-amsterdam-event.mp4", alt: "Amsterdam event page: An evening on the Amsterdam canals, with date and boarding location, why the evening matters, a welcome for guests in town for the conference week, and the Reserve your seat form", width: 1600, height: 828 };
+const BM_CAB_HERO = img("cb-cab-hero.webp", "Customer Advisory Board page hero: the meeting title, date with Add to calendar, and the Napa Valley venue with directions, over a photo of the winery", 1800, 932);
+const BM_CAB_GUEST = img("cb-cab-guest.webp", "Customer Advisory Board page for guests: what the day is for and what Coverbase covers, a sticky card with date and location, and an event schedule with expandable sessions", 1800, 1925);
+const BM_NYC_OG = img("cb-nyc-dinner-og.webp", "Share image for the New York executive dinner: title, date, venue and Event by invitation only over a photo of the restaurant", 1600, 840);
+const BM_NYC_PAGE = img("cb-nyc-dinner-page.webp", "New York executive dinner page: hero with date, venue and Reserve your seat, then why the dinner matters, three stats, the three topics and a short agenda beside a sticky reservation card", 1800, 2606);
+const BM_AD_RADAR = img("cb-ad-radar.webp", "Radar ad: Watch Your Vendors Between Reviews. Once a year isn't monitoring. This is. coverbase.com/radar", 1600, 1600);
+const BM_AD_REPORT = img("cb-ad-report.webp", "Report ad: TPRM Wasn't Built for the World We're In Now, with the open 2026 report and a small robot", 1600, 1600);
 const SPICE_AI_WEBSITE_COVER = img("spice-ai-website-cover.webp", "Spice AI website: the hero, The Data and AI Stack in One Engine, beside a SQL playground", 1600, 1000);
 const SA = (f: string, alt: string, w: number, h: number) => img(`spice-ai-${f}.webp`, alt, w, h);
 const SA_HOME_HERO = SA("home-hero", "Spice AI homepage on desktop: The Data and AI Stack in One Engine, beside a SQL playground with hybrid search, LLM inference and federation callouts, over the customer logos", 2000, 1378);
@@ -267,7 +297,7 @@ const ATLAS_PROJECT = img("atlas-project-detail.webp", "Atlas project detail: th
 const ATLAS_LOGIN = img("atlas-login.webp", "Atlas sign-in over a line illustration of a city and its landscape", 1456, 818);
 const ATLAS_CALLS_EMPTY = img("atlas-calls-empty.webp", "Atlas calls page empty state, with an illustration of a person on a call", 1456, 818);
 const ATLAS_COVER: ProjectImage = { src: "/media/atlas-cover.webp", video: "/media/atlas-cover.mp4", alt: "Atlas: a garage capture where a contractor adds a Tesla Powerwall to the scene, beside the client onboarding video, with me showing how to keep the right distance", width: 1600, height: 1056 };
-const AUGMEND_COVER = img("augmend-cover.webp", "Augmend landing hero: Collective intelligence for developers, over a shared workspace with teammates' cursors", 1600, 1000);
+const AUGMEND_COVER_SQ = img("augmend-cover-square.webp", "Augmend landing hero: Collective intelligence for developers, over a shared workspace with teammates' cursors", 1600, 1600);
 const AUGMEND_LANDING = img("augmend-landing.webp", "Augmend landing: Accelerate software development team speed with AI-augmented collaboration tools, with a waitlist field above the workspace", 2000, 1130);
 const AUGMEND_LOGO = img("augmend-logo.webp", "Augmend logo on lime, dark, light and white backgrounds", 888, 1366);
 const AUGMEND_COLORS = img("augmend-colors.webp", "Augmend color system: neutral, lime primary, violet complementary, error and warning scales", 1124, 1061);
@@ -281,11 +311,11 @@ const AUGMEND_WAITLIST = img("augmend-waitlist.webp", "Waitlist modal: Welcome o
 const AUGMEND_EMAIL_BETA = img("augmend-email-beta.webp", "Private beta confirmation email: You're on the list and we're so excited", 778, 1269);
 const AUGMEND_EMAIL_ARTICLE = img("augmend-email-article.webp", "Newsletter email announcing a new article, with the Augmend app icon between mail and calendar icons", 778, 1232);
 const AUGMEND_EMAIL_INVITE = img("augmend-email-invite.webp", "Team invitation email with two people fitting puzzle pieces together", 712, 1212);
-const COOL_EARTH_COVER = img("cool-earth-cover.webp", "ECool Club home: the club sidebar with Take action, Rewards, Leaderboards and Learn, an invitation to earn 100 seeds, and badge tiers up to gold", 1600, 1053);
-const COOL_EARTH_HOME = img("cool-earth-home.webp", "ECool Club home: connect, contribute and get rewarded, with seeds and a daily streak in the top bar", 1536, 864);
-const COOL_EARTH_REWARDS = img("cool-earth-rewards.webp", "Rewards: badges for streaks, seeds, oxygen saved, sharing and the forum, beside course certificates", 1536, 864);
-const COOL_EARTH_LEADERBOARD = img("cool-earth-leaderboard.webp", "Leaderboards: badge tiers and a weekly ranking of businesses and supporters by points", 1536, 864);
-const COOL_EARTH_LEARN = img("cool-earth-learn.webp", "Learn: free courses about wildlife and rainforest protection, each worth 50 seeds", 1536, 864);
+const COOL_EARTH_COVER = img("cool-earth-cover.webp", "ECool Club home, with the Gold tier card and a Take action button in front of it, over Cool Earth's striped green background", 1600, 1053);
+const COOL_EARTH_HOME = img("cool-earth-home.webp", "ECool Club home: connect, contribute and get rewarded, with seeds and a daily streak in the top bar and an invitation to earn 100 seeds", 2400, 1350);
+const COOL_EARTH_REWARDS = img("cool-earth-rewards.webp", "Rewards: badges for streaks, seeds, oxygen saved, sharing and the forum, above course certificates", 2400, 1350);
+const COOL_EARTH_LEADERBOARD = img("cool-earth-leaderboard.webp", "Leaderboards: badge tiers up to gold and a weekly ranking of businesses and supporters by points", 2400, 1350);
+const COOL_EARTH_LEARN = img("cool-earth-learn.webp", "Learn: free courses about wildlife and rainforest protection, each worth 50 seeds", 2400, 1350);
 const SWIPPR_SWIPE_CARD = img("swippr-swipe-card.webp", "Swippr job card: location, salary and benefits in sight, a compatibility score, and swipe left, right or Super Swipp", 1512, 1048);
 const SWIPPR_PITCH = img("swippr-pitch.webp", "Swippr pitch: talents read a job in under 30 seconds, match, book an interview and chat; companies see candidate profiles, set a budget and review matches", 1000, 1795);
 const SWIPPR_SOCIAL = img("swippr-social.webp", "Swippr candidate app on two phones: a job card with its compatibility score, and Start applying to jobs, for free", 1000, 1000);
@@ -564,6 +594,7 @@ export const projects: Project[] = [
     description: "Contract management and AI clause review inside Coverbase, redesigned around the questions customers bring to it.",
     teaser: "What expires, and when do I act? Redesigning the contracts portfolio around dates",
     image: CONTRACTS_COVER,
+    coverVideo: { src: "/media/cb-contracts-cover.mp4", poster: "/media/cb-contracts-cover.webp", width: 1600, height: 1000, fill: true },
     story: [
       { type: "images", items: [CONTRACTS_COVER] },
       {
@@ -649,22 +680,77 @@ export const projects: Project[] = [
     slug: "coverbase-brand-marketing",
     year: 2026,
     employer: CB,
-    client: "Brand and marketing website",
-    description: "Coverbase's marketing website, campaign assets and a private page for its Customer Advisory Board.",
-    teaser: "Website v3, case studies, a lead-magnet report and a code-gated advisory board page",
-    image: COVERBASE_WEBSITE_COVER,
+    client: "Brand, website and marketing",
+    description: "A refreshed Coverbase mark and brand foundations, a richer marketing website, and the event pages and ads around it.",
+    teaser: "A logo rebuilt on a real grid, a website with motion, and event pages guests can act on",
+    image: BM_COVER,
+    coverVideo: { src: "/media/cb-brand-cover.mp4", poster: "/media/cb-brand-cover.webp", width: 1600, height: 1000, fill: true },
     wide: true,
     pairNext: true,
     story: [
-      { type: "images", items: [COVERBASE_WEBSITE_COVER, CAB_SITE_COVER] },
+      { type: "images", items: [BM_COVER] },
       {
         type: "p",
-        text: "I designed Coverbase's brand and marketing updates on top of the Coverbase V2 Brand library: Marketing Website v3, a case-study template and its redesign, a changelog, and marketing assets for social posts, email templates, a one-pager, a sales deck, print material and a lead-magnet report on third-party risk management in the age of AI.",
+        text: "Beyond the product, I worked on how Coverbase shows up outside it. In 2026 that meant three things: tightening the logo and writing down brand foundations, raising the craft of the marketing website, and designing the pages and assets marketing used to fill rooms.",
       },
+      { type: "images", items: [BM_SITE_CTA] },
       {
         type: "p",
-        text: "For the Customer Advisory Board meeting in April 2026, I designed a private landing page. The prototype opens on a code-gated entry screen over a full-bleed photo, with the meeting title and date beside a four-digit code input.",
+        text: "The footer started as an experiment in how far the site's visual language could go: a shader for the dome, layered illustrations for parallax as the page scrolls, and cursor effects that turn the pointer into the Book a demo button, so a visitor can click anywhere on the scene.",
       },
+      { type: "h", text: "Brand: a mark that holds up close" },
+      {
+        type: "p",
+        text: "I started with an audit of the existing mark: the two shapes were misaligned where they met, they overlapped at the center point, and the right edge didn't land on any grid. I rebuilt it on one set of 30-degree construction lines with consistent rounded corners, so every edge has a reason to be where it is.",
+      },
+      { type: "images", items: [BM_AUDIT, BM_GRID] },
+      { type: "images", items: [BM_MARK, BM_ICON] },
+      {
+        type: "p",
+        text: "Then I set new foundations so every team could use the brand consistently: a primary blue scale with one main color, logo and icon variations for light and dark backgrounds, and type pairings, collected in a 2026 brand guidelines deck.",
+      },
+      { type: "images", items: [BM_WORDMARK, BM_COLORS] },
+      { type: "images", items: [BM_VARIATIONS] },
+      { type: "h", text: "The logo in motion" },
+      {
+        type: "p",
+        text: "I also gave the mark a motion of its own. The animation never leaves the construction grid: each shape rounds into a capsule along the same lines, the capsules shrink into three circles that rotate around the mark's center, and they open back into the logo. I built it in code with Claude and wrote guidelines for each step, so it can be reproduced anywhere the brand needs to move.",
+      },
+      { type: "images", items: [BM_LOGO_ANIM, BM_LOGO_GRID] },
+      { type: "images", items: [BM_LOGO_CAPSULES, BM_LOGO_ROTATION] },
+      { type: "h", text: "Website: from a fast build to a crafted one" },
+      {
+        type: "p",
+        text: "The CEO had rebuilt the website in Ploy to move fast. I proposed a set of improvements on top of it and designed them for production: a visual direction mixing engraving with geometric dithering, warmer and lighter backgrounds with grain, and isometric illustrations as a reusable language for explaining the platform. I updated the illustrative product view, the platform diagrams, the TPM-Bench v2 results section and the footer.",
+      },
+      { type: "images", items: [BM_SITE_WALK] },
+      { type: "images", items: [BM_SITE_APPLIED, BM_SITE_AGENT] },
+      {
+        type: "p",
+        text: "Motion does the explaining. The platform diagram walks through how evidence and requirements route through Coverbase step by step, and the Industries illustrations animate on hover.",
+      },
+      { type: "images", items: [BM_SITE_DIAGRAM, BM_SITE_INDUSTRIES] },
+      { type: "h", text: "Marketing: pages a guest can act on" },
+      {
+        type: "p",
+        text: "For a hosted evening on the Amsterdam canals during a major industry conference week, I designed a landing page that reads like the invitation it is: one scene, the date and boarding area up front, a short reason to come, a welcome for guests whether or not they have a conference badge, and a reservation form that asks for four fields.",
+      },
+      { type: "images", items: [BM_AMSTERDAM] },
+      {
+        type: "p",
+        text: "The Customer Advisory Board page was built for executives traveling to a full day in Napa Valley, so clarity mattered more than persuasion. Everything a guest needs to plan sits where they look first: the date with Add to calendar, the venue with directions, a note that travel, lodging and meals are covered, and a schedule from the morning departure to the ride back, with each session expanding to show what it covers.",
+      },
+      { type: "images", items: [BM_CAB_HERO, BM_CAB_GUEST] },
+      {
+        type: "p",
+        text: "The same structure carried over to an executive dinner in New York, with its own share image so the invitation looks right wherever it's posted: the hero answers when, where and how to reserve, and the page explains why the evening is worth it before the short agenda.",
+      },
+      { type: "images", items: [BM_NYC_OG, BM_NYC_PAGE] },
+      {
+        type: "p",
+        text: "Campaign ads used the same blues and a single idea each: watching vendors between annual reviews with Radar, and a free 2026 report on third-party risk in the age of AI.",
+      },
+      { type: "images", items: [BM_AD_RADAR, BM_AD_REPORT] },
     ],
   },
   {
@@ -781,18 +867,50 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "cencora-audit",
+    slug: "vendor-onboarding-audit",
     year: 2026,
     employer: CB,
-    client: "Cencora workflow audit",
-    description: "A design audit of a customer's workflow, with dashboard and configuration studies.",
-    teaser: "A customer workflow audit, with dashboard and configuration architecture studies",
-    image: CENCORA_AUDIT_COVER,
+    client: "Vendor onboarding audit",
+    description: "A usability audit for a Fortune 500 prospect, turned into a clearer path from first login to a new vendor's next step.",
+    teaser: "From \"I created the vendor, now what?\" to an agent that answers it",
+    image: AUDIT_COVER,
     story: [
-      { type: "images", items: [CENCORA_AUDIT_COVER] },
+      { type: "images", items: [AUDIT_COVER] },
       {
         type: "p",
-        text: "The Cencora Workflow design audit sits in the Design Audit folder next to a dashboard architecture study and a configuration architecture board. The cover is dated June 2026.",
+        text: "A Fortune 500 company evaluating Coverbase in a proof of concept kept running into the same wall: the product felt hard to use and non-obvious, most of all in vendor onboarding, the workflow almost every customer depends on. If less technical users struggled there, it meant friction, confusion and support load from day one.",
+      },
+      {
+        type: "p",
+        text: "I reviewed the prospect's call recordings, mapped their path from demo to first product touch, and logged usability issues for every step, from login to the vendor profile. I checked them against product analytics and support feedback, ranked them by how often they came up and what they put at stake for the deal, and turned each one into a design ticket with a proposed solution in Figma and a short thread for the team.",
+      },
+      { type: "h", text: "Search first, then create" },
+      {
+        type: "p",
+        text: "Adding a vendor was the highest-priority fix. The modal opened on a noisy list of existing vendors before anyone typed, and when nothing matched, the way to create one from scratch was easy to miss. The new first step starts with a single name field: matching profiles appear as you type, each with Select and continue, and Continue from scratch is always there. The second step marks the fields that drive automatic workflow routing, so people know which details are worth filling in now.",
+      },
+      { type: "images", items: [AUDIT_STEP1, AUDIT_STEP2] },
+      { type: "h", text: "I created the vendor, now what?" },
+      {
+        type: "p",
+        text: "That was the question users asked right after creating a vendor. The vendor page now opens with the Coverbase Agent: it says what was just filled in and where it came from, recommends the next steps as an interactive checklist, and takes questions about the vendor. Its actions reuse the floating surfaces the product already has, and a vertical lifecycle sits beside it, because a horizontal stepper would not scale to more statuses.",
+      },
+      { type: "images", items: [AUDIT_AGENT] },
+      { type: "h", text: "One job per tab" },
+      {
+        type: "p",
+        text: "The old profile spread general information across three columns and several cards. I moved to navigation plus two columns with vertical tabs, and gave each tab one job: Overview for what changes or needs attention, About for the facts Coverbase extracts about the vendor in collapsible cards, and Properties for how the organization works with the vendor, with shortcuts to findings, commitments and questionnaire submissions. Tabs with nothing to act on stay hidden until they do, such as Bill of Materials after a BOM upload.",
+      },
+      { type: "images", items: [AUDIT_ABOUT, AUDIT_PROPERTIES] },
+      { type: "h", text: "Lighter from the first screen" },
+      {
+        type: "p",
+        text: "The same pass covered the shell around these flows. The top bar dropped repeated page icons, treats Work queue and Notifications as equal actions and only shows system status when something needs attention. The home page lost a redundant search field and gained at-a-glance cards that each lead to an action. On the vendors table, a heatmap showed clicks gathering on search, filters and New vendor, so the redesign keeps those prominent, makes New vendor the primary action and uses tabs for the related lists.",
+      },
+      { type: "images", items: [AUDIT_OVERVIEW] },
+      {
+        type: "p",
+        text: "The prospect responded well to the redesigned vendor experience in a follow-up call, and the findings became the first set of design tickets for the onboarding work.",
       },
     ],
   },
@@ -922,18 +1040,68 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "appraiser",
-    year: 2025, // estimate
+    slug: "inspect-zero-touch",
+    year: 2026,
     employer: CB,
-    client: "Appraiser V2",
-    description: "One Coverbase product surface, from low-fidelity rounds to high fidelity.",
-    teaser: "Every round saved as a dated version: how Appraiser evolved",
-    image: APPRAISER_COVER,
+    client: "Inspect and Zero Touch",
+    description: "Two ways to check a vendor without waiting on a questionnaire: test their live service, or assess them from evidence that already exists.",
+    teaser: "Test the service, not the certificate",
+    image: INSPECT_ZERO_TOUCH_COVER,
     story: [
-      { type: "images", items: [APPRAISER_COVER] },
+      { type: "images", items: [INSPECT_ZERO_TOUCH_COVER] },
       {
         type: "p",
-        text: "The Appraiser V2 file runs from low-fidelity rounds to high-fidelity rounds, each saved as a dated version, which makes it the clearest record of one Coverbase surface evolving over time.",
+        text: "A vendor review usually rests on documents: a SOC 2 report, a questionnaire, a certificate. They describe what was true at one point in time. Inspect checks what is true now. Read-only agents sign in to the third-party apps a company uses and test the controls that matter, such as MFA, single sign-on and admin access, and keep time-stamped evidence of what they saw.",
+      },
+      { type: "h", text: "A guided connection to Okta" },
+      {
+        type: "p",
+        text: "Inspect needs access to the company's identity provider before it can test anything. I started with the first screen: say plainly what Inspect does, then offer two ways in, connect Okta or Microsoft Entra to discover managed apps, or browse an application library for a quick test or an app outside the identity provider. The word library mattered: it tells people there are ready-made settings to start from.",
+      },
+      { type: "images", items: [CB_INSPECT_START] },
+      {
+        type: "p",
+        text: "The connection itself became four guided steps: app details, configuring the connection, syncing and selecting applications, and preparing them for inspection. Each step separates what the person does in Okta from what Coverbase checks automatically, and asks for access only when it becomes relevant: the scopes for creating an inspection identity are explained up front but used only after apps are chosen, behind an explicit approval. I designed the loading and error states of every step, plus an empty inventory, so a wrong client ID or a missing role can be fixed in place without starting over.",
+      },
+      { type: "images", items: [CB_OKTA_CONNECT, CB_OKTA_SELECT] },
+      { type: "images", items: [CB_OKTA_DONE] },
+      {
+        type: "p",
+        text: "Connections then got one home under Configuration: a card for each of Okta, Microsoft Entra and Google OAuth, with status, last sync, the inventory available and the apps already added to Inspect.",
+      },
+      { type: "images", items: [CB_INSPECT_CONFIG] },
+      { type: "h", text: "From one inspection to continuous checks" },
+      {
+        type: "p",
+        text: "Once apps are connected, the Applications view shows what is inspected, what isn't, and what can't be reached. Inspections run on a schedule, and each run is compared with the last, separating material changes from noise, so a reviewer sees what changed rather than rereading everything.",
+      },
+      { type: "images", items: [CB_INSPECT_APPS] },
+      { type: "h", text: "Zero Touch Assessments" },
+      {
+        type: "p",
+        text: "Zero Touch is the lightweight sibling: an assessment built from public data and the intelligence Coverbase already holds, with no questionnaire and no outreach to the vendor. The first version treated it like a smaller traditional assessment, so reviewers expected to go through it issue by issue. I reframed it as screening: one assessment-level conclusion with grouped observations and the evidence behind them, and a default path of launch, review the summary, then close, or only when it's warranted, raise a finding or start a full assessment.",
+      },
+      { type: "images", items: [CB_ZERO_TOUCH] },
+      {
+        type: "p",
+        text: "I designed the completed results first and worked backward into launch and processing. While a run is in progress, the old page offered Approve, Escalate and Archive before there was anything to act on, and filled the screen with empty scores, findings and sources. The new running state shows what Coverbase is doing right now, section by section, with a persistent index for jumping around a long report.",
+      },
+      { type: "images", items: [CB_ZT_RUNNING] },
+      {
+        type: "p",
+        text: "On the completed page, the risk level and score come first, risk information is grouped in one place, and the reviewer decision stays in view on the right. Sections carry a confidence label, because evidence quality varies and \u201cnothing found\u201d must never read as \u201cstrong evidence of low risk\u201d.",
+      },
+      { type: "images", items: [CB_ZT_COMPLETED] },
+      { type: "h", text: "Taking it to market" },
+      {
+        type: "p",
+        text: "I also designed the September 2026 launch campaign for Inspect, built on one idea: a certificate says the castle was safe once. These two ads ran on LinkedIn and Meta.",
+      },
+      { type: "images", items: [CB_AD_POINT, CB_AD_VERIFY] },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "Both shipped in the September 2026 release. Inspect gained scheduled inspections, notifications for outcomes that need attention, change comparisons, evidence from browser activity and API responses, an Accounts view and repeatable probes. Zero Touch gained the new summary, six pre-built templates, and a way to build it into intake and other workflows. The first-run page, the guided Okta connection, the Configuration cards and the redesigned running and completed Zero Touch pages all shipped.",
       },
     ],
   },
@@ -1029,72 +1197,6 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    slug: "inspect-zero-touch",
-    year: 2026,
-    employer: CB,
-    client: "Inspect and Zero Touch",
-    description: "Two ways to check a vendor without waiting on a questionnaire: test their live service, or assess them from evidence that already exists.",
-    teaser: "Test the service, not the certificate",
-    image: INSPECT_ZERO_TOUCH_COVER,
-    story: [
-      { type: "images", items: [INSPECT_ZERO_TOUCH_COVER] },
-      {
-        type: "p",
-        text: "A vendor review usually rests on documents: a SOC 2 report, a questionnaire, a certificate. They describe what was true at one point in time. Inspect checks what is true now. Read-only agents sign in to the third-party apps a company uses and test the controls that matter, such as MFA, single sign-on and admin access, and keep time-stamped evidence of what they saw.",
-      },
-      { type: "h", text: "A guided connection to Okta" },
-      {
-        type: "p",
-        text: "Inspect needs access to the company's identity provider before it can test anything. I started with the first screen: say plainly what Inspect does, then offer two ways in, connect Okta or Microsoft Entra to discover managed apps, or browse an application library for a quick test or an app outside the identity provider. The word library mattered: it tells people there are ready-made settings to start from.",
-      },
-      { type: "images", items: [CB_INSPECT_START] },
-      {
-        type: "p",
-        text: "The connection itself became four guided steps: app details, configuring the connection, syncing and selecting applications, and preparing them for inspection. Each step separates what the person does in Okta from what Coverbase checks automatically, and asks for access only when it becomes relevant: the scopes for creating an inspection identity are explained up front but used only after apps are chosen, behind an explicit approval. I designed the loading and error states of every step, plus an empty inventory, so a wrong client ID or a missing role can be fixed in place without starting over.",
-      },
-      { type: "images", items: [CB_OKTA_CONNECT, CB_OKTA_SELECT] },
-      { type: "images", items: [CB_OKTA_DONE] },
-      {
-        type: "p",
-        text: "Connections then got one home under Configuration: a card for each of Okta, Microsoft Entra and Google OAuth, with status, last sync, the inventory available and the apps already added to Inspect.",
-      },
-      { type: "images", items: [CB_INSPECT_CONFIG] },
-      { type: "h", text: "From one inspection to continuous checks" },
-      {
-        type: "p",
-        text: "Once apps are connected, the Applications view shows what is inspected, what isn't, and what can't be reached. Inspections run on a schedule, and each run is compared with the last, separating material changes from noise, so a reviewer sees what changed rather than rereading everything.",
-      },
-      { type: "images", items: [CB_INSPECT_APPS] },
-      { type: "h", text: "Zero Touch Assessments" },
-      {
-        type: "p",
-        text: "Zero Touch is the lightweight sibling: an assessment built from public data and the intelligence Coverbase already holds, with no questionnaire and no outreach to the vendor. The first version treated it like a smaller traditional assessment, so reviewers expected to go through it issue by issue. I reframed it as screening: one assessment-level conclusion with grouped observations and the evidence behind them, and a default path of launch, review the summary, then close, or only when it's warranted, raise a finding or start a full assessment.",
-      },
-      { type: "images", items: [CB_ZERO_TOUCH] },
-      {
-        type: "p",
-        text: "I designed the completed results first and worked backward into launch and processing. While a run is in progress, the old page offered Approve, Escalate and Archive before there was anything to act on, and filled the screen with empty scores, findings and sources. The new running state shows what Coverbase is doing right now, section by section, with a persistent index for jumping around a long report.",
-      },
-      { type: "images", items: [CB_ZT_RUNNING] },
-      {
-        type: "p",
-        text: "On the completed page, the risk level and score come first, risk information is grouped in one place, and the reviewer decision stays in view on the right. Sections carry a confidence label, because evidence quality varies and \u201cnothing found\u201d must never read as \u201cstrong evidence of low risk\u201d.",
-      },
-      { type: "images", items: [CB_ZT_COMPLETED] },
-      { type: "h", text: "Taking it to market" },
-      {
-        type: "p",
-        text: "I also designed the September 2026 launch campaign for Inspect, built on one idea: a certificate says the castle was safe once. These two ads ran on LinkedIn and Meta.",
-      },
-      { type: "images", items: [CB_AD_POINT, CB_AD_VERIFY] },
-      { type: "h", text: "Result" },
-      {
-        type: "p",
-        text: "Both shipped in the September 2026 release. Inspect gained scheduled inspections, notifications for outcomes that need attention, change comparisons, evidence from browser activity and API responses, an Accounts view and repeatable probes. Zero Touch gained the new summary, six pre-built templates, and a way to build it into intake and other workflows. The first-run page, the guided Okta connection, the Configuration cards and the redesigned running and completed Zero Touch pages all shipped.",
-      },
-    ],
-  },
 
   // ---------- 2024 ----------
   {
@@ -1133,6 +1235,7 @@ export const projects: Project[] = [
 
   {
     slug: "atlas",
+    rowEnd: true,
     year: 2024,
     employer: TT,
     client: "Atlas",
@@ -1236,9 +1339,9 @@ export const projects: Project[] = [
     client: "Augmend",
     description: "A real-time incident workspace for dev teams, with an AI assistant.",
     teaser: "Fix incidents together, with AI that remembers",
-    image: AUGMEND_COVER,
+    image: AUGMEND_COVER_SQ,
     story: [
-      { type: "images", items: [AUGMEND_COVER, AUGMEND_LANDING] },
+      { type: "images", items: [AUGMEND_COVER_SQ, AUGMEND_LANDING] },
       { type: "p", text: TT_NOTE },
       {
         type: "p",
