@@ -163,6 +163,13 @@ const RAINFOREST_KIDS_COVER = img("rainforest-kids-cover.webp", "Rainforest Foun
 const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment results: score, controls evaluated and an analysis summary with strengths, weaknesses and actions", 1600, 1000);
 const APPRAISER_COVER = img("appraiser-cover.webp", "Coverbase Appraiser: review and submit a pre-filled vendor questionnaire", 1600, 1000);
 const BFF_COVER = img("bff-cover.webp", "BFF: two phones with the fan home page and the request menu (comment, like, follow, greeting, serenade) beside a person holding a BFF sign", 1920, 1320);
+const BFF_MOCKUPS = img("bff-mockups.webp", "BFF fan app screens laid out on pink: talent search, featured talent, services, request details and a celebrity video", 1345, 896);
+const BFF_CLIENT = img("bff-client-app.webp", "BFF fan app store screens: home with a celebrity video, a 10% first-request offer, services with prices, and occasions", 1566, 685);
+const BFF_CELEBRITY = img("bff-celebrity-app.webp", "BFF celebrity app store screens: a cancelled song request, the request list with search and filters, and a pending greeting", 1507, 660);
+const BFF_LANDING_HERO = img("bff-landing-hero.webp", "BFF landing page hero: Somos fans de nuestros fans, with two phones showing the app", 1443, 840);
+const BFF_LANDING_STEPS = img("bff-landing-steps.webp", "BFF landing page step 3: the request checkout with delivery email, payment method and total", 1443, 840);
+const BFF_DASHBOARD = img("bff-dashboard.webp", "BFF admin dashboard: a celebrity's monthly payout with billed total, manager, BFF and payment gateway fees", 1443, 840);
+const BFF_DESIGN_SYSTEM = img("bff-design-system.webp", "BFF design system: colours, typography, buttons, inputs, service and request cards, icons and illustrations", 1372, 876);
 const CHECK_MIG_COVER = img("check-mig-cover.webp", "Check Mig: migration registration flow screens, a travel record and the design system", 1600, 1000);
 const COVERBASE_WEBSITE_COVER = img("coverbase-website-cover.webp", "Coverbase website: a customer video hero with the headline Agentic third-party risk and security", 1600, 1000);
 const SPICE_AI_WEBSITE_COVER = img("spice-ai-website-cover.webp", "Spice AI website: the hero, The Data and AI Stack in One Engine, beside a SQL playground", 1600, 1000);
@@ -949,13 +956,59 @@ export const projects: Project[] = [
     year: 2022,
     employer: RV,
     client: "BFF (Best Friend Famoso)",
-    description: "An app that connects celebrities with their fans.",
-    teaser: "A client web app and design system that connect celebrities and fans",
+    description: "An app where Latin American fans book personal videos and messages from their favourite celebrities.",
+    teaser: "A fan app, a celebrity app, a landing page and an admin dashboard on one design system",
     image: BFF_COVER,
     story: [
-      { type: "images", items: [BFF_COVER] },
+      { type: "images", items: [BFF_COVER, BFF_MOCKUPS] },
       { type: "p", text: RV_NOTE },
-      { type: "p", text: "An app connecting celebrities with their fans, with a client web app and a design system." },
+      {
+        type: "p",
+        text: "BFF (Best Friend Famoso) is an app where fans find Latin American celebrities they admire, from actors and singers to comedians, influencers and content creators, and ask them for something personal: a custom video, a serenade, or a like, comment or follow on social media. Fans can request it for themselves or as a gift, businesses can book special services, and celebrities can apply to join and manage their requests in their own app.",
+      },
+      { type: "h", text: "Fans were willing to pay, but rarely got noticed" },
+      {
+        type: "p",
+        text: "In Colombia, fans tried to reach celebrities through social media and ask for a personal message or video. Many were willing to pay for it, but they were unlikely to get an answer. Celebrities, on their side, couldn't keep their audience happy and were missing an extra source of income.",
+      },
+      {
+        type: "p",
+        text: "I led the design from start to end. I helped run the user research, designed the information architecture and the interactions, and we launched the first versions of the fan app, the celebrity app, a landing page and an admin dashboard. After launch we ran usability tests and used them to prioritise the next releases.",
+      },
+      {
+        type: "p",
+        text: "Both sides had to win. For fans, contacting a celebrity had to be fast and simple, a request had to feel personal, and they had to know where it stood. For celebrities, creating and managing a profile and answering requests had to be easy.",
+      },
+      { type: "h", text: "The fan app" },
+      {
+        type: "p",
+        text: "Fans browse celebrities by category and by occasion (birthdays, love, celebrations, special dates), see every service with its price upfront, and send a request in three steps: what they want, their account, and payment.",
+      },
+      { type: "images", items: [BFF_CLIENT] },
+      { type: "h", text: "The celebrity app" },
+      {
+        type: "p",
+        text: "Celebrities see their pending, completed and cancelled requests, search them by ID or client, and filter them by service. Each request opens with who it is for, the fan's instructions and the price, so they can record their answer or reject it from the same screen.",
+      },
+      { type: "images", items: [BFF_CELEBRITY] },
+      { type: "h", text: "Landing page and admin dashboard" },
+      {
+        type: "p",
+        text: "The landing page introduces BFF to fans, walks them through a request step by step, and links to apply as a celebrity. The admin dashboard lets the BFF team manage requests, payments, celebrities, clients and admins, and the catalogue of categories, services and occasions. Each celebrity's monthly payout shows what was billed and what they receive after the manager, BFF and payment-gateway fees.",
+      },
+      { type: "images", items: [BFF_LANDING_HERO, BFF_LANDING_STEPS] },
+      { type: "images", items: [BFF_DASHBOARD] },
+      { type: "h", text: "One system for four products" },
+      {
+        type: "p",
+        text: "A shared design system kept the four products consistent: a bold palette of primary, secondary and tertiary colours, Archivo Expanded for headlines and Helios Antique for text, service, occasion and request cards, inputs, buttons, notifications, and a set of icons and illustrations.",
+      },
+      { type: "images", items: [BFF_DESIGN_SYSTEM] },
+      { type: "h", text: "Results" },
+      {
+        type: "p",
+        text: "On the main tasks, finding celebrities and requesting services, fans had a 95% success rate and a 91% satisfaction score. Celebrities rated the app 97.5% CSAT on average across all tasks and described it as easy to use, valuable and helpful. Cancelling a request was the hardest part for users, so it went into the next release.",
+      },
     ],
   },
   {
