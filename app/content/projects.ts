@@ -51,6 +51,8 @@ export type Project = {
   wide?: boolean;
   /** With wide: share the row with the next card instead of a photo. */
   pairNext?: boolean;
+  /** With wide: share the row with the previous card, which sits on the left. */
+  pairPrev?: boolean;
   /** Full-width Tunnel Strip carousel in the feed: needs at least 5 images, else the card shows. */
   carousel?: string[];
   /** Four screen animations shown as a mosaic in the card, and by a "mosaic" block. */
@@ -178,6 +180,10 @@ const ABACUS = img(
 );
 
 const CONTRACTS_COVER = img("contracts-cover.webp", "Coverbase Contracts: portfolio value, notice deadlines and clauses that need a decision above the contracts table, with the Actions menu open on Import contracts", 1600, 1000);
+const CB_VR_VIDEO: ProjectImage = { src: "/media/cb-vendor-registry.webp", video: "/media/cb-vendor-registry.mp4", alt: "Vendor Registry Portal walkthrough: sign in with a work email, open the magic link, describe a need, and get approved, conditional and in-review options", width: 1920, height: 1064 };
+const CB_VR_SIGNIN = img("cb-vr-signin.webp", "Vendor Registry sign-in under the customer's own brand: work email only, with a magic link instead of a password", 2400, 1330);
+const CB_VR_EMAIL = img("cb-vr-email.webp", "The sign-in email: one button to open the Vendor Registry, branded for the customer and powered by Coverbase", 2400, 1330);
+const CB_VR_RESULTS = img("cb-vr-results.webp", "Search results for a described need: counts of approved, conditional and in-review options above a table with approval, vendor, tier and next review", 2400, 1330);
 const VENDOR_REGISTRY_COVER = img("vendor-registry-cover.webp", "Charles River Vendor Registry Portal: a search for a meeting-transcription tool with approved, conditional and in-review results", 1600, 1000);
 const INSPECT_ZERO_TOUCH_COVER = img("inspect-zero-touch-cover.webp", "Coverbase Inspect: inspection runs with controls finished, outcomes, compliance score and findings per application", 1600, 1000);
 const CENCORA_AUDIT_COVER = img("cencora-audit-cover.webp", "Cencora workflow audit: the new-vendor form with fields used by workflows, beside vendor and overview screens", 1600, 1000);
@@ -186,7 +192,6 @@ const CB_CONTRACTS_TRIAGE = img("cb-contracts-table.webp", "Contracts triage tab
 const CB_CONTRACTS_TIMELINE = img("cb-contracts-timeline.webp", "Timeline view of the same contracts: each row runs from its notice due date to the end of the current term, with a dashed line where the notice date is missing", 2400, 1544);
 const CB_CONTRACTS_PORTFOLIO: ProjectImage = { src: "/media/cb-contracts-portfolio.webp", video: "/media/cb-contracts-portfolio.mp4", alt: "The redesigned Contracts portfolio: Key Dates, Pending Tasks, Approvals and Portfolio cards above the table, a single Export button, the Add contracts menu, and a row menu that holds every contract action", width: 1920, height: 880 };
 const RADAR_COVER = img("radar-cover.webp", "Coverbase Radar: the signals list with severity and affected suppliers, and an event page with an AI summary, triage status and the vendors involved", 1600, 1000);
-const ASSESSMENTS_COVER = img("assessments-cover.webp", "Coverbase assessment statuses: custom review steps in settings, and a workflow that moves an assessment into review", 1600, 1000);
 const CB_ZERO_TOUCH = img("cb-zero-touch.webp", "Zero Touch Assessment for 1Password: review results with a low-risk score beside the sections for supplier profile, reputational risk, controls and security posture", 2400, 1372);
 const CB_RADAR_BACKTEST = img("cb-radar-backtest.webp", "Radar's New Detector form: sources, categories, severity threshold and guidance for what Radar should watch", 2400, 1372);
 const CB_RADAR_MAP = img("cb-radar-map.webp", "A Radar event for a critical file-transfer vulnerability, with the Exposure map showing which vendors are hit directly and which through a shared provider", 2400, 1502);
@@ -517,14 +522,37 @@ export const projects: Project[] = [
     year: 2026,
     employer: CB,
     client: "Vendor Registry Portal",
-    description: "The Vendor Registry Portal, one of Coverbase's finished product areas.",
-    teaser: "A finished portal design, dated September 2026",
+    description: "A read-only portal where any employee can check whether their company already has an approved vendor or service before requesting a new one.",
+    teaser: "Before you request a new vendor, check if you already have one",
     image: VENDOR_REGISTRY_COVER,
     story: [
       { type: "images", items: [VENDOR_REGISTRY_COVER] },
       {
         type: "p",
-        text: "The Vendor Registry Portal is one of the product areas I marked as finished design, with a cover dated September 2026.",
+        text: "Vendor reviews usually start when someone needs a tool. Most of those people aren't on the third-party risk team and never open the Coverbase dashboard, so they file a new intake even when the company already has an approved option. I redesigned the Vendor Registry Portal for them: a read-only place to check first, replacing the previous portal.",
+      },
+      { type: "images", items: [CB_VR_VIDEO] },
+      { type: "h", text: "No account, no dashboard" },
+      {
+        type: "p",
+        text: "The portal is white-labelled under the customer's own brand and domain. People sign in with their work email and a magic link, with no password to create, and a compact version can be embedded in an internal page.",
+      },
+      { type: "images", items: [CB_VR_SIGNIN, CB_VR_EMAIL] },
+      { type: "h", text: "Search by need, not by vendor name" },
+      {
+        type: "p",
+        text: "Employees rarely know which vendor they want; they know the job. Search accepts a vendor, a product, a service or a plain description such as \u201ca tool to transcribe internal meetings\u201d. Results open with what matters most, how many options are approved, approved with conditions or still in review, followed by each option's approval, vendor tier and next review, with reviews that are due or coming up flagged.",
+      },
+      { type: "images", items: [CB_VR_RESULTS] },
+      { type: "h", text: "Details the admins decide" },
+      {
+        type: "p",
+        text: "Opening a result explains why it fits the need, what use is approved and what is restricted, then the service and vendor details. Most of those fields, such as assessment outcome, next assessment date, tier, tags, lifecycle status and use case, are configured by portal admins, so each organization decides what its employees see. When nothing matches, the page says so plainly and offers two ways forward: refine the search or open a vendor intake.",
+      },
+      { type: "h", text: "Result" },
+      {
+        type: "p",
+        text: "The new Vendor Registry Portal shipped in 2026, giving employees outside the risk team a self-serve answer before they start an intake.",
       },
     ],
   },
@@ -894,10 +922,28 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "appraiser",
+    year: 2025, // estimate
+    employer: CB,
+    client: "Appraiser V2",
+    description: "One Coverbase product surface, from low-fidelity rounds to high fidelity.",
+    teaser: "Every round saved as a dated version: how Appraiser evolved",
+    image: APPRAISER_COVER,
+    story: [
+      { type: "images", items: [APPRAISER_COVER] },
+      {
+        type: "p",
+        text: "The Appraiser V2 file runs from low-fidelity rounds to high-fidelity rounds, each saved as a dated version, which makes it the clearest record of one Coverbase surface evolving over time.",
+      },
+    ],
+  },
+  {
     slug: "cocuy",
     year: 2025,
     employer: ML,
     client: "Cocuy",
+    wide: true,
+    pairPrev: true,
     description: "Cocuy, the B2B design system that gave Mercado Libre's First Party tools one language.",
     teaser: "From launch in June to 62,000+ component insertions and a squad of its own",
     image: COCUY,
@@ -980,53 +1026,6 @@ export const projects: Project[] = [
       {
         type: "p",
         text: "Next: make Cocuy an official satellite library of Andes, move reusable patterns into the Seller Experience library, and keep building it in code as 1P UI Core.",
-      },
-    ],
-  },
-  {
-    slug: "appraiser",
-    year: 2025, // estimate
-    employer: CB,
-    client: "Appraiser V2",
-    description: "One Coverbase product surface, from low-fidelity rounds to high fidelity.",
-    teaser: "Every round saved as a dated version: how Appraiser evolved",
-    image: APPRAISER_COVER,
-    story: [
-      { type: "images", items: [APPRAISER_COVER] },
-      {
-        type: "p",
-        text: "The Appraiser V2 file runs from low-fidelity rounds to high-fidelity rounds, each saved as a dated version, which makes it the clearest record of one Coverbase surface evolving over time.",
-      },
-    ],
-  },
-  {
-    slug: "assessments",
-    year: 2026,
-    employer: CB,
-    client: "Assessments",
-    description: "Vendor assessments in Coverbase: how risk is scored, reviewed and tracked to a decision.",
-    teaser: "Making risk scores readable and reviews trackable",
-    image: ASSESSMENTS_COVER,
-    story: [
-      { type: "images", items: [ASSESSMENTS_COVER] },
-      {
-        type: "p",
-        text: "Assessments are the core of vendor risk work: collect evidence, evaluate controls, score the risk, record findings and decide. In 2026 I worked on how that flow reads and moves, without changing the scoring model underneath.",
-      },
-      { type: "h", text: "Scores people can read" },
-      {
-        type: "p",
-        text: "I redesigned how risk scores are displayed across assessments and vendors, and introduced Risk Domains, so a score can be broken down into the areas it comes from and traced back from an assessment to the vendor's overall risk.",
-      },
-      { type: "h", text: "Reviews that live in the product" },
-      {
-        type: "p",
-        text: "Internal review steps often lived in email and spreadsheets. Custom statuses and review workflows bring those steps into Coverbase: teams add their own stages, workflows move assessments through them and create reviews, and an assessment only moves forward when the required reviews are done.",
-      },
-      { type: "h", text: "Result" },
-      {
-        type: "p",
-        text: "Risk Domains and the refreshed score display shipped in May 2026, SLA tracking per assessment stage in June, and custom statuses with review workflows in July.",
       },
     ],
   },
