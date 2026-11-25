@@ -195,6 +195,8 @@ const CB_RADAR_EMPTY = img("cb-radar-empty.webp", "Radar's empty state while it 
 const CB_INSPECT_START = img("cb-inspect-start.webp", "Inspect's first-run page: what Inspect can do, then two ways to start, connecting an identity provider (Okta or Microsoft Entra) or browsing the application library", 2400, 1500);
 const CB_OKTA_SELECT = img("cb-okta-select.webp", "Connect Okta to Inspect, step 3: app details and connection verified, three synced applications to choose from, and an explicit approval before Inspect provisions anything", 2400, 1500);
 const CB_INSPECT_CONFIG = img("cb-inspect-config.webp", "Configuration, Inspect: one card each for Okta, Microsoft Entra and Google OAuth, with connection status, last sync and how many applications are added", 2400, 405);
+const CB_ZT_RUNNING = img("cb-zt-running.webp", "Zero Touch assessment while it runs: a progress banner, a persistent section index on the left, and each section reporting what Coverbase is checking right now", 2400, 1500);
+const CB_ZT_COMPLETED = img("cb-zt-completed.webp", "Completed Zero Touch assessment: risk level and score up front, the vendor profile and inherent risk grouped together, and the reviewer decision kept in view on the right", 2400, 1500);
 const CB_OKTA_CONNECT = img("cb-okta-connect.webp", "Connect Okta to Inspect: app details are found, then step-by-step setup of the public key, scopes and roles Inspect needs", 2400, 1747);
 const CB_OKTA_DONE = img("cb-okta-done.webp", "Okta connection completed: three applications ready for inspection, with New inspection and View applications", 2400, 1500);
 const CB_INSPECT_APPS = img("cb-inspect-apps.webp", "Inspect's Applications tab: counts of added, unavailable, inspected and not-inspected apps, the Okta sync status, and each app with its source and last inspection", 2400, 1500);
@@ -1068,9 +1070,19 @@ export const projects: Project[] = [
       { type: "h", text: "Zero Touch Assessments" },
       {
         type: "p",
-        text: "Zero Touch is the lightweight sibling: an assessment built from public data and the intelligence Coverbase already holds, with no questionnaire and no outreach to the vendor. I redesigned the results as one summary across supplier profile, controls, security posture and financial health, with a clear risk score and a way to correct the data and reassess.",
+        text: "Zero Touch is the lightweight sibling: an assessment built from public data and the intelligence Coverbase already holds, with no questionnaire and no outreach to the vendor. The first version treated it like a smaller traditional assessment, so reviewers expected to go through it issue by issue. I reframed it as screening: one assessment-level conclusion with grouped observations and the evidence behind them, and a default path of launch, review the summary, then close, or only when it's warranted, raise a finding or start a full assessment.",
       },
       { type: "images", items: [CB_ZERO_TOUCH] },
+      {
+        type: "p",
+        text: "I designed the completed results first and worked backward into launch and processing. While a run is in progress, the old page offered Approve, Escalate and Archive before there was anything to act on, and filled the screen with empty scores, findings and sources. The new running state shows what Coverbase is doing right now, section by section, with a persistent index for jumping around a long report.",
+      },
+      { type: "images", items: [CB_ZT_RUNNING] },
+      {
+        type: "p",
+        text: "On the completed page, the risk level and score come first, risk information is grouped in one place, and the reviewer decision stays in view on the right. Sections carry a confidence label, because evidence quality varies and \u201cnothing found\u201d must never read as \u201cstrong evidence of low risk\u201d.",
+      },
+      { type: "images", items: [CB_ZT_COMPLETED] },
       { type: "h", text: "Taking it to market" },
       {
         type: "p",
