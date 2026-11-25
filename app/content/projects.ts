@@ -313,7 +313,7 @@ export const projects: Project[] = [
     year: 2026,
     employer: { label: "Personal" },
     client: "Wedding invitation",
-    description: "Our wedding invitation, designed and shipped by me, still in progress.",
+    description: "A wedding invitation built with shader experiments, still in progress.",
     teaser: "Content first, then shaders: a monogram, a sky of stars and falling petals",
     image: WED_HERO,
     coverVideo: { src: WED_VIDEO.src, poster: WED_VIDEO.poster, width: WED_VIDEO.width, height: WED_VIDEO.height },
