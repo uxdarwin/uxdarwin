@@ -197,6 +197,22 @@ const CHECK_MIG_FLOW = img("check-mig-flow.webp", "Check Mig screens: trip direc
 const CHECK_MIG_DS = img("check-mig-design-system.webp", "Check Mig design system: colours, type scale, 12-column grid, spacing, buttons, inputs, icons and cards", 1568, 537);
 const COVERBASE_WEBSITE_COVER = img("coverbase-website-cover.webp", "Coverbase website: a customer video hero with the headline Agentic third-party risk and security", 1600, 1000);
 const SPICE_AI_WEBSITE_COVER = img("spice-ai-website-cover.webp", "Spice AI website: the hero, The Data and AI Stack in One Engine, beside a SQL playground", 1600, 1000);
+const SA = (f: string, alt: string, w: number, h: number) => img(`spice-ai-${f}.webp`, alt, w, h);
+const SA_HOME_HERO = SA("home-hero", "Spice AI homepage on desktop: The Data and AI Stack in One Engine, beside a SQL playground with hybrid search, LLM inference and federation callouts, over the customer logos", 2000, 1378);
+const SA_HOME_GROUND = SA("home-ground", "Spice AI homepage: Ground apps and AI agents in enterprise data, with tabs for SQL federation, hybrid search and embedded AI inference", 2000, 1242);
+const SA_HOME_AI_ERA = SA("home-ai-era", "Spice AI homepage: Do more with your data in three charted numbers, then Built for the AI era with deploy, sandboxing and observability cards", 2000, 1806);
+const SA_HOME_PRODUCTION = SA("home-production", "Spice AI homepage: a customer quote, Get started with Spice resource cards and the See spice in action call to action", 2000, 2357);
+const SA_FEDERATION = SA("diagram-federation", "Spice engine diagram, SQL Federation and Acceleration highlighted: accelerated data and catalogs", 2000, 1352);
+const SA_HYBRID = SA("diagram-hybrid", "Spice engine diagram, Hybrid SQL Search highlighted: full-text, vector, keyword and re-ranking", 2000, 1352);
+const SA_INFERENCE = SA("diagram-inference", "Spice engine diagram, LLM Inference highlighted: serving and grounding AI in data", 2000, 1352);
+const SA_STACK = SA("stack", "The Data and AI Stack in One Engine: the Spice playground with a hybrid search query, its results and the three capability callouts", 2000, 1274);
+const SA_APPS = SA("diagram-apps", "Architecture diagram: AI apps on top of Spice AI, which connects S3 buckets and tables with AI models such as NVIDIA NIM, OpenAI and Hugging Face", 1388, 760);
+const SA_CODE = SA("code", "Marketing graphic: a hybrid search query with exponential recency decay in a Spice AI code window", 1386, 873);
+const SA_RESULTS = SA("results", "Marketing graphic: a Spice AI query over review messages beside its ranked results table", 1325, 764);
+const SA_22 = SA("2-2", "Spice 2.2 announcement: Spice Cloud Connect for BYOC, MySQL change data capture, Debezium CDC without Kafka and faster search", 2000, 1047);
+const SA_ICON = SA("icon", "The Spice AI app icon over a grid of the data sources and AI providers it connects", 1360, 1034);
+const SA_SIGNIN = SA("signin", "Spice Cloud Platform sign-in: continue with GitHub, beside what the platform does and the companies that run it in production", 2000, 1111);
+const SA_CTA = SA("cta", "See spice in action: a dark call to action for a live demo", 2000, 640);
 const SWIPPR_COVER = img("swippr-cover.webp", "Swippr website: Find your next job for free, with the free plan's features", 1600, 1000);
 const NOMICOL_DOCUCOL_COVER = img("nomicol-docucol-devices.webp", "Nomicol and Docucol on a laptop, a tablet and two phones, with the matching nc and dc marks", 1452, 833);
 const NOMICOL_LANDING = img("nomicol-landing.webp", "Nomicol landing page: Nómina en minutos, no días, with the sign-up on a phone and a customer quote", 1510, 803);
@@ -701,6 +717,28 @@ export const projects: Project[] = [
         type: "p",
         text: "The Spice AI folder holds the website design from February 2026, the Spice AI design system and a media kit, with the old website kept for comparison.",
       },
+      { type: "h", text: "A homepage that runs the engine" },
+      {
+        type: "p",
+        text: "The homepage opens on the product itself: a SQL playground with callouts for hybrid search, LLM inference and federation, next to the line The Data and AI Stack in One Engine. From there it walks through what teams can ground in their data, three numbers worth remembering, what makes it ready for the AI era, proof from production, and where to start.",
+      },
+      { type: "images", items: [SA_HOME_HERO, SA_HOME_GROUND] },
+      { type: "images", items: [SA_HOME_AI_ERA, SA_HOME_PRODUCTION] },
+      { type: "h", text: "Diagrams that explain the architecture" },
+      {
+        type: "p",
+        text: "Spice does three jobs in one engine, which is hard to say in a sentence. One diagram carries it, with a state for each capability: SQL federation and acceleration, hybrid search, and LLM inference. A second diagram shows where Spice sits, between AI apps and the storage and models they depend on.",
+      },
+      { type: "images", items: [SA_FEDERATION, SA_HYBRID, SA_INFERENCE] },
+      { type: "images", items: [SA_STACK, SA_APPS] },
+      { type: "h", text: "Marketing design" },
+      {
+        type: "p",
+        text: "The same system carries the marketing work: release announcements such as Spice 2.2, code graphics that show real queries, the app icon, the Spice Cloud Platform sign-in and the closing call to action.",
+      },
+      { type: "images", items: [SA_22, SA_ICON] },
+      { type: "images", items: [SA_CODE, SA_RESULTS] },
+      { type: "images", items: [SA_SIGNIN, SA_CTA] },
     ],
   },
 
