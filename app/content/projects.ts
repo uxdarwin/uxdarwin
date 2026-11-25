@@ -233,33 +233,6 @@ const RV_NOTE =
 export const projects: Project[] = [
   // ---------- 2026 ----------
   {
-    slug: "neon-wood",
-    year: 2026,
-    employer: { label: "Freelance" },
-    client: "Neon Wood",
-    url: "https://neonwood.com/",
-    description: "A website for furnished apartments and community spaces in four German cities.",
-    teaser: "One floating card for location, apartment type and all-inclusive rent, right in the hero",
-    image: NEON,
-    story: [
-      { type: "images", items: [NEON] },
-      {
-        type: "p",
-        text: "Neon Wood rents furnished apartments and community spaces in Berlin, Cologne, Frankfurt and Tübingen. I designed the website through Cresco, a Berlin studio, and led and executed it end to end. It is live at neonwood.com.",
-      },
-      { type: "h", text: "The decision on top of the photo" },
-      {
-        type: "p",
-        text: "The home hero puts the decision on a full-bleed photo. A floating card switches between apartments and community spaces, picks a location and an apartment type with its all-inclusive monthly rent, and offers two actions: book a visit or rent an apartment.",
-      },
-      { type: "h", text: "A whole site, not a home page" },
-      {
-        type: "p",
-        text: "The site maps out location and building pages, a city overview, room categories and types, promotions, pricing, partners, events, sustainable living, an app page, a page for parents, a blog, about, contact and legal pages, with mobile layouts at 430 px for the key pages. Each review got its own dated design round, from March to July 2026, next to a logo, a style guide, illustrations and a sitemap.",
-      },
-    ],
-  },
-  {
     slug: "parque-caudal",
     year: 2026,
     employer: { label: "Freelance" },
@@ -306,6 +279,33 @@ export const projects: Project[] = [
         text: "A render is a flat image. I split it into layers (sky, building, foliage and interface) and animated them strategically, with a slow push-in and parallax at different depths, so the hero feels alive instead of static. The clip at the top shows the intro and the scroll into the project section on mobile. Below, from left to right: the raw render, the same render graded with foliage framing the building, and the layers I split it into for motion.",
       },
       { type: "images", items: [PC_LAYERS] },
+    ],
+  },
+  {
+    slug: "neon-wood",
+    year: 2026,
+    employer: { label: "Freelance" },
+    client: "Neon Wood",
+    url: "https://neonwood.com/",
+    description: "A website for furnished apartments and community spaces in four German cities.",
+    teaser: "One floating card for location, apartment type and all-inclusive rent, right in the hero",
+    image: NEON,
+    story: [
+      { type: "images", items: [NEON] },
+      {
+        type: "p",
+        text: "Neon Wood rents furnished apartments and community spaces in Berlin, Cologne, Frankfurt and Tübingen. I designed the website through Cresco, a Berlin studio, and led and executed it end to end. It is live at neonwood.com.",
+      },
+      { type: "h", text: "The decision on top of the photo" },
+      {
+        type: "p",
+        text: "The home hero puts the decision on a full-bleed photo. A floating card switches between apartments and community spaces, picks a location and an apartment type with its all-inclusive monthly rent, and offers two actions: book a visit or rent an apartment.",
+      },
+      { type: "h", text: "A whole site, not a home page" },
+      {
+        type: "p",
+        text: "The site maps out location and building pages, a city overview, room categories and types, promotions, pricing, partners, events, sustainable living, an app page, a page for parents, a blog, about, contact and legal pages, with mobile layouts at 430 px for the key pages. Each review got its own dated design round, from March to July 2026, next to a logo, a style guide, illustrations and a sitemap.",
+      },
     ],
   },
   {
