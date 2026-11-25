@@ -222,7 +222,11 @@ const AUGMEND_WAITLIST = img("augmend-waitlist.webp", "Waitlist modal: Welcome o
 const AUGMEND_EMAIL_BETA = img("augmend-email-beta.webp", "Private beta confirmation email: You're on the list and we're so excited", 778, 1269);
 const AUGMEND_EMAIL_ARTICLE = img("augmend-email-article.webp", "Newsletter email announcing a new article, with the Augmend app icon between mail and calendar icons", 778, 1232);
 const AUGMEND_EMAIL_INVITE = img("augmend-email-invite.webp", "Team invitation email with two people fitting puzzle pieces together", 712, 1212);
-const COOL_EARTH_COVER = img("cool-earth-cover.webp", "Cool Club by Cool Earth: badges and certificates on the home, beside the Learn section and the leaderboard", 1600, 1000);
+const COOL_EARTH_COVER = img("cool-earth-cover.webp", "ECool Club home: the club sidebar with Take action, Rewards, Leaderboards and Learn, an invitation to earn 100 seeds, and badge tiers up to gold", 1600, 1600);
+const COOL_EARTH_HOME = img("cool-earth-home.webp", "ECool Club home: connect, contribute and get rewarded, with seeds and a daily streak in the top bar", 1536, 864);
+const COOL_EARTH_REWARDS = img("cool-earth-rewards.webp", "Rewards: badges for streaks, seeds, oxygen saved, sharing and the forum, beside course certificates", 1536, 864);
+const COOL_EARTH_LEADERBOARD = img("cool-earth-leaderboard.webp", "Leaderboards: badge tiers and a weekly ranking of businesses and supporters by points", 1536, 864);
+const COOL_EARTH_LEARN = img("cool-earth-learn.webp", "Learn: free courses about wildlife and rainforest protection, each worth 50 seeds", 1536, 864);
 const SWIPPR_SWIPE_CARD = img("swippr-swipe-card.webp", "Swippr job card: location, salary and benefits in sight, a compatibility score, and swipe left, right or Super Swipp", 1512, 1048);
 const SWIPPR_PITCH = img("swippr-pitch.webp", "Swippr pitch: talents read a job in under 30 seconds, match, book an interview and chat; companies see candidate profiles, set a budget and review matches", 1000, 1795);
 const SWIPPR_SOCIAL = img("swippr-social.webp", "Swippr candidate app on two phones: a job card with its compatibility score, and Start applying to jobs, for free", 1000, 1000);
@@ -871,10 +875,10 @@ export const projects: Project[] = [
     employer: TT,
     client: "Cool Earth",
     description: "A gamified donor experience that won Toptal's global hackathon.",
-    teaser: "Turning donors into members with a gamified Cool Club",
+    teaser: "Turning donors into members with a gamified ECool Club",
     image: COOL_EARTH_COVER,
     story: [
-      { type: "images", items: [COOL_EARTH_COVER] },
+      { type: "images", items: [COOL_EARTH_COVER, COOL_EARTH_HOME] },
       {
         type: "p",
         text: "Cool Earth is a charity that fights carbon emissions by keeping rainforests standing, and it works through the Indigenous and forest communities who have looked after those forests for generations. In Toptal's global hackathon in Q1 2024, Cool Earth asked teams for an immersive, educational and interactive way to turn businesses into long-term charity partners. I led design for our team, and we won.",
@@ -887,8 +891,10 @@ export const projects: Project[] = [
       { type: "h", text: "Giving as a game" },
       {
         type: "p",
-        text: "Our idea was Cool Club: a membership where a business's support becomes progress it can see and share. Members learn about the forest and its communities, earn badges and certificates as their contribution grows, and climb a leaderboard. The game mechanics give a company a reason to come back and progress it can show, which is what turns a one-off gift into a lasting partnership, and the same content works for outreach, fundraising and education.",
+        text: "Our idea was ECool Club: a membership where a business's support becomes progress it can see and share. Members take action for the forest and earn seeds, keep a daily streak, take free courses that end in certificates, unlock badges and tiers, and climb a weekly leaderboard. The game mechanics give a company a reason to come back and progress it can show, which is what turns a one-off gift into a lasting partnership, and the same content works for outreach, fundraising and education.",
       },
+      { type: "images", items: [COOL_EARTH_REWARDS] },
+      { type: "images", items: [COOL_EARTH_LEADERBOARD, COOL_EARTH_LEARN] },
       { type: "h", text: "High fidelity to sell the idea" },
       {
         type: "p",
@@ -952,7 +958,7 @@ export const projects: Project[] = [
     description: "AI tools that take game creators from an idea to an animated 3D asset.",
     teaser: "Texture, animate and build 3D game assets with AI",
     image: CHARMED_COVER,
-    coverVideo: { src: "/media/charmed-cover.mp4", poster: "/media/charmed-cover.webp", width: 1600, height: 976 },
+    coverVideo: { src: "/media/charmed-cover.mp4", poster: "/media/charmed-cover.webp", width: 1600, height: 976, fill: true },
     story: [
       { type: "images", items: [CHARMED_COVER, CHARMED_WEB_HERO] },
       { type: "p", text: TT_NOTE },
