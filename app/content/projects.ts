@@ -16,7 +16,7 @@ export type ProjectImage = {
 export type Block =
   | { type: "p"; text: string }
   | { type: "h"; text: string }
-  | { type: "images"; items: ProjectImage[] }
+  | { type: "images"; items: ProjectImage[]; layout?: { x: number; y: number; w: number; rot: number }[] }
   | { type: "motion" }
   /** A looping, muted screen recording. Portrait clips render as a phone-width column. */
   | { type: "video"; src: string; poster: string; alt: string; width: number; height: number }
@@ -169,6 +169,12 @@ const PC_VIDEO = {
   width: 590,
   height: 1276,
 };
+const PC_LAYERS = img(
+  "parque-caudal-layers.webp",
+  "Three phone frames side by side: the client’s raw render, flat and washed out; the same render graded with a deep blue sky and foliage framing the building; and the layer breakdown used for the motion",
+  1600,
+  1110,
+);
 const PC_PALETTE = img(
   "parque-caudal-palette.webp",
   "Visual system: the Tierra, Arena, Cielo, Hoja and Café color primitives taken from the hero",
@@ -234,14 +240,23 @@ export const projects: Project[] = [
       { type: "h", text: "Answering a buyer’s questions in order" },
       {
         type: "p",
-        text: "The page follows the questions a buyer asks: what it is, what the apartments are like, where it is and how to get in touch. Size, the three typologies and the common areas show up early, and nothing useful sits behind a form. I also improved the quality of the renders and floor plans the client shared, so they hold up at full size.",
+        text: "The page follows the questions a buyer asks: what it is, what the apartments are like, where it is and how to get in touch. Size, the three typologies and the common areas show up early, and nothing useful sits behind a form. I also reworked the renders the client shared. The originals were raw and washed out, so I made them feel more alive while keeping the architecture consistent.",
       },
       { type: "h", text: "WhatsApp first, then email, then the form" },
       {
         type: "p",
         text: "The client asked for a form, plus a WhatsApp button for people who might prefer it. I flipped the order: WhatsApp is the primary action across the page, email comes second and the form third. People don’t want to wait for a callback, and WhatsApp is how most people in Colombia already talk to businesses. I also suggested showing the sales team’s working hours right in the contact section, so people know when to expect an answer.",
       },
-      { type: "images", items: [PC_PROJECT, PC_TYPES, PC_CONTACT] },
+      {
+        type: "images",
+        items: [PC_PROJECT, PC_TYPES, PC_CONTACT],
+        // The contact section sits on top and larger than the preset, so the form reads at first glance.
+        layout: [
+          { x: -17, y: 40, w: 391, rot: 2 },
+          { x: 660, y: 120, w: 300, rot: -2 },
+          { x: 330, y: 0, w: 430, rot: 0 },
+        ],
+      },
       { type: "h", text: "A brand built from a single render" },
       {
         type: "p",
@@ -251,8 +266,9 @@ export const projects: Project[] = [
       { type: "h", text: "Bringing a flat render to life" },
       {
         type: "p",
-        text: "A render is a flat image. I split it into layers (sky, building, foliage and interface) and animated them strategically, with a slow push-in and parallax at different depths, so the hero feels alive instead of static. The clip at the top shows the intro and the scroll into the project section on mobile.",
+        text: "A render is a flat image. I split it into layers (sky, building, foliage and interface) and animated them strategically, with a slow push-in and parallax at different depths, so the hero feels alive instead of static. The clip at the top shows the intro and the scroll into the project section on mobile. Below, from left to right: the raw render, the same render graded with foliage framing the building, and the layers I split it into for motion.",
       },
+      { type: "images", items: [PC_LAYERS] },
     ],
   },
   {

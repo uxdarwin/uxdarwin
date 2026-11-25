@@ -50,7 +50,8 @@ export default async function ProjectPage({ params }: Params) {
           <ProjectMeta project={p} withUrl />
           <h1 className={styles.headline}>{p.description}</h1>
           {p.story.map((b, i) => {
-            if (b.type === "images") return <ImageCluster key={i} images={b.items} variant={cluster++} seed={`${p.slug}-${i}`} />;
+            if (b.type === "images")
+              return <ImageCluster key={i} images={b.items} layout={b.layout} variant={cluster++} seed={`${p.slug}-${i}`} />;
             if (b.type === "motion") return p.motion ? <MotionGrid key={i} clips={p.motion} size="page" /> : null;
             if (b.type === "trio")
               return (
@@ -58,6 +59,7 @@ export default async function ProjectPage({ params }: Params) {
                   key={i}
                   images={[b.left, b.right, { src: b.video.poster, video: b.video.src, alt: b.video.alt, width: b.video.width, height: b.video.height }]}
                   layout={TRIO}
+                  center
                   variant={0}
                   seed={`${p.slug}-${i}`}
                 />

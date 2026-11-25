@@ -86,16 +86,21 @@ export function ImageCluster({
   variant,
   seed,
   layout,
+  center,
 }: {
   images: ProjectImage[];
   variant: number;
   seed: string;
   /** A custom arrangement instead of the preset for this many images. */
   layout?: Slot[];
+  /** Centre the arrangement on the text column instead of starting at its left edge,
+      using the page's left margin when it is wider than the column. */
+  center?: boolean;
 }) {
   const canDrag = useCanDrag();
   const ref = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [offset, setOffset] = useState(0);
   const [stack, setStack] = useState(false);
   const options = LAYOUTS[Math.min(images.length, 3)];
   const slots = layout ?? options[variant % options.length];
@@ -112,11 +117,24 @@ export function ImageCluster({
     const ro = new ResizeObserver(([e]) => {
       const w = e.contentRect.width;
       setStack(w < 560);
-      setScale(Math.min(1, w / layoutW));
+      if (!center) {
+        setScale(Math.min(1, w / layoutW));
+        return;
+      }
+      // Room to the left of the column: the parent's left padding beyond the page inset.
+      const parent = el.parentElement;
+      const cs = parent ? getComputedStyle(parent) : null;
+      const inset = cs ? parseFloat(cs.getPropertyValue("--title-inset")) || 0 : 0;
+      const room = cs ? Math.max(0, parseFloat(cs.paddingLeft) - inset) : 0;
+      const sc = Math.min(1, (w + room) / layoutW);
+      const shown = layoutW * sc;
+      const ideal = (Math.min(w, 720) - shown) / 2;
+      setScale(sc);
+      setOffset(Math.max(-room, Math.min(w - shown, ideal)));
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, [layoutW]);
+  }, [layoutW, center]);
 
   // Click anywhere else (or press Escape) to deselect, like Figma.
   useEffect(() => {
@@ -199,7 +217,7 @@ export function ImageCluster({
             data-draggable={canDrag || undefined}
             data-selected={isSel || undefined}
             style={{
-              left: s.x * scale,
+              left: offset + s.x * scale,
               top: s.y * scale,
               width: st.w * scale,
               transform: `translate(${st.dx}px, ${st.dy}px) rotate(${s.rot}deg)`,
